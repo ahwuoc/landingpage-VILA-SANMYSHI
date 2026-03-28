@@ -1,0 +1,101 @@
+$ next dev --port "3000"
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://100.64.224.45:3000
+✓ Ready in 535ms
+
+ GET / 200 in 3.1s (next.js: 2.7s, application-code: 382ms)
+ GET / 200 in 114ms (next.js: 6ms, application-code: 107ms)
+ GET /about 200 in 662ms (next.js: 592ms, application-code: 69ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /services 200 in 516ms (next.js: 455ms, application-code: 62ms)
+[browser] Image with src "/images/services/customs.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "/images/services/hub.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /news 200 in 512ms (next.js: 462ms, application-code: 50ms)
+[browser] Image with src "/images/news/featured.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /contact 200 in 507ms (next.js: 458ms, application-code: 50ms)
+[browser] Image with src "/images/contact/support.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Compiled in 122ms
+ GET /contact 200 in 209ms (next.js: 127ms, application-code: 82ms)
+ GET /contact 200 in 317ms (next.js: 3ms, application-code: 314ms)
+[browser] Image with src "/images/contact/hero.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/contact/support.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Compiled in 94ms
+ GET /contact 200 in 94ms (next.js: 50ms, application-code: 44ms)
+ GET /contact 200 in 26ms (next.js: 3ms, application-code: 24ms)
+ GET /contact 200 in 28ms (next.js: 5ms, application-code: 23ms)
+ GET /contact 200 in 23ms (next.js: 1966µs, application-code: 21ms)
+✓ Compiled in 26ms
+✓ Compiled in 59ms
+ GET /contact 200 in 82ms (next.js: 45ms, application-code: 36ms)
+ GET /contact 200 in 34ms (next.js: 1965µs, application-code: 32ms)
+ GET /contact 200 in 40ms (next.js: 2ms, application-code: 38ms)
+ GET /contact 200 in 21ms (next.js: 1663µs, application-code: 19ms)
+✓ Compiled in 16ms
+ GET /contact 200 in 21ms (next.js: 1681µs, application-code: 19ms)
+✓ Compiled in 18ms
+ GET / 200 in 31ms (next.js: 13ms, application-code: 18ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+✓ Compiled in 35ms
+ GET / 200 in 82ms (next.js: 48ms, application-code: 34ms)
+ GET / 200 in 37ms (next.js: 2ms, application-code: 35ms)
+ GET / 200 in 21ms (next.js: 1680µs, application-code: 20ms)
+ GET /about 200 in 41ms (next.js: 17ms, application-code: 24ms)
+[browser] Image with src "/images/about/history.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /services 200 in 44ms (next.js: 15ms, application-code: 28ms)
+[browser] Image with src "/images/services/customs.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "/images/services/hub.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "/images/services/warehouse.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Compiled in 42ms
+ GET /services 200 in 82ms (next.js: 44ms, application-code: 38ms)
+ GET /services 200 in 41ms (next.js: 3ms, application-code: 39ms)
+ GET /services 200 in 26ms (next.js: 2ms, application-code: 24ms)
+ GET /services 200 in 31ms (next.js: 2ms, application-code: 29ms)
+✓ Compiled in 17ms
+ GET / 200 in 38ms (next.js: 12ms, application-code: 26ms)
+ GET /about 200 in 39ms (next.js: 15ms, application-code: 24ms)
+ GET /services 200 in 28ms (next.js: 3ms, application-code: 26ms)
+ GET /news 200 in 37ms (next.js: 14ms, application-code: 23ms)
+[browser] Image with src "/images/news/featured.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "/images/news/regulation.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /contact 200 in 37ms (next.js: 15ms, application-code: 22ms)
+ GET / 200 in 23ms (next.js: 2ms, application-code: 21ms)
+ GET /services 200 in 28ms (next.js: 3ms, application-code: 26ms)
+ GET /news 200 in 23ms (next.js: 2ms, application-code: 21ms)
+ GET /news 200 in 29ms (next.js: 3ms, application-code: 26ms)
+✓ Compiled in 49ms
+✓ Compiled in 43ms
+ GET /news 200 in 110ms (next.js: 71ms, application-code: 39ms)
+⚠ Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /news 200 in 131ms (next.js: 1987µs, application-code: 129ms)
+[browser] Image with src "/images/news/hero.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/news/featured.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+⨯ ReferenceError: item is not defined
+    at NewsView (src/views/News/NewsView.tsx:86:48)
+  84 | ...
+  85 | ...    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+> 86 | ...        <Link key={item.id} href={`/news/${item.id}`} className="group cursor-pointer">
+     |                                               ^
+  87 | ...          <div className="aspect-[4/3] relative rounded-[2.5rem] overflow-hidden mb-8 s...
+  88 | ...            <Image
+  89 | ...              src={item.image} {
+  digest: '2346092118'
+}
+ GET /news 200 in 36ms (next.js: 6ms, application-code: 31ms)
+[browser] Uncaught ReferenceError: item is not defined
+    at NewsView (src/views/News/NewsView.tsx:86:48)
+  84 | ...
+  85 | ...    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+> 86 | ...        <Link key={item.id} href={`/news/${item.id}`} className="group cursor-pointer">
+     |                                               ^
+  87 | ...          <div className="aspect-[4/3] relative rounded-[2.5rem] overflow-hidden mb-8 s...
+  88 | ...            <Image
+  89 | ...              src={item.image}
+ GET /news 200 in 81ms (next.js: 4ms, application-code: 78ms)
+[browser] Image with src "/images/news/hero.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+[browser] Image with src "/images/news/featured.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[?25h
+error: script "dev" exited with code 143

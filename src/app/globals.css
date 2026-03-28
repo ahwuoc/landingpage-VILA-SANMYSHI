@@ -1,0 +1,606 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ============================================
+   Prose (Typography plugin) overrides
+   Dùng design tokens thay vì màu hardcode
+   ============================================ */
+@layer base {
+  .prose {
+    --tw-prose-body: var(--md-on-surface-variant);
+    --tw-prose-headings: var(--md-on-surface);
+    --tw-prose-lead: var(--md-on-surface-variant);
+    --tw-prose-links: var(--md-primary);
+    --tw-prose-bold: var(--md-on-surface);
+    --tw-prose-counters: var(--md-outline);
+    --tw-prose-bullets: var(--md-primary);
+    --tw-prose-hr: var(--md-outline-variant);
+    --tw-prose-quotes: var(--md-on-surface);
+    --tw-prose-quote-borders: var(--md-primary);
+    --tw-prose-captions: var(--md-outline);
+    --tw-prose-code: var(--md-on-surface);
+    --tw-prose-pre-code: var(--md-inverse-on-surface);
+    --tw-prose-pre-bg: var(--md-inverse-surface);
+    --tw-prose-th-borders: var(--md-outline-variant);
+    --tw-prose-td-borders: var(--md-outline-variant);
+  }
+}
+
+/* ============================================
+   DESIGN SYSTEM — The Logistics Atelier
+   Material Design 3 Color Tokens + Tailwind v4
+   ============================================ */
+
+/* ---------- Base CSS Variables ---------- */
+:root {
+  /* === Material Design 3 — Core Palette === */
+  --md-primary: #006d36;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #24e87d;
+  --md-on-primary-container: #006330;
+  --md-primary-fixed: #61ff98;
+  --md-primary-fixed-dim: #18e379;
+
+  --md-secondary: #206c3b;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #a4f1b4;
+  --md-on-secondary-container: #25703f;
+  --md-secondary-fixed: #a7f4b7;
+  --md-secondary-fixed-dim: #8cd79c;
+
+  --md-tertiary: #845419;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #ffbe7a;
+  --md-on-tertiary-container: #794b10;
+  --md-tertiary-fixed: #ffdcbc;
+  --md-tertiary-fixed-dim: #faba76;
+
+  --md-error: #ba1a1a;
+  --md-on-error: #ffffff;
+  --md-error-container: #ffdad6;
+  --md-on-error-container: #93000a;
+
+  /* === Surfaces === */
+  --md-background: #f7f9fc;
+  --md-on-background: #191c1e;
+  --md-surface: #f7f9fc;
+  --md-on-surface: #191c1e;
+  --md-surface-variant: #e0e3e6;
+  --md-on-surface-variant: #3c4a3d;
+  --md-surface-tint: #006d36;
+
+  --md-surface-dim: #d8dadd;
+  --md-surface-bright: #f7f9fc;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #f2f4f7;
+  --md-surface-container: #eceef1;
+  --md-surface-container-high: #e6e8eb;
+  --md-surface-container-highest: #e0e3e6;
+
+  /* === Outline === */
+  --md-outline: #6b7b6c;
+  --md-outline-variant: #bacbba;
+
+  /* === Inverse === */
+  --md-inverse-surface: #2d3133;
+  --md-inverse-on-surface: #eff1f4;
+  --md-inverse-primary: #18e379;
+
+  /* === Fixed variants === */
+  --md-on-primary-fixed: #00210c;
+  --md-on-primary-fixed-variant: #005227;
+  --md-on-secondary-fixed: #00210c;
+  --md-on-secondary-fixed-variant: #005227;
+  --md-on-tertiary-fixed: #2c1600;
+  --md-on-tertiary-fixed-variant: #683d01;
+
+  /* === Extended palette — Slate (used in nav, footer, dark sections) === */
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+
+  /* === Extended palette — Emerald (used for nav accents) === */
+  --emerald-400: #34d399;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+
+  /* === Gradients === */
+  --gradient-hero-overlay: linear-gradient(to right, var(--md-background), rgba(247, 249, 252, 0.8), transparent);
+  --gradient-primary-section: linear-gradient(to bottom right, var(--md-primary), var(--md-on-primary-container));
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+
+  /* === Shadows === */
+  --shadow-card: 0 1px 3px rgba(25, 28, 30, 0.06), 0 1px 2px rgba(25, 28, 30, 0.04);
+  --shadow-card-hover: 0 20px 25px -5px rgba(25, 28, 30, 0.08), 0 8px 10px -6px rgba(25, 28, 30, 0.04);
+  --shadow-nav: 0px 24px 48px rgba(25, 28, 30, 0.06);
+  --shadow-elevated: 0 25px 50px -12px rgba(25, 28, 30, 0.15);
+  --shadow-glow-primary: 0 0 20px rgba(36, 232, 125, 0.4);
+
+  /* === Blur === */
+  --blur-glass: 12px;
+
+  /* === Transition timing === */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 400ms;
+}
+
+/* ============================================
+   Tailwind v4 @theme — Design Tokens
+   ============================================ */
+@theme inline {
+  /* Font families */
+  --font-sans: var(--font-roboto), system-ui, -apple-system, sans-serif;
+  --font-headline: var(--font-roboto), system-ui, sans-serif;
+  --font-body: var(--font-roboto), system-ui, sans-serif;
+  --font-label: var(--font-roboto), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Fira Code", monospace;
+
+  /* === Material Design 3 Colors === */
+
+  /* Primary */
+  --color-primary: var(--md-primary);
+  --color-on-primary: var(--md-on-primary);
+  --color-primary-container: var(--md-primary-container);
+  --color-on-primary-container: var(--md-on-primary-container);
+  --color-primary-fixed: var(--md-primary-fixed);
+  --color-primary-fixed-dim: var(--md-primary-fixed-dim);
+  --color-on-primary-fixed: var(--md-on-primary-fixed);
+  --color-on-primary-fixed-variant: var(--md-on-primary-fixed-variant);
+
+  /* Secondary */
+  --color-secondary: var(--md-secondary);
+  --color-on-secondary: var(--md-on-secondary);
+  --color-secondary-container: var(--md-secondary-container);
+  --color-on-secondary-container: var(--md-on-secondary-container);
+  --color-secondary-fixed: var(--md-secondary-fixed);
+  --color-secondary-fixed-dim: var(--md-secondary-fixed-dim);
+  --color-on-secondary-fixed: var(--md-on-secondary-fixed);
+  --color-on-secondary-fixed-variant: var(--md-on-secondary-fixed-variant);
+
+  /* Tertiary */
+  --color-tertiary: var(--md-tertiary);
+  --color-on-tertiary: var(--md-on-tertiary);
+  --color-tertiary-container: var(--md-tertiary-container);
+  --color-on-tertiary-container: var(--md-on-tertiary-container);
+  --color-tertiary-fixed: var(--md-tertiary-fixed);
+  --color-tertiary-fixed-dim: var(--md-tertiary-fixed-dim);
+  --color-on-tertiary-fixed: var(--md-on-tertiary-fixed);
+  --color-on-tertiary-fixed-variant: var(--md-on-tertiary-fixed-variant);
+
+  /* Error */
+  --color-error: var(--md-error);
+  --color-on-error: var(--md-on-error);
+  --color-error-container: var(--md-error-container);
+  --color-on-error-container: var(--md-on-error-container);
+
+  /* Surface & Background */
+  --color-background: var(--md-background);
+  --color-on-background: var(--md-on-background);
+  --color-surface: var(--md-surface);
+  --color-on-surface: var(--md-on-surface);
+  --color-surface-variant: var(--md-surface-variant);
+  --color-on-surface-variant: var(--md-on-surface-variant);
+  --color-surface-tint: var(--md-surface-tint);
+
+  /* Surface containers */
+  --color-surface-dim: var(--md-surface-dim);
+  --color-surface-bright: var(--md-surface-bright);
+  --color-surface-container-lowest: var(--md-surface-container-lowest);
+  --color-surface-container-low: var(--md-surface-container-low);
+  --color-surface-container: var(--md-surface-container);
+  --color-surface-container-high: var(--md-surface-container-high);
+  --color-surface-container-highest: var(--md-surface-container-highest);
+
+  /* Outline */
+  --color-outline: var(--md-outline);
+  --color-outline-variant: var(--md-outline-variant);
+
+  /* Inverse */
+  --color-inverse-surface: var(--md-inverse-surface);
+  --color-inverse-on-surface: var(--md-inverse-on-surface);
+  --color-inverse-primary: var(--md-inverse-primary);
+
+  /* Extended — Slate */
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+
+  /* Extended — Emerald */
+  --color-emerald-400: var(--emerald-400);
+  --color-emerald-500: var(--emerald-500);
+  --color-emerald-600: var(--emerald-600);
+
+  /* Border radius (matching the landing page) */
+  --radius-DEFAULT: 1rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
+  --radius-full: 9999px;
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.4s var(--ease-smooth) both;
+  --animate-fade-up: fade-up 0.5s var(--ease-out-expo) both;
+  --animate-fade-down: fade-down 0.5s var(--ease-out-expo) both;
+  --animate-scale-in: scale-in 0.4s var(--ease-spring) both;
+  --animate-slide-left: slide-left 0.5s var(--ease-out-expo) both;
+  --animate-slide-right: slide-right 0.5s var(--ease-out-expo) both;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 5s ease-in-out infinite;
+  --animate-marquee: marquee 5s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 3s linear infinite;
+}
+
+/* ============================================
+   Keyframe Animations
+   ============================================ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(36, 232, 125, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(36, 232, 125, 0.4), 0 0 80px rgba(36, 232, 125, 0.1);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family: var(--font-roboto), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+/* ============================================
+   Material Symbols (Google Icons)
+   ============================================ */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ============================================
+   Typography Scale — Đồng bộ toàn site
+   ============================================ */
+
+/* Display — Hero headings lớn nhất */
+.text-display-xl { font-size: clamp(3.5rem, 10vw, 9rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; text-transform: uppercase; }
+.text-display-lg { font-size: clamp(3rem, 8vw, 7rem);   font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; text-transform: uppercase; }
+.text-display-md { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; line-height: 1;   letter-spacing: -0.02em; text-transform: uppercase; }
+
+/* Heading — Section titles */
+.text-heading-xl { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; }
+.text-heading-lg { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.01em; text-transform: uppercase; }
+.text-heading-md { font-size: clamp(1.25rem, 2vw, 1.75rem); font-weight: 900; line-height: 1.2; letter-spacing: -0.01em; text-transform: uppercase; }
+.text-heading-sm { font-size: 1.125rem; font-weight: 900; line-height: 1.3; letter-spacing: -0.01em; text-transform: uppercase; }
+
+/* Label — Eyebrow / badge text */
+.text-label-lg { font-size: 0.75rem;  font-weight: 900; line-height: 1; letter-spacing: 0.2em; text-transform: uppercase; }
+.text-label-md { font-size: 0.625rem; font-weight: 900; line-height: 1; letter-spacing: 0.3em; text-transform: uppercase; }
+.text-label-sm { font-size: 0.5rem;   font-weight: 900; line-height: 1; letter-spacing: 0.4em; text-transform: uppercase; }
+
+/* Body — Paragraph text */
+.text-body-xl { font-size: 1.25rem; font-weight: 500; line-height: 1.7; }
+.text-body-lg { font-size: 1.125rem; font-weight: 500; line-height: 1.7; }
+.text-body-md { font-size: 1rem;    font-weight: 500; line-height: 1.7; }
+.text-body-sm { font-size: 0.875rem; font-weight: 500; line-height: 1.6; }
+
+/* ============================================
+   Color Semantic Aliases — Dùng thống nhất
+   ============================================ */
+
+/* Backgrounds */
+.bg-page        { background-color: var(--md-surface); }
+.bg-page-dark   { background-color: var(--md-inverse-surface); }
+.bg-card        { background-color: var(--md-surface-container-lowest); }
+.bg-card-muted  { background-color: var(--md-surface-container-low); }
+.bg-section     { background-color: var(--md-surface-container); }
+
+/* Text on light bg */
+.text-default   { color: var(--md-on-surface); }
+.text-muted     { color: var(--md-on-surface-variant); }
+.text-faint     { color: var(--md-outline); }
+
+/* Text on dark bg */
+.text-on-dark         { color: var(--md-inverse-on-surface); }
+.text-on-dark-muted   { color: color-mix(in srgb, var(--md-inverse-on-surface) 60%, transparent); }
+.text-on-dark-faint   { color: color-mix(in srgb, var(--md-inverse-on-surface) 30%, transparent); }
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+/* Glass morphism */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+/* Glow effects */
+.glow-primary {
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* Nav shadow */
+.shadow-nav {
+  box-shadow: var(--shadow-nav);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--md-surface-container-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md-outline-variant);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-outline);
+}
+
+/* Hide floating contact when mobile menu is open */
+.menu-open .floating-contact-container {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translateY(24px);
+}
+
+/* ============================================
+   Tiptap Editor Styles 
+   ============================================ */
+.tiptap {
+  outline: none !important;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  table-layout: fixed;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.tiptap td,
+.tiptap th {
+  border: 1px solid #e2e8f0;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 1rem 1.25rem;
+  position: relative;
+  vertical-align: top;
+}
+
+.tiptap th {
+  background-color: #f8fafc;
+  font-weight: 700;
+  text-align: left;
+  color: #0f172a;
+}
+
+.tiptap .selectedCell:after {
+  background: rgba(36, 232, 125, 0.1);
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.tiptap sub {
+  vertical-align: sub;
+  font-size: 0.75em;
+}
+
+.tiptap sup {
+  vertical-align: super;
+  font-size: 0.75em;
+}
+
+.tiptap hr {
+  border: none;
+  border-top: 2px solid #e2e8f0;
+  margin: 2rem 0;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding: 0 1.5rem;
+  margin: 1rem 0;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap blockquote {
+  border-left: 4px solid #24e87d;
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #64748b;
+}
+
+.tiptap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  margin: 1.5rem 0;
+}
+
+.tiptap-editor-container {
+  transition: all 0.3s ease;
+}
+
+.tiptap-editor-container:focus-within {
+  border-color: #24e87d !important;
+  box-shadow: 0 0 0 4px rgba(36, 232, 125, 0.1);
+}

@@ -1,0 +1,37 @@
+import Counter from "@/components/Counter";
+import Image from "next/image";
+import Link from "next/link";
+import HeroCarousel from "@/components/HeroCarousel";
+import CoreValues from "@/components/CoreValues";
+import NewsSlider from "@/components/NewsSlider";
+import HomeServices from "@/components/HomeServices";
+import HomeStats from "@/components/HomeStats";
+import PartnerSection from "@/components/PartnerSection";
+import { BRAND_NAME } from "@/constants/company";
+
+export default function HomeView() {
+  return (
+    <div className="bg-surface selection:bg-primary-container/30">
+      <HeroCarousel />
+
+      <HomeServices />
+      <HomeStats />
+      <CoreValues />
+      <NewsSlider />
+      <PartnerSection />
+
+      {/* CTA Section */}
+      <section className="py-24 lg:py-40 text-center max-w-4xl mx-auto px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-on-surface tracking-tight mb-8 lg:mb-12 uppercase leading-[1.1]">Sẵn sàng tối ưu chuỗi cung ứng của bạn?</h2>
+        <div className="flex flex-col sm:flex-row justify-center gap-4 lg:gap-6">
+          <Link href="/contact" className="bg-primary text-on-primary px-10 py-5 lg:px-12 lg:py-6 rounded-xl lg:rounded-2xl font-black text-[10px] lg:text-xs uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all duration-300">
+            Liên hệ tư vấn ngay
+          </Link>
+          <Link href="/services" className="bg-surface-container-high text-on-surface px-10 py-5 lg:px-12 lg:py-6 rounded-xl lg:rounded-2xl font-black text-[10px] lg:text-xs uppercase tracking-[0.2em] hover:bg-on-surface hover:text-white transition-all duration-300 border border-on-surface/5">
+            Khám phá dịch vụ
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
