@@ -68,7 +68,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
         <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-20 md:h-28 lg:h-32">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 md:gap-4 lg:gap-6 group shrink-0 relative z-[110]">
-            <div className="relative w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-xl md:rounded-2xl shadow-xl group-hover:shadow-glow-primary transition-all duration-700">
+            <div className="relative w-14 h-14 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-xl transition-all duration-700">
               <Image
                 src="/images/logo.jpg"
                 alt="Logo VILA SANMYSHI"
@@ -83,14 +83,11 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
               <span className="text-label-sm text-faint opacity-80">IMPORT-EXPORT</span>
             </div>
           </Link>
-
-          {/* Desktop Links */}
           <div className="hidden lg:flex items-center space-x-8 font-black text-base tracking-tight h-full">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               const hasDropdown = !!link.dropdown;
               const isDropdownActive = activeDropdown === link.name;
-
               return (
                 <div
                   key={link.name}

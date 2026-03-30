@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { TableOfContents } from '@tiptap/extension-table-of-contents';
 import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
@@ -38,6 +39,14 @@ interface TiptapEditorProps {
   placeholder?: string;
 }
 
+interface TocAnchor {
+  id: string;
+  textContent: string;
+  level: number;
+  isActive: boolean;
+  isScrolledOver: boolean;
+}
+
 const MenuButton = ({
   onClick,
   isActive = false,
@@ -68,13 +77,13 @@ const MenuButton = ({
 const Separator = () => <div className="w-px h-6 bg-on-surface/10 mx-1 self-center" />;
 
 export default function TiptapEditor({ value, onChange, placeholder }: TiptapEditorProps) {
+  const [tocAnchors, setTocAnchors] = useState<TocAnchor[]>([]);
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ link: false }),
       TiptapImage,
-      Table.configure({
-        resizable: true,
-      }),
+      Table.configure({ resizable: true }),
       TableRow,
       TableHeader,
       TableCell,
@@ -84,22 +93,19 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
       }),
       Color,
       TextStyle,
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Highlight.configure({ multicolor: true }),
-      Placeholder.configure({
-        placeholder: placeholder || 'Bắt đầu viết nội dung...',
-      }),
+      Placeholder.configure({ placeholder: placeholder || 'Bắt đầu viết nội dung...' }),
       Youtube,
       TaskList,
-      TaskItem.configure({
-        nested: true,
-      }),
+      TaskItem.configure({ nested: true }),
       Subscript,
       Superscript,
       Typography,
       CharacterCount,
+      TableOfContents.configure({
+        onUpdate: (anchors) => setTocAnchors(anchors as TocAnchor[]),
+      }),
     ],
     content: value || '',
     immediatelyRender: false,
@@ -123,9 +129,7 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
 
   return (
     <div className="tiptap-editor-container border border-on-surface/10 rounded-2xl bg-white overflow-hidden flex flex-col shadow-sm">
-      {/* TOOLBAR */}
       <div className="sticky top-0 z-20 flex flex-wrap items-center gap-1 p-2 bg-slate-100 border-b border-on-surface/5 backdrop-blur-md bg-opacity-90">
-        {/* History */}
         <div className="flex items-center gap-1">
           <MenuButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} title="Hoàn tác">
             <Undo size={16} />
@@ -360,12 +364,44 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
       </div>
 
       {/* EDITOR CONTENT */}
-      <div className="flex-1 max-h-[700px] overflow-y-auto custom-scrollbar bg-slate-50/10">
-        <div className="w-full bg-white min-h-full">
-          <EditorContent editor={editor} />
+      {/* EDITOR CONTENT */}
+      <div className="flex flex-1 max-h-[700px]">
+        <div className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50/10">
+          <div className="w-full bg-white min-h-full">
+            <EditorContent editor={editor} />
+          </div>
         </div>
-      </div>
 
+        {/* TOC SIDEBAR */}
+        {tocAnchors.length > 0 && (
+          <div className="w-56 shrink-0 border-l border-on-surface/5 bg-slate-50 overflow-y-auto custom-scrollbar p-4">
+            <p className="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/40 mb-3">Mục lục</p>
+            <ul className="space-y-1">
+              {tocAnchors.map((anchor) => (
+                <li key={anchor.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const el = document.getElementById(anchor.id);
+                      el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    style={{ paddingLeft: `${(anchor.level - 1) * 12}px` }}
+                    className={`w-full text-left text-[11px] leading-snug py-1 px-2 rounded-lg transition-all truncate ${
+                      anchor.isActive
+                        ? 'text-primary font-bold bg-primary/10'
+                        : anchor.isScrolledOver
+                        ? 'text-on-surface-variant/40 line-through'
+                        : 'text-on-surface-variant/70 hover:text-primary hover:bg-primary/5'
+                    }`}
+                  >
+                    {anchor.textContent}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
       {/* FOOTER */}
       <div className="px-4 py-2 bg-slate-100 border-t border-on-surface/5 flex items-center justify-between text-[9px] font-bold text-on-surface-variant/30 uppercase tracking-widest">
         <span>Headless CMS Engine @ Tiptap 2.x</span>

@@ -4,6 +4,7 @@ import { getNewsById, getNewsList } from "@/lib/data";
 import { notFound } from "next/navigation";
 import ShareButtons from "@/components/ShareButtons";
 import Breadcrumb from "@/components/Breadcrumb";
+import { ArticleProvider, ArticleBody, ArticleToc } from "@/components/NewsContent";
 
 export default async function NewsDetailView({ id }: { id: string }) {
   const [newsItem, allNews] = await Promise.all([
@@ -43,36 +44,28 @@ export default async function NewsDetailView({ id }: { id: string }) {
       </header>
 
       {/* Main Content & Sidebar */}
-      <div className="max-w-7xl mx-auto px-8 py-24 flex flex-col lg:flex-row gap-20">
-        {/* Post Content */}
-        <div className="lg:w-2/3">
-          <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl mb-16 border-8 border-surface-container-lowest">
-            <Image
-              src={newsItem.image}
-              alt={newsItem.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 1024px) 100vw, 66vw"
-            />
+      <ArticleProvider content={newsItem.content || ""}>
+        <div className="max-w-7xl mx-auto px-8 py-24 flex flex-col lg:flex-row gap-20">
+          {/* Post Content */}
+          <div className="lg:w-2/3">
+            <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl mb-16 border-8 border-surface-container-lowest">
+              <Image
+                src={newsItem.image}
+                alt={newsItem.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 66vw"
+              />
+            </div>
+            <ArticleBody />
+            <ShareButtons title={newsItem.title} />
           </div>
 
-          <div
-            className="prose prose-lg max-w-none text-on-surface-variant leading-relaxed font-medium 
-              prose-headings:text-on-surface prose-headings:font-black prose-headings:tracking-tight prose-headings:uppercase
-              prose-h3:text-2xl prose-h3:mb-6 prose-h3:mt-12
-              prose-p:mb-8
-              prose-ul:mb-12 prose-li:mb-2
-              prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-surface-container-low prose-blockquote:p-8 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:font-black prose-blockquote:text-on-surface"
-            dangerouslySetInnerHTML={{ __html: newsItem.content || "" }}
-          />
-
-          <ShareButtons title={newsItem.title} />
-        </div>
-
-        {/* Sidebar */}
-        <aside className="lg:w-1/3">
-          <div className="sticky top-40 space-y-12">
+          {/* Sidebar */}
+          <aside className="lg:w-1/3">
+            <div className="sticky top-40 space-y-12">
+              <ArticleToc />
             <div className="p-10 bg-card rounded-[3rem] shadow-xl border border-on-surface/5">
               <h4 className="text-xl font-black tracking-tight uppercase mb-8 pb-4 border-b border-on-surface/5">Bài viết khác</h4>
               <div className="space-y-10">
@@ -111,6 +104,7 @@ export default async function NewsDetailView({ id }: { id: string }) {
           </div>
         </aside>
       </div>
+      </ArticleProvider>
     </article>
   );
 }

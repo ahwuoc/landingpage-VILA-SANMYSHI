@@ -20,6 +20,7 @@
         "@tiptap/extension-table": "^3.20.5",
         "@tiptap/extension-table-cell": "^3.20.5",
         "@tiptap/extension-table-header": "^3.20.5",
+        "@tiptap/extension-table-of-contents": "^3.21.0",
         "@tiptap/extension-table-row": "^3.20.5",
         "@tiptap/extension-task-item": "^3.20.5",
         "@tiptap/extension-task-list": "^3.20.5",
@@ -338,6 +339,8 @@
     "@tiptap/extension-table-cell": ["@tiptap/extension-table-cell@3.20.5", "", { "peerDependencies": { "@tiptap/extension-table": "^3.20.5" } }, "sha512-NEobjpZ9f9CpQjnqTAsUHgcjWjTXcgWxqVfMmOWMyZLVh5kmEzDb7V8+lNplLnUUOFYynJcnzPTV7WieaD6Reg=="],
 
     "@tiptap/extension-table-header": ["@tiptap/extension-table-header@3.20.5", "", { "peerDependencies": { "@tiptap/extension-table": "^3.20.5" } }, "sha512-pGKVMPpfvKYIIerCUdGXD9OavFRriKd8+9PSoCR1+wtPsD8EhFbGRR3d8InLFq/G7V77pmsO6Tbws5b+M2LGNQ=="],
+
+    "@tiptap/extension-table-of-contents": ["@tiptap/extension-table-of-contents@3.21.0", "", { "dependencies": { "uuid": "^10.0.0" }, "peerDependencies": { "@tiptap/core": "^3.21.0", "@tiptap/pm": "^3.21.0" } }, "sha512-SLUAQ9EIbq31HVyNFiA00Nnm47qteloCMb9ztB7+abdzEj+HRp3w9CD25aPXaPfcCF5vP5BSwNzERw44uLp1dA=="],
 
     "@tiptap/extension-table-row": ["@tiptap/extension-table-row@3.20.5", "", { "peerDependencies": { "@tiptap/extension-table": "^3.20.5" } }, "sha512-zDW4GtnWnKPW3EdPHY5LOhW6ztuIlMxGRUYS7KGVWj9Qm8JWMPWSRsluNwajQacuZOo4ODVfG1GUooFibkjZLA=="],
 
@@ -1064,6 +1067,8 @@
     "use-sync-external-store": ["use-sync-external-store@1.6.0", "", { "peerDependencies": { "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w=="],
 
     "util-deprecate": ["util-deprecate@1.0.2", "", {}, "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="],
+
+    "uuid": ["uuid@10.0.0", "", { "bin": { "uuid": "dist/bin/uuid" } }, "sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ=="],
 
     "w3c-keyname": ["w3c-keyname@2.2.8", "", {}, "sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ=="],
 
