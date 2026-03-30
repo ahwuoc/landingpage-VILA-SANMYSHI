@@ -23,10 +23,7 @@ export function useResponsive() {
       setIsTablet(width >= 768 && width < 1024);
       setIsDesktop(width >= 1024);
     }
-
-    // Set initial values
     handleResize();
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);

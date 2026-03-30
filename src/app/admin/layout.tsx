@@ -5,6 +5,10 @@ import AdminHeader from "@/components/admin/Header";
 export const metadata: Metadata = {
   title: "Admin Dashboard | VILA SANMYSHI",
   description: "Hệ thống quản trị nội dung VILA SANMYSHI",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function AdminLayout({
@@ -18,10 +22,10 @@ export default function AdminLayout({
       <AdminSidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 ml-72 flex flex-col min-h-screen">
+      <div className="flex-1 ml-72 flex flex-col min-h-screen overflow-x-hidden">
         <AdminHeader />
         
-        <main className="flex-1 p-10 bg-slate-50/50 relative overflow-y-auto">
+        <main className="flex-1 p-10 bg-slate-50/50 relative overflow-y-auto overflow-x-hidden">
           {/* Decorative background element */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none -mr-40 -mt-20 lg:-mt-10" />
           

@@ -2,11 +2,26 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { HERO_SLIDES } from "@/constants/home";
+import ConsultationModal from "@/components/ConsultationModal";
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalService, setModalService] = useState<string | undefined>();
+  const router = useRouter();
+
+  const openModal = (service?: string) => {
+    setModalService(service);
+    setModalOpen(true);
+  };
+
+  const handleCta = (action?: string, href?: string, service?: string) => {
+    if (action === "modal") openModal(service);
+    else if (href) router.push(href);
+  };
 
   const nextSlide = useCallback(() => {
     if (isTransitioning) return;
@@ -28,7 +43,7 @@ export default function HeroCarousel() {
   }, [nextSlide]);
 
   return (
-    <section className="relative h-[85vh] min-h-[800px] lg:min-h-[900px] w-full overflow-hidden flex items-center bg-primary pt-40 md:pt-56 lg:pt-64 pb-32 md:pb-40 lg:pb-48">
+    <section className="relative h-[85vh] min-h-[800px] lg:min-h-[900px] w-full overflow-hidden flex items-center bg-slate-900 pt-40 md:pt-56 lg:pt-64 pb-32 md:pb-40 lg:pb-48">
       {HERO_SLIDES.map((slide, index) => (
         <div
           key={slide.id}
@@ -42,12 +57,10 @@ export default function HeroCarousel() {
             className={`object-cover ${index === current ? 'scale-105' : 'scale-100'} transition-transform duration-[7s] ease-linear`}
             sizes="100vw"
           />
-          {/* Overlay tối nhẹ nhất có thể */}
-          <div className="absolute inset-0 bg-black/25" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
         </div>
       ))}
 
-      {/* Content Layer */}
       <div className="relative z-20 max-w-7xl mx-auto px-8 w-full">
         {HERO_SLIDES.map((slide, index) => (
           <div
@@ -60,17 +73,21 @@ export default function HeroCarousel() {
               {slide.tag}
             </span>
             <h1
-              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-on-dark mb-6 md:mb-10 leading-[0.9] text-balance uppercase [text-shadow:0_2px_20px_rgba(0,0,0,0.5)]"
+              className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-on-dark mb-6 md:mb-10 leading-[0.9] text-balance uppercase [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.8))]"
               dangerouslySetInnerHTML={{ __html: slide.title }}
             />
-            <p className="text-lg md:text-xl lg:text-2xl text-on-dark leading-relaxed mb-8 md:mb-12 max-w-xl font-medium [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+            <p className="text-lg md:text-xl lg:text-2xl text-on-dark leading-relaxed mb-8 md:mb-12 max-w-xl font-medium [text-shadow:0_2px_20px_rgba(0,0,0,0.9),0_4px_40px_rgba(0,0,0,0.7)]">
               {slide.subtitle}
             </p>
             <div className="flex flex-wrap gap-4 md:gap-6">
-              <button className="bg-primary text-on-primary px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:shadow-glow-primary transition-all active:scale-95 duration-300">
+              <button
+                onClick={() => handleCta(slide.ctaPrimaryAction, (slide as any).ctaPrimaryHref, (slide as any).ctaPrimaryService)}
+                className="bg-primary text-on-primary px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:shadow-glow-primary transition-all active:scale-95 duration-300">
                 {slide.ctaPrimary}
               </button>
-              <button className="bg-on-dark/10 backdrop-blur-xl border border-on-dark/20 text-on-dark px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:bg-on-dark/20 transition-all duration-300">
+              <button
+                onClick={() => handleCta((slide as any).ctaSecondaryAction, (slide as any).ctaSecondaryHref, (slide as any).ctaSecondaryService)}
+                className="bg-on-dark/10 backdrop-blur-xl border border-on-dark/20 text-on-dark px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:bg-on-dark/20 transition-all duration-300">
                 {slide.ctaSecondary}
               </button>
             </div>
@@ -105,15 +122,11 @@ export default function HeroCarousel() {
         </button>
       </div>
 
-      <style jsx>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.8s forwards ease-out;
-        }
-      `}</style>
+      <ConsultationModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        serviceName={modalService}
+      />
     </section>
   );
 }

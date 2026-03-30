@@ -5,32 +5,11 @@ import { useEffect, useState } from "react";
 import DataTable from "@/components/admin/DataTable";
 import { CONTACT_STATUS_COLORS, CONTACT_STATUS_LABELS } from "@/constants/contacts";
 import { supabase } from "@/lib/supabase";
+import { useContacts } from "@/hooks/useAdminData";
 
 export default function AdminConsultations() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetchContacts();
-  }, []);
-
-  async function fetchContacts() {
-    setLoading(true);
-    try {
-      const { data: contacts, error } = await supabase
-        .from("contacts")
-        .select("*")
-        .order("date", { ascending: false });
-
-      if (error) throw error;
-      setData(contacts || []);
-    } catch (error) {
-      console.error("Lỗi khi tải danh sách tư vấn:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { contacts: data, loading, setContacts: setData } = useContacts();
 
   const handleDelete = async (item: any) => {
     if (!confirm("Bạn có chắc chắn muốn xóa yêu cầu này?")) return;

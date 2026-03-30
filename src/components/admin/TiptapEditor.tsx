@@ -7,7 +7,7 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
-import { Image } from '@tiptap/extension-image';
+import { Image as TiptapImage } from '@tiptap/extension-image';
 import { Link } from '@tiptap/extension-link';
 import { Color } from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
@@ -29,7 +29,7 @@ import {
   PlusSquare, Trash2, Video,
   Highlighter, CheckSquare, Subscript as SubIcon,
   Superscript as SupIcon, Palette, Type, Quote, Code,
-  HelpCircle, MoreVertical
+  HelpCircle, MoreVertical, Link as LinkIcon, Unlink
 } from 'lucide-react';
 
 interface TiptapEditorProps {
@@ -70,14 +70,18 @@ const Separator = () => <div className="w-px h-6 bg-on-surface/10 mx-1 self-cent
 export default function TiptapEditor({ value, onChange, placeholder }: TiptapEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({ link: false }),
+      TiptapImage,
       Table.configure({
         resizable: true,
       }),
       TableRow,
       TableHeader,
       TableCell,
-      Image,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer' },
+      }),
       Color,
       TextStyle,
       TextAlign.configure({
@@ -295,7 +299,34 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
 
         <Separator />
 
-        {/* Tables */}
+        {/* Link */}
+        <div className="flex items-center gap-1">
+          <MenuButton
+            onClick={() => {
+              const url = window.prompt('Nhập URL liên kết:', editor.getAttributes('link').href || '');
+              if (url === null) return;
+              if (url === '') {
+                editor.chain().focus().unsetLink().run();
+              } else {
+                editor.chain().focus().setLink({ href: url }).run();
+              }
+            }}
+            isActive={editor.isActive('link')}
+            title="Gắn liên kết"
+          >
+            <LinkIcon size={16} />
+          </MenuButton>
+          {editor.isActive('link') && (
+            <MenuButton
+              onClick={() => editor.chain().focus().unsetLink().run()}
+              title="Gỡ liên kết"
+            >
+              <Unlink size={16} />
+            </MenuButton>
+          )}
+        </div>
+
+        <Separator />
         <div className="flex items-center gap-1">
           <MenuButton
             onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}

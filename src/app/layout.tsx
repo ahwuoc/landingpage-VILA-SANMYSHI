@@ -67,6 +67,7 @@ export const metadata: Metadata = {
 };
 
 import { getServicesList } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
 
 export default async function RootLayout({
   children,
@@ -74,7 +75,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const services = await getServicesList();
-  const navServices = services.map(s => ({ name: s.title, href: `/services/${s.id}` }));
+  const { data: cats } = await supabase.from("service_categories").select("name, slug");
+  const catSlugMap = Object.fromEntries((cats || []).map(c => [c.name, c.slug]));
+  const serviceNavItems = services.map(s => ({
+    name: s.title,
+    href: `/services/${catSlugMap[s.category || ""] || ""}/${s.id}`,
+    category: s.category || "Dịch vụ",
+    categorySlug: catSlugMap[s.category || ""] || "",
+  }));
+  const existingCats = new Set(serviceNavItems.map(s => s.category));
+  const emptyCatItems = (cats || [])
+    .filter(c => !existingCats.has(c.name))
+    .map(c => ({ name: "", href: `/services/${c.slug}`, category: c.name, categorySlug: c.slug }));
+  const navServices = [...serviceNavItems, ...emptyCatItems];
   return (
     <html lang="vi" className={`${roboto.variable} light scroll-smooth`} data-scroll-behavior="smooth">
       <head>

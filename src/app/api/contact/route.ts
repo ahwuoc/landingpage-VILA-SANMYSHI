@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
 
     const newId = `MSG${Math.floor(100000 + Math.random() * 900000)}`;
 
-    // 1. Lưu vào database
     const { error: dbError } = await supabase
       .from("contacts")
       .insert([
@@ -34,13 +33,11 @@ export async function POST(request: NextRequest) {
     if (dbError) {
       console.error("Lỗi khi lưu vào database:", dbError);
     }
-    // 2. Fetch SMTP Settings
     const { data: smtpSettings } = await supabase
       .from("smtp_settings")
       .select("*")
       .eq("id", 1)
       .single();
-
     if (smtpSettings && smtpSettings.receive_notifications) {
       const transporter = nodemailer.createTransport({
         host: smtpSettings.host || process.env.SMTP_HOST,

@@ -4,6 +4,7 @@ import { useState, useEffect, FormEvent } from "react";
 import Image from "next/image";
 import { COMPANY_INFO, BRAND_NAME } from "@/constants/company";
 import Breadcrumb from "@/components/Breadcrumb";
+import PageHero from "@/components/PageHero";
 
 export default function ContactView() {
   const [loading, setLoading] = useState(false);
@@ -56,32 +57,16 @@ export default function ContactView() {
 
   return (
     <div className="bg-surface selection:bg-primary/30 text-on-surface">
-      <header className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-page-dark">
-        <div className="absolute inset-0">
-          <Image src="/images/contact/hero.png" alt="Liên hệ tư vấn Logistics VILA SANMYSHI" fill className="object-cover" priority sizes="100vw" />
-          <div className="absolute inset-0 bg-black/15" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 animate-fade-up">
-          <div className="flex justify-center">
-            <Breadcrumb items={[{ label: "Liên hệ" }]} isDark={true} />
-          </div>
-          <div className="text-center">
-            <div className="flex flex-col items-center gap-3 mb-6">
-              <div className="flex items-center gap-3">
-                <span className="w-10 h-[2px] bg-primary rounded-full" />
-                <span className="text-primary text-label-md">Kết nối với chuyên gia</span>
-                <span className="w-10 h-[2px] bg-primary rounded-full" />
-              </div>
-            </div>
-            <h1 className="text-display-md text-on-dark mb-8 [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
-              LIÊN HỆ <span className="text-primary">{BRAND_NAME}</span>
-            </h1>
-            <p className="text-body-xl text-white max-w-2xl mx-auto [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
-              Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc về nhu cầu Logistics và XNK của bạn 24/7.
-            </p>
-          </div>
-        </div>
-      </header>
+      <PageHero
+        image="/images/contact/hero.png"
+        imageAlt="Liên hệ tư vấn Logistics VILA SANMYSHI"
+        overlay="bg-black/20"
+        align="center"
+        breadcrumb={[{ label: "Liên hệ" }]}
+        tag="Kết nối với chuyên gia"
+        title={<>LIÊN HỆ <span className="text-primary">{BRAND_NAME}</span></>}
+        description="Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc về nhu cầu Logistics và XNK của bạn 24/7."
+      />
 
       <section className="py-20 lg:py-32 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">

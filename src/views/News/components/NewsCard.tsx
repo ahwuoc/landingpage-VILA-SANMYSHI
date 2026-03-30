@@ -9,7 +9,7 @@ interface NewsCardProps {
 
 export default function NewsCard({ item }: NewsCardProps) {
   return (
-    <Link href={`/news/${item.id}`} className="group cursor-pointer">
+    <Link href={`/news/${item.slug || item.id}`} className="group cursor-pointer">
       <div className="aspect-[4/3] relative rounded-[2.5rem] overflow-hidden mb-8 shadow-lg">
         <Image
           src={item.image}

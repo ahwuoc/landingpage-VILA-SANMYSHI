@@ -1,12 +1,32 @@
 "use client";
 
 import DataTable from "@/components/admin/DataTable";
-import { SERVICES_LIST } from "@/constants/services";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminServices() {
   const router = useRouter();
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase
+      .from("services")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data: services }) => {
+        setData(services || []);
+        setLoading(false);
+      });
+  }, []);
+
+  async function handleDelete(item: any) {
+    if (!confirm("Bạn có chắc chắn muốn xóa dịch vụ này?")) return;
+    await supabase.from("services").delete().eq("id", item.id);
+    setData(prev => prev.filter(s => s.id !== item.id));
+  }
 
   const columns = [
     {
@@ -15,19 +35,9 @@ export default function AdminServices() {
       render: (value: string, item: any) => (
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl overflow-hidden relative border border-on-surface/5 bg-slate-50 flex-none shadow-sm">
-            <Image
-              src={item.image}
-              alt={value}
-              fill
-              className="object-cover"
-            />
+            <Image src={item.image || "/images/logo.jpg"} alt={value} fill className="object-cover" />
           </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-black text-on-surface leading-snug">{value}</span>
-            <span className="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-widest line-clamp-1">
-              {item.content.replace(/<[^>]*>/g, "").substring(0, 50)}...
-            </span>
-          </div>
+          <span className="text-sm font-black text-on-surface">{value}</span>
         </div>
       )
     },
@@ -41,46 +51,49 @@ export default function AdminServices() {
       )
     },
     {
-      header: "Thông tin chi tiết",
-      accessor: "details",
-      render: (value: any[]) => (
-        <div className="flex -space-x-2">
-          {(value || []).slice(0, 3).map((_, i) => (
-            <div key={i} className="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[10px] font-black text-on-surface-variant">
-              {i + 1}
-            </div>
-          ))}
-          {value?.length > 3 && (
-            <div className="w-8 h-8 rounded-full bg-primary/10 border-2 border-white flex items-center justify-center text-[10px] font-black text-primary">
-              +{value.length - 3}
-            </div>
-          )}
-          {(!value || value.length === 0) && (
-            <span className="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-widest italic ml-2">Đang cập nhật</span>
-          )}
-        </div>
+      header: "Danh mục",
+      accessor: "category",
+      render: (value: string) => (
+        <span className="text-xs font-bold text-on-surface-variant">{value || "—"}</span>
       )
     },
     {
-      header: "Lợi ích",
-      accessor: "benefits",
-      render: (value: any[]) => (
-        <span className="text-xs font-bold text-on-surface-variant">
-          {value?.length || 0} mục
-        </span>
+      header: "Trạng thái",
+      accessor: "status",
+      render: (value: string, item: any) => (
+        <label className="flex items-center gap-2 cursor-pointer group">
+          <div className="relative">
+            <input type="checkbox" className="sr-only" checked={value === "Active"} onChange={async () => {
+              const newStatus = value === "Active" ? "Inactive" : "Active";
+              await supabase.from("services").update({ status: newStatus }).eq("id", item.id);
+              setData(prev => prev.map(s => s.id === item.id ? { ...s, status: newStatus } : s));
+            }} />
+            <div className={`w-10 h-5 rounded-full transition-colors ${value === "Active" ? "bg-emerald-500" : "bg-slate-200"}`} />
+            <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${value === "Active" ? "translate-x-5" : "translate-x-0"}`} />
+          </div>
+          <span className={`text-[9px] font-black uppercase tracking-widest ${value === "Active" ? "text-emerald-600" : "text-slate-400"}`}>
+            {value === "Active" ? "Công khai" : "Nháp"}
+          </span>
+        </label>
       )
     }
   ];
+
+  if (loading) return (
+    <div className="flex items-center justify-center p-20">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
+    </div>
+  );
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
       <DataTable
         title="Danh sách Dịch vụ"
         columns={columns}
-        data={SERVICES_LIST}
+        data={data}
         onAdd={() => router.push("/admin/services/new")}
         onEdit={(item) => router.push(`/admin/services/${item.id}/edit`)}
-        onDelete={(item) => console.log("Delete", item)}
+        onDelete={handleDelete}
       />
     </div>
   );

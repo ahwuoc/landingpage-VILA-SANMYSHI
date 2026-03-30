@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Send, FileText, User, Mail, Phone, Calendar, Info, ChevronDown, Check } from "lucide-react";
 import TiptapEditor from "@/components/admin/TiptapEditor";
 import { supabase } from "@/lib/supabase";
+import { useTemplates } from "@/hooks/useAdminData";
 
 export default function ReplyConsultationPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -13,23 +14,13 @@ export default function ReplyConsultationPage({ params }: { params: Promise<{ id
   const [loading, setLoading] = useState(true);
   const [consultation, setConsultation] = useState<any>(null);
   const [response, setResponse] = useState("");
-  const [templates, setTemplates] = useState<any[]>([]);
+  const templates = useTemplates("reply");
   const [showTemplates, setShowTemplates] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     fetchConsultation();
-    fetchTemplates();
   }, [id]);
-
-  async function fetchTemplates() {
-    const { data } = await supabase
-      .from("templates")
-      .select("*")
-      .eq("type", "reply")
-      .order("name");
-    setTemplates(data || []);
-  }
 
   async function fetchConsultation() {
     setLoading(true);
@@ -46,7 +37,7 @@ export default function ReplyConsultationPage({ params }: { params: Promise<{ id
       if (data && data.status === 'new') {
         await supabase
           .from("contacts")
-          .update({ status: 'processing' })
+          .update({ status: 'read' })
           .eq("id", id);
       }
     } catch (error) {
@@ -65,8 +56,16 @@ export default function ReplyConsultationPage({ params }: { params: Promise<{ id
     setShowTemplates(false);
   };
 
+  const hasEmail = !!consultation?.email;
+
+  const handleMarkReplied = async () => {
+    await supabase.from("contacts").update({ status: 'replied' }).eq("id", consultation.id);
+    alert("Đã đánh dấu hoàn thành!");
+    router.push("/admin/contacts");
+  };
+
   const handleSend = async () => {
-    if (!response) return;
+    if (!response || !hasEmail) return;
 
     setIsSending(true);
     try {
@@ -244,26 +243,40 @@ export default function ReplyConsultationPage({ params }: { params: Promise<{ id
               placeholder="Nhập nội dung tư vấn kỹ thuật hoặc giải pháp logistics tại đây..."
             />
 
-            <div className="mt-10 flex justify-end gap-4">
+            <div className="mt-10 flex justify-end gap-4 flex-wrap">
               <button
                 onClick={() => router.back()}
                 className="px-8 py-4 text-xs font-black uppercase tracking-[0.2em] text-on-surface-variant/60 hover:bg-slate-50 rounded-2xl transition-all"
               >
                 Hủy bỏ
               </button>
-              <button
-                onClick={handleSend}
-                disabled={!response || isSending}
-                className={`flex items-center gap-3 px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-glow-primary transition-all active:scale-95 ${!response || isSending ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-primary text-white hover:brightness-110'
-                  }`}
-              >
-                {isSending ? (
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <Send size={18} />
-                )}
-                GỬI PHẢN HỒI
-              </button>
+
+              {!hasEmail && (
+                <div className="flex flex-col items-end gap-1">
+                  <button
+                    onClick={handleMarkReplied}
+                    className="flex items-center gap-3 px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] bg-emerald-500 text-white hover:brightness-110 transition-all active:scale-95"
+                  >
+                    <Check size={18} /> Đánh dấu đã xử lý
+                  </button>
+                  <p className="text-[10px] text-slate-400 font-bold italic">Khách hàng chưa cung cấp email — không thể gửi phản hồi</p>
+                </div>
+              )}
+
+              {hasEmail && (
+                <button
+                  onClick={handleSend}
+                  disabled={!response || isSending}
+                  className={`flex items-center gap-3 px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-glow-primary transition-all active:scale-95 ${!response || isSending ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-primary text-white hover:brightness-110'}`}
+                >
+                  {isSending ? (
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <Send size={18} />
+                  )}
+                  GỬI PHẢN HỒI
+                </button>
+              )}
             </div>
           </div>
         </div>

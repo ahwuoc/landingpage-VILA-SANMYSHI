@@ -10,6 +10,8 @@ interface ConsultationModalProps {
 
 export default function ConsultationModal({ isOpen, onClose, serviceName }: ConsultationModalProps) {
    const [isSubmitted, setIsSubmitted] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState<string | null>(null);
 
    useEffect(() => {
       if (isOpen) {
@@ -24,13 +26,35 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
 
    if (!isOpen) return null;
 
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setIsSubmitted(true);
-      setTimeout(() => {
-         onClose();
-         setIsSubmitted(false);
-      }, 3000);
+      setError(null);
+      setIsLoading(true);
+      const form = e.currentTarget;
+      const data = {
+         name: (form.elements.namedItem("name") as HTMLInputElement).value,
+         phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+         email: "",
+         service: serviceName || "",
+         message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+      };
+      try {
+         const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+         });
+         if (!res.ok) {
+            const json = await res.json();
+            throw new Error(json.error || "Gửi thất bại");
+         }
+         setIsSubmitted(true);
+         setTimeout(() => { onClose(); setIsSubmitted(false); }, 3000);
+      } catch (err: any) {
+         setError(err.message);
+      } finally {
+         setIsLoading(false);
+      }
    };
 
    return (
@@ -76,21 +100,30 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                            <div className="space-y-2 lg:space-y-3">
                               <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Họ và Tên*</label>
-                              <input required type="text" placeholder="Nguyễn Văn A" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
+                           <input required type="text" name="name" placeholder="Nguyễn Văn A" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
                            </div>
                            <div className="space-y-2 lg:space-y-3">
                               <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Số điện thoại*</label>
-                              <input required type="tel" placeholder="090 000 0000" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
+                              <input required type="tel" name="phone" placeholder="090 000 0000" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
                            </div>
                         </div>
 
                         <div className="space-y-2 lg:space-y-3">
                            <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Nhu cầu cụ thể</label>
-                           <textarea rows={3} placeholder="Ví dụ: Cần thông quan 2 container tại Lao Bảo..." className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all resize-none shadow-inner" />
+                           <textarea rows={3} name="message" defaultValue={serviceName ? `Tôi cần tư vấn về dịch vụ ${serviceName}` : ""} placeholder="Ví dụ: Cần thông quan 2 container tại Lao Bảo..." className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all resize-none shadow-inner" />
                         </div>
 
-                        <button className="w-full bg-primary text-white py-5 lg:py-6 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all duration-300">
-                           Gửi yêu cầu ngay
+                        {error && (
+                           <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
+                              <p className="text-rose-600 text-xs font-black uppercase tracking-widest text-center">{error}</p>
+                           </div>
+                        )}
+
+                        <button
+                           type="submit"
+                           disabled={isLoading}
+                           className="w-full bg-primary text-white py-5 lg:py-6 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100">
+                           {isLoading ? "Đang gửi..." : "Gửi yêu cầu ngay"}
                         </button>
 
                         <p className="text-[9px] text-center font-bold text-slate-400 leading-relaxed max-w-sm mx-auto">

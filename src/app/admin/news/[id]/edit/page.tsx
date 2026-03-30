@@ -1,60 +1,17 @@
-"use client";
-
-import { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
-import NewsForm from "@/components/admin/NewsForm";
+import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import NewsForm from "@/components/admin/NewsForm";
 
-export default function EditNewsPage({ params }: { params: Promise<{ id: string }> }) {
-  const router = useRouter();
-  const { id } = use(params);
-  const [loading, setLoading] = useState(true);
-  const [newsItem, setNewsItem] = useState<any>(null);
+export default async function EditNewsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
-  useEffect(() => {
-    fetchNewsItem();
-  }, [id]);
+  const { data: newsItem, error } = await supabase
+    .from("news")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-  async function fetchNewsItem() {
-    try {
-      const { data, error } = await supabase
-        .from("news")
-        .select("*")
-        .eq("id", id)
-        .single();
-
-      if (error) throw error;
-      setNewsItem(data);
-    } catch (error) {
-      console.error("Lỗi khi tải bài viết:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!newsItem) {
-    return (
-      <div className="text-center py-20 bg-white rounded-[2.5rem] border border-on-surface/5 shadow-sm">
-        <h3 className="text-xl font-black text-on-surface-variant/40 uppercase tracking-widest mb-4">
-          Không tìm thấy bài viết
-        </h3>
-        <button
-          onClick={() => router.push("/admin/news")}
-          className="text-primary font-bold hover:underline"
-        >
-          Quay lại danh sách
-        </button>
-      </div>
-    );
-  }
+  if (error || !newsItem) notFound();
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -64,7 +21,6 @@ export default function EditNewsPage({ params }: { params: Promise<{ id: string 
           Cập nhật nội dung cho bài viết: <span className="text-primary font-bold">"{newsItem.title}"</span>
         </p>
       </div>
-
       <NewsForm initialData={newsItem} isEdit={true} />
     </div>
   );

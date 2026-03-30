@@ -25,7 +25,7 @@ export default function FeaturedNewsCard({ news }: FeaturedNewsCardProps) {
             {news.excerpt}
           </p>
           <Link
-            href={`/news/${news.id}`}
+            href={`/news/${news.slug || news.id}`}
             className="flex items-center gap-4 group"
           >
             <span className="w-12 h-12 rounded-full border border-on-surface/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all">

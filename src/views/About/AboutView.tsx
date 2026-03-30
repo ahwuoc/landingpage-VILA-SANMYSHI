@@ -6,6 +6,7 @@ import Link from "next/link";
 import { BRAND_NAME, COMPANY_INFO } from "@/constants/company";
 import { ABOUT_DATA, BUSINESS_FIELDS, TIMELINE_DATA } from "@/constants/about";
 import Breadcrumb from "@/components/Breadcrumb";
+import PageHero from "@/components/PageHero";
 
 export default function AboutView() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -20,20 +21,18 @@ export default function AboutView() {
 
   return (
     <div className="bg-page text-default pb-20">
-      <header className="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-page-dark mb-12 lg:mb-20">
-        <div className="absolute inset-0">
-          <Image src="/images/about/office-video-thumb.jpg" alt="About Hero" fill className="object-cover opacity-40" priority sizes="100vw" />
+      <PageHero
+        image="/images/about/office-video-thumb.jpg"
+        imageAlt="Về VILA SANMYSHI"
+        imageOpacity="opacity-40"
+        customOverlay={<>
           <div className="absolute inset-0 bg-gradient-to-r from-primary/70 via-primary/30 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <Breadcrumb items={[{ label: ABOUT_DATA.hero.titleSmall }]} isDark={true} />
-          <div className="max-w-4xl">
-            <h1 className="text-display-md text-on-dark mb-6">{BRAND_NAME}</h1>
-            <p className="text-body-lg text-on-dark-muted">{ABOUT_DATA.hero.subtitle}</p>
-          </div>
-        </div>
-      </header>
+        </>}
+        breadcrumb={[{ label: ABOUT_DATA.hero.titleSmall }]}
+        title={BRAND_NAME}
+        description={ABOUT_DATA.hero.subtitle}
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24">
         {/* Video Placeholder (Simple centered) */}

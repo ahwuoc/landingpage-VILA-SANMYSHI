@@ -8,7 +8,7 @@ import { useResponsive } from "@/hooks/useResponsive";
 import { BRAND_NAME } from "@/constants/company";
 import ConsultationModal from "./ConsultationModal";
 
-interface NavService { name: string; href: string; }
+interface NavService { name: string; href: string; category?: string; categorySlug?: string; }
 
 export default function Navbar({ navServices = [] }: { navServices?: NavService[] }) {
   const pathname = usePathname();
@@ -18,12 +18,17 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const services = navServices;
+  const servicesByCategory = navServices.reduce((acc, s) => {
+    const cat = s.category || "Dịch vụ";
+    if (!acc[cat]) acc[cat] = { slug: s.categorySlug || "", items: [] };
+    acc[cat].items.push(s);
+    return acc;
+  }, {} as Record<string, { slug: string; items: NavService[] }>);
 
   const navLinks = [
     { name: "Trang chủ", href: "/" },
     { name: "Về chúng tôi", href: "/about" },
-    { name: "Dịch vụ", href: "/services", dropdown: services },
+    { name: "Dịch vụ", href: "/services", dropdown: navServices },
     { name: "Tin tức", href: "/news" },
     { name: "Liên hệ", href: "/contact" },
   ];
@@ -110,17 +115,29 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                   {/* Dropdown Menu */}
                   {hasDropdown && isDropdownActive && (
                     <div className="absolute top-full left-0 w-72 bg-card shadow-2xl rounded-2xl p-4 border border-on-surface/5 animate-fade-in origin-top">
-                      <div className="grid grid-cols-1 gap-2">
-                        {link.dropdown?.map((sub) => (
+                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-on-surface-variant/40 px-3 mb-3">Danh mục dịch vụ</p>
+                      <div className="grid grid-cols-1 gap-1">
+                        {Object.entries(servicesByCategory).map(([cat, { slug, items }]) => (
                           <Link
-                            key={sub.name}
-                            href={sub.href}
-                            className="p-4 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
+                            key={cat}
+                            href={`/services/${slug}`}
+                            className="p-3 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
                           >
-                            {sub.name}
-                            <span className="material-symbols-outlined text-xs opacity-0 group-hover/sub:opacity-100 transition-opacity translate-x-1">arrow_forward</span>
+                            <span className="flex items-center gap-3">
+                              <span className="w-2 h-2 rounded-full bg-primary/40 group-hover/sub:bg-primary transition-colors" />
+                              {cat}
+                            </span>
+                            {items.filter(i => i.name).length > 0
+                              ? <span className="text-[10px] text-on-surface-variant/40 font-bold">{items.filter(i => i.name).length} dịch vụ</span>
+                              : <span className="text-[10px] text-amber-500 font-bold italic">Sắp ra mắt</span>
+                            }
                           </Link>
                         ))}
+                      </div>
+                      <div className="mt-2 pt-2 border-t border-on-surface/5">
+                        <Link href="/services" className="flex items-center justify-center gap-2 py-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline">
+                          Xem tất cả <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                        </Link>
                       </div>
                     </div>
                   )}

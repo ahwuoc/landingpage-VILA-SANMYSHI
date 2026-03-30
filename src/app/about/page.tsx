@@ -4,6 +4,12 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Giới thiệu VILA SANMYSHI | Đơn vị Logistics chuyên nghiệp tại Quảng Trị",
   description: "Tìm hiểu về hành trình, sứ mệnh và năng lực vận tải, kho bãi vượt trội tại Cửa khẩu Lao Bảo của VILA SANMYSHI.",
+  keywords: ["vila sanmyshi là gì", "công ty logistics quảng trị", "đại lý hải quan lao bảo", "về chúng tôi vila sanmyshi", "vận tải quốc tế quảng trị"],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large", "max-video-preview": -1 },
+  },
   openGraph: {
     title: "Về VILA SANMYSHI | Logistics & Hải quan",
     description: "Câu chuyện và sứ mệnh trở thành đối tác tin cậy hàng đầu tại Quảng Trị & EWEC.",
@@ -15,6 +21,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: ["/images/logo.jpg"],
   },
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

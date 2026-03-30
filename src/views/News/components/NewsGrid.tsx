@@ -55,7 +55,7 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
         {filtered.map((item) => (
           <Link
             key={item.id}
-            href={`/news/${item.id}`}
+            href={`/news/${item.slug || item.id}`}
             className="group flex gap-6 py-6 hover:bg-surface-container-low rounded-2xl px-4 -mx-4 transition-all"
           >
             {/* Thumbnail */}

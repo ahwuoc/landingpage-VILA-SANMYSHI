@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { NEWS_LIST } from "@/constants/news";
+import { supabase } from "@/lib/supabase";
 
 interface NewsItem {
   id: number;
@@ -13,13 +13,24 @@ interface NewsItem {
   category: string;
   image: string;
   author: string;
-  content: string;
+  slug?: string;
 }
 
 export default function NewsSlider() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [newsList, setNewsList] = useState<NewsItem[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("news")
+      .select("id, title, excerpt, date, category, image, author, slug")
+      .eq("status", "Published")
+      .order("created_at", { ascending: false })
+      .limit(8)
+      .then(({ data }) => setNewsList(data || []));
+  }, []);
 
   const checkScroll = useCallback(() => {
     if (scrollRef.current) {
@@ -91,12 +102,12 @@ export default function NewsSlider() {
         ref={scrollRef}
         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-10 px-6 lg:px-[max(1.5rem,calc((100vw-80rem)/2))] no-scrollbar"
       >
-        {NEWS_LIST.map((news) => (
+        {newsList.map((news) => (
           <div
             key={news.id}
             className="flex-none w-[90vw] md:w-[70vw] lg:w-[55vw] snap-center"
           >
-            <Link href={`/news/${news.id}`} className="group relative block aspect-[16/10] lg:aspect-[16/9] rounded-[4rem] lg:rounded-[5rem] overflow-hidden bg-slate-900 shadow-2xl">
+            <Link href={`/news/${news.slug || news.id}`} className="group relative block aspect-[16/10] lg:aspect-[16/9] rounded-[4rem] lg:rounded-[5rem] overflow-hidden bg-slate-900 shadow-2xl">
               <Image
                 src={news.image}
                 alt={news.title}

@@ -1,93 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { useDashboardStats } from "@/hooks/useAdminData";
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    services: 0,
-    news: 0,
-    contacts: 0,
-    visits: "1.2k"
-  });
-  const [recentActivities, setRecentActivities] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  async function fetchDashboardData() {
-    setLoading(true);
-    try {
-      // 1. Fetch Stats Counts
-      const [servicesCount, newsCount, contactsCount] = await Promise.all([
-        supabase.from("services").select("*", { count: 'exact', head: true }),
-        supabase.from("news").select("*", { count: 'exact', head: true }),
-        supabase.from("contacts").select("*", { count: 'exact', head: true }),
-      ]);
-
-      setStats({
-        services: servicesCount.count || 0,
-        news: newsCount.count || 0,
-        contacts: contactsCount.count || 0,
-        visits: "1.2k"
-      });
-
-      // 2. Fetch Recent Activities (Aggregated)
-      const [recentContacts, recentNews, recentServices] = await Promise.all([
-        supabase.from("contacts").select("id, name, created_at, subject").order("created_at", { ascending: false }).limit(3),
-        supabase.from("news").select("id, title, created_at").order("created_at", { ascending: false }).limit(3),
-        supabase.from("services").select("id, title, updated_at").order("updated_at", { ascending: false }).limit(3),
-      ]);
-
-      // Combine and Sort
-      const activities: any[] = [
-        ...(recentContacts.data || []).map(item => ({
-          id: `contact-${item.id}`,
-          type: "contact",
-          title: `Tin nhắn mới từ: ${item.name}`,
-          time: item.created_at,
-          status: "Mới",
-          color: "text-rose-500 bg-rose-500/10",
-          icon: "mail"
-        })),
-        ...(recentNews.data || []).map(item => ({
-          id: `news-${item.id}`,
-          type: "news",
-          title: `Bài viết mới: ${item.title}`,
-          time: item.created_at,
-          status: "Đã đăng",
-          color: "text-emerald-500 bg-emerald-500/10",
-          icon: "newspaper"
-        })),
-        ...(recentServices.data || []).map(item => ({
-          id: `service-${item.id}`,
-          type: "service",
-          title: `Cập nhật dịch vụ: ${item.title}`,
-          time: item.updated_at,
-          status: "Cập nhật",
-          color: "text-blue-500 bg-blue-500/10",
-          icon: "inventory_2"
-        }))
-      ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
-        .slice(0, 5);
-
-      setRecentActivities(activities);
-    } catch (error) {
-      console.error("Lỗi khi tải dữ liệu dashboard:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { stats, recentActivities, loading } = useDashboardStats();
 
   const DASHBOARD_STATS = [
     { label: "Dịch vụ", count: stats.services, icon: "inventory_2", color: "bg-blue-500", href: "/admin/services" },
     { label: "Tin tức", count: stats.news, icon: "newspaper", color: "bg-emerald-500", href: "/admin/news" },
-    { label: "Lượt truy cập", count: stats.visits, icon: "trending_up", color: "bg-amber-500", href: "#" },
+    { label: "Chưa đọc", count: stats.newContacts, icon: "mark_email_unread", color: "bg-amber-500", href: "/admin/contacts" },
+    { label: "Templates", count: stats.templates, icon: "description", color: "bg-violet-500", href: "/admin/templates" },
     { label: "Liên hệ", count: stats.contacts, icon: "mail", color: "bg-rose-500", href: "/admin/contacts" },
   ];
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { useUnreadContacts } from "@/hooks/useAdminData";
 import {
   Bell, LogOut, User,
   ExternalLink, Search,
@@ -13,41 +14,7 @@ import {
 export default function AdminHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  useEffect(() => {
-    fetchUnreadCount();
-
-    const channel = supabase
-      .channel('schema-db-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'contacts'
-        },
-        () => {
-          fetchUnreadCount();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  async function fetchUnreadCount() {
-    const { count, error } = await supabase
-      .from("contacts")
-      .select("*", { count: 'exact', head: true })
-      .eq("status", "new");
-
-    if (!error) {
-      setUnreadCount(count || 0);
-    }
-  }
+  const unreadCount = useUnreadContacts();
 
   async function handleLogout() {
     await fetch("/api/admin/auth", { method: "DELETE" });

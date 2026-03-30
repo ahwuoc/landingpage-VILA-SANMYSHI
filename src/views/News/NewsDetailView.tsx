@@ -77,7 +77,7 @@ export default async function NewsDetailView({ id }: { id: string }) {
               <h4 className="text-xl font-black tracking-tight uppercase mb-8 pb-4 border-b border-on-surface/5">Bài viết khác</h4>
               <div className="space-y-10">
                 {otherNews.map(item => (
-                  <Link key={item.id} href={`/news/${item.id}`} className="group block">
+                  <Link key={item.id} href={`/news/${item.slug || item.id}`} className="group block">
                     <div className="flex gap-6 items-center">
                       <div className="w-20 h-20 relative rounded-2xl overflow-hidden shadow-md flex-shrink-0">
                         <Image

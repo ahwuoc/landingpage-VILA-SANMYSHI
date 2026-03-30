@@ -1,3 +1,5 @@
+import { supabase } from "@/lib/supabase";
+
 export interface NewsItem {
   id: number;
   title: string;
@@ -8,6 +10,7 @@ export interface NewsItem {
   category: string;
   date: string;
   created_at: string;
+  slug?: string;
 }
 
 export interface ServiceItem {
@@ -16,30 +19,18 @@ export interface ServiceItem {
   image: string;
   content: string;
   created_at: string;
-}
-
-const BASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
-  ? process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000"
-  : "http://localhost:3000";
-
-async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error(`API error: ${path}`);
-  return res.json();
+  category?: string;
 }
 
 export async function getNewsList(): Promise<NewsItem[]> {
-  return apiFetch<NewsItem[]>("/api/news");
+  const { data, error } = await supabase.from("news").select("*").order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data || [];
 }
 
 export async function getNewsById(id: string): Promise<NewsItem | null> {
-  try {
-    return await apiFetch<NewsItem>(`/api/news/${id}`);
-  } catch {
-    return null;
-  }
+  const { data } = await supabase.from("news").select("*").eq("id", id).single();
+  return data || null;
 }
 
 export async function getNewsCategories(): Promise<string[]> {
@@ -49,13 +40,12 @@ export async function getNewsCategories(): Promise<string[]> {
 }
 
 export async function getServicesList(): Promise<ServiceItem[]> {
-  return apiFetch<ServiceItem[]>("/api/services");
+  const { data, error } = await supabase.from("services").select("*").order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data || [];
 }
 
 export async function getServiceById(id: string): Promise<ServiceItem | null> {
-  try {
-    return await apiFetch<ServiceItem>(`/api/services/${id}`);
-  } catch {
-    return null;
-  }
+  const { data } = await supabase.from("services").select("*").eq("id", id).single();
+  return data || null;
 }

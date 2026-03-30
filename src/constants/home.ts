@@ -6,7 +6,10 @@ export const HERO_SLIDES = [
     subtitle: "Giải pháp khai báo hải quan chuyên nghiệp tại cửa khẩu Lao Bảo. Vila Sanmyshi cam kết tối ưu hóa quy trình XNK, rút ngắn thời gian thông quan cho doanh nghiệp của bạn.",
     image: "/images/hero/hero-1.png",
     ctaPrimary: "Bắt đầu ngay",
-    ctaSecondary: "Tìm hiểu thêm"
+    ctaPrimaryAction: "modal" as const,
+    ctaPrimaryService: "Khai báo Hải quan",
+    ctaSecondary: "Tìm hiểu thêm",
+    ctaSecondaryHref: "/services"
   },
   {
     id: 2,
@@ -15,7 +18,11 @@ export const HERO_SLIDES = [
     subtitle: "Chúng tôi là cầu nối chiến lược trên tuyến EWEC, kết nối Việt Nam - Lào - Thái Lan với quy trình vận tải đa phương thức an toàn và tiết kiệm chi phí nhất.",
     image: "/images/hero/hero-2.png",
     ctaPrimary: "Xem lộ trình",
-    ctaSecondary: "Yêu cầu báo giá"
+    ctaPrimaryAction: "href" as const,
+    ctaPrimaryHref: "/services",
+    ctaSecondary: "Yêu cầu báo giá",
+    ctaSecondaryAction: "modal" as const,
+    ctaSecondaryService: "Vận tải Đa phương thức"
   },
   {
     id: 3,
@@ -24,6 +31,10 @@ export const HERO_SLIDES = [
     subtitle: "Tối ưu hóa chuỗi cung ứng với hệ thống kho ngoại quan và kho CFS tại Lao Bảo. Theo dõi hàng hóa 24/7 với công nghệ quản lý kho thông minh WMS.",
     image: "/images/hero/hero-3.png",
     ctaPrimary: "Khám phá kho",
-    ctaSecondary: "Tư vấn miễn phí"
+    ctaPrimaryAction: "href" as const,
+    ctaPrimaryHref: "/services#warehouse",
+    ctaSecondary: "Tư vấn miễn phí",
+    ctaSecondaryAction: "modal" as const,
+    ctaSecondaryService: "Dịch vụ Kho vận"
   }
 ];

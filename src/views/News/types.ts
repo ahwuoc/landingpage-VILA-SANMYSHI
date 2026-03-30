@@ -7,4 +7,6 @@ export interface NewsItem {
   image: string;
   author: string;
   content: string;
+  slug?: string;
+  created_at?: string;
 }
