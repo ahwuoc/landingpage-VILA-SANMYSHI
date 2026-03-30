@@ -65,10 +65,10 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
     <>
       <ConsultationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <nav className={`fixed top-0 w-full z-[120] transition-all duration-300 ${isOpen ? 'bg-transparent shadow-none border-none' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-slate-100/50'}`}>
-        <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-20 md:h-28 lg:h-32">
+        <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-24 md:h-28 lg:h-32">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 md:gap-4 lg:gap-6 group shrink-0 relative z-[110]">
-            <div className="relative w-14 h-14 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-xl transition-all duration-700">
+            <div className="relative w-30 h-30 md:w-34 md:h-44 lg:w-52 lg:h-52 rounded-xl transition-all duration-700">
               <Image
                 src="/images/logo.jpg"
                 alt="Logo VILA SANMYSHI"
@@ -116,7 +116,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                       <div className="grid grid-cols-1 gap-1">
                         {Object.entries(servicesByCategory).map(([cat, { slug, items }]) => (
                           <Link
-                            key={cat}
+                            key={cat}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                             href={`/services/${slug}`}
                             className="p-3 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
                           >
@@ -143,7 +143,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
             })}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0 ml-auto lg:ml-0">
             <button
               onClick={() => setIsModalOpen(true)}
               className={`hidden sm:block bg-primary text-white px-5 py-2.5 lg:px-6 lg:py-3 rounded-full font-black text-[10px] lg:text-xs uppercase tracking-widest shadow-glow-primary hover:scale-[0.98] transition-all active:scale-95 duration-200 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
@@ -156,15 +156,9 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
               className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[110] relative focus:outline-none"
               aria-label="Toggle menu"
             >
-              <span
-                className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[8px] bg-on-dark' : 'bg-default'}`}
-              />
-              <span
-                className={`w-7 h-[2px] rounded-full transition-all duration-300 ${isOpen ? 'opacity-0 scale-x-0 bg-on-dark' : 'opacity-100 bg-default'}`}
-              />
-              <span
-                className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? '-rotate-45 -translate-y-[8px] bg-on-dark' : 'bg-default'}`}
-              />
+              <span className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[8px] bg-white' : 'bg-slate-800'}`} />
+              <span className={`w-7 h-[2px] rounded-full transition-all duration-300 ${isOpen ? 'opacity-0 scale-x-0 bg-white' : 'opacity-100 bg-slate-800'}`} />
+              <span className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? '-rotate-45 -translate-y-[8px] bg-white' : 'bg-slate-800'}`} />
             </button>
           </div>
         </div>
