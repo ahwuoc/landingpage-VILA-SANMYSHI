@@ -21,6 +21,7 @@ export default function NewsSlider() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [newsList, setNewsList] = useState<NewsItem[]>([]);
+  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     supabase
@@ -47,13 +48,47 @@ export default function NewsSlider() {
       checkScroll();
       return () => el.removeEventListener("scroll", checkScroll);
     }
-  }, [checkScroll]);
+  }, [checkScroll, newsList]);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const { clientWidth } = scrollRef.current;
-      const scrollAmount = direction === "left" ? -clientWidth * 0.8 : clientWidth * 0.8;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  const scrollFn = useCallback((direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    if (direction === "right" && scrollLeft >= scrollWidth - clientWidth - 20) {
+      scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -clientWidth * 0.8 : clientWidth * 0.8,
+        behavior: "smooth",
+      });
+    }
+  }, []);
+
+  const scroll = scrollFn;
+
+  const startAutoScroll = useCallback(() => {
+    if (autoScrollRef.current) clearInterval(autoScrollRef.current);
+    autoScrollRef.current = setInterval(() => scrollFn("right"), 4000);
+  }, [scrollFn]);
+
+  // Auto-scroll khi có data
+  useEffect(() => {
+    if (newsList.length === 0) return;
+    startAutoScroll();
+    return () => { if (autoScrollRef.current) clearInterval(autoScrollRef.current); };
+  }, [newsList, startAutoScroll]);
+
+  const handleUserScroll = () => startAutoScroll();
+
+  const formatDate = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return {
+        day: String(d.getDate()).padStart(2, "0"),
+        month: String(d.getMonth() + 1).padStart(2, "0"),
+        year: String(d.getFullYear()),
+      };
+    } catch {
+      return { day: "--", month: "--", year: "----" };
     }
   };
 
@@ -100,6 +135,9 @@ export default function NewsSlider() {
 
       <div
         ref={scrollRef}
+        onMouseEnter={() => { if (autoScrollRef.current) clearInterval(autoScrollRef.current); }}
+        onMouseLeave={() => startAutoScroll()}
+        onTouchStart={handleUserScroll}
         className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-10 px-6 lg:px-[max(1.5rem,calc((100vw-80rem)/2))] no-scrollbar"
       >
         {newsList.map((news) => (
@@ -133,8 +171,10 @@ export default function NewsSlider() {
               {/* Date Column */}
               <div className="absolute top-6 right-6 lg:top-12 lg:right-12 text-right">
                 <div className="flex flex-col items-end gap-1">
-                  <span className="text-white/40 text-[8px] lg:text-[10px] font-black uppercase tracking-[0.4em]">{news.date.split('/')[2]}</span>
-                  <span className="text-white text-lg md:text-5xl font-black leading-none tracking-tighter">{news.date.split('/')[0]} . {news.date.split('/')[1]}</span>
+                  {(() => { const d = formatDate(news.date); return (<>
+                    <span className="text-white/40 text-[8px] lg:text-[10px] font-black uppercase tracking-[0.4em]">{d.year}</span>
+                    <span className="text-white text-lg md:text-5xl font-black leading-none tracking-tighter">{d.day} . {d.month}</span>
+                  </>); })()}
                 </div>
               </div>
 
