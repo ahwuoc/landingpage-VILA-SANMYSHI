@@ -48,6 +48,7 @@ const NAV_ITEMS: NavItemType[] = [
     label: "Cấu hình",
     icon: Settings,
     children: [
+      { label: "Cài đặt chung", href: "/admin/settings/general" },
       { label: "Cài đặt Email", href: "/admin/settings/email" },
       { label: "Hồ sơ cá nhân", href: "/admin/profile" },
     ]

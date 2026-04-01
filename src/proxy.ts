@@ -1,34 +1,46 @@
-import { NextRequest, NextResponse } from "next/server";
-
-const ADMIN_PREFIX = "/admin";
-const ADMIN_API_PREFIX = "/api/admin";
-const LOGIN_PATH = "/admin/login";
-const AUTH_API_PATH = "/api/admin/auth";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === LOGIN_PATH || pathname === AUTH_API_PATH) {
-    return NextResponse.next();
-  }
-  const session = request.cookies.get("admin_session");
-  if (!session?.value) {
-    if (pathname.startsWith(ADMIN_API_PREFIX)) {
-      return NextResponse.json(
-        { error: "Unauthorized: Please log in to access this resource" },
-        { status: 401 }
-      );
-    }
-    if (pathname.startsWith(ADMIN_PREFIX)) {
-      const loginUrl = new URL(LOGIN_PATH, request.url);
+  // Check admin authentication
+  const isAdminRoute = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
+  const isAdminApiRoute = pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/auth");
+  
+  if (isAdminRoute || isAdminApiRoute) {
+    const adminSession = request.cookies.get("admin_session");
+    if (!adminSession || adminSession.value !== "authenticated") {
+      const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);
     }
+  }
+
+  // Bypass maintenance cho admin routes và maintenance page
+  if (
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/api/admin") ||
+    pathname.startsWith("/maintenance") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/images") ||
+    pathname.startsWith("/icon")
+  ) {
+    return NextResponse.next();
+  }
+
+  // Check maintenance mode từ env
+  const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
+
+  if (isMaintenanceMode) {
+    return NextResponse.redirect(new URL("/maintenance", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
 };

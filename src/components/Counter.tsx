@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 
 interface CounterProps {
   value: string;
@@ -36,6 +36,7 @@ export default function Counter({ value, duration = 2000 }: CounterProps) {
   useEffect(() => {
     if (!hasStarted) return;
 
+    let lastUpdate = 0;
     const animate = (timestamp: number) => {
       if (startTime.current === null) startTime.current = timestamp;
       const progress = timestamp - startTime.current;
@@ -46,7 +47,12 @@ export default function Counter({ value, duration = 2000 }: CounterProps) {
       };
 
       const currentCount = Math.floor(numericValue * easeOutQuart(percentage));
-      setCount(currentCount);
+      
+      // Chỉ update khi số thay đổi (giảm re-render)
+      if (currentCount !== lastUpdate) {
+        setCount(currentCount);
+        lastUpdate = currentCount;
+      }
 
       if (percentage < 1) {
         requestAnimationFrame(animate);
@@ -56,10 +62,10 @@ export default function Counter({ value, duration = 2000 }: CounterProps) {
     requestAnimationFrame(animate);
   }, [hasStarted, numericValue, duration]);
 
-  const displayValue = new Intl.NumberFormat('vi-VN').format(count);
+  const displayValue = useMemo(() => new Intl.NumberFormat('vi-VN').format(count), [count]);
 
   return (
-    <div ref={elementRef} className="tabular-nums">
+    <div ref={elementRef} className="tabular-nums will-change-contents">
       {displayValue}{suffix}
     </div>
   );
