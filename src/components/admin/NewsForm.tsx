@@ -73,18 +73,32 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
         updated_at: new Date().toISOString(),
       };
 
+      let finalSlug = "";
+
       if (isEdit && initialData?.id) {
-        const slugPayload = formData.title !== initialData?.title
-          ? { ...payload, slug: slugify(formData.title) }
-          : payload;
+        finalSlug = formData.title !== initialData?.title ? slugify(formData.title) : initialData.slug;
+        const slugPayload = formData.title !== initialData?.title ? { ...payload, slug: finalSlug } : payload;
         const { error } = await supabase.from("news").update(slugPayload).eq("id", initialData.id);
         if (error) throw error;
         alert("Cập nhật bài viết thành công!");
       } else {
-        const slug = slugify(formData.title) || `bai-viet-${Date.now()}`;
-        const { error } = await supabase.from("news").insert([{ ...payload, slug, date: new Date().toISOString() }]);
+        finalSlug = slugify(formData.title) || `bai-viet-${Date.now()}`;
+        const { error } = await supabase.from("news").insert([{ ...payload, slug: finalSlug, date: new Date().toISOString() }]);
         if (error) throw error;
         alert("Đã tạo bài viết mới thành công!");
+      }
+
+      if (formData.status === "Published") {
+        fetch("/api/send-newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: formData.title,
+            slug: finalSlug,
+            excerpt: formData.summary,
+            image: formData.image
+          })
+        }).catch(err => console.error("Newsletter error:", err)); // Chạy ngầm, không chặn UI
       }
 
       router.push("/admin/news");
