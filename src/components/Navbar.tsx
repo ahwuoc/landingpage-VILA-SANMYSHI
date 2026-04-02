@@ -200,18 +200,26 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                   )}
                 </div>
 
-                {/* Mobile Submenu */}
+                {/* Mobile Submenu - Categorized for better UX */}
                 {hasDropdown && isSubOpen && (
-                  <div className="flex flex-col gap-4 mt-6 ml-4 border-l-2 border-primary/20 pl-6 animate-fade-in">
-                    {link.dropdown?.map((sub) => (
-                      <Link
-                        key={sub.name}
-                        href={sub.href}
-                        className="text-lg md:text-xl font-black text-on-dark-muted hover:text-on-dark transition-colors"
-                      >
-                        {sub.name}
-                      </Link>
-                    ))}
+                  <div className="flex flex-col gap-6 mt-6 ml-4 border-l-2 border-primary/20 pl-6 animate-fade-in">
+                    {Object.entries(servicesByCategory)
+                      .filter(([cat]) => cat !== "Dịch vụ khác")
+                      .map(([cat, { slug }]) => (
+                        <Link
+                          key={cat}
+                          href={`/services/${slug}`}
+                          className="text-xl md:text-2xl font-black text-on-dark-muted hover:text-primary transition-colors flex items-center justify-between group/sub"
+                        >
+                          {cat}
+                        </Link>
+                      ))}
+                    <Link
+                      href="/services"
+                      className="text-lg font-black text-primary uppercase tracking-[0.2em] mt-2 flex items-center gap-2"
+                    >
+                      Xem tất cả <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </Link>
                   </div>
                 )}
               </div>

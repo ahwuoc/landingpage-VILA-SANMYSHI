@@ -2,22 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
 
-const GRADIENTS: Record<string, string> = {
-  "sea-freight": "from-blue-500 to-indigo-600",
-  "cross-border": "from-primary to-emerald-500",
-  "logistics-fulfillment": "from-slate-700 to-slate-900",
-};
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
 
 export default function HomeServices() {
   const [services, setServices] = useState<{ id: string; title: string; image: string; category?: string }[]>([]);
   const [catSlugMap, setCatSlugMap] = useState<Record<string, string>>({});
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const autoScrollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [swiper, setSwiper] = useState<any>(null);
 
   useEffect(() => {
     supabase
@@ -26,7 +23,6 @@ export default function HomeServices() {
       .then(({ data }) => {
         if (data) setCatSlugMap(Object.fromEntries(data.map(c => [c.name, c.slug])));
       });
-
     supabase
       .from("services")
       .select("id, title, image, category")
@@ -34,51 +30,8 @@ export default function HomeServices() {
       .then(({ data }) => setServices(data || []));
   }, []);
 
-  const checkScroll = useCallback(() => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 20);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
-    }
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) {
-      el.addEventListener("scroll", checkScroll);
-      checkScroll();
-      return () => el.removeEventListener("scroll", checkScroll);
-    }
-  }, [checkScroll, services]);
-
-  const scrollFn = useCallback((direction: "left" | "right") => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    if (direction === "right" && scrollLeft >= scrollWidth - clientWidth - 20) {
-      scrollRef.current.scrollTo({ left: 0, behavior: "smooth" });
-    } else {
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -clientWidth * 0.8 : clientWidth * 0.8,
-        behavior: "smooth",
-      });
-    }
-  }, []);
-
-  const scroll = scrollFn;
-
-  const startAutoScroll = useCallback(() => {
-    if (autoScrollRef.current) clearInterval(autoScrollRef.current);
-    autoScrollRef.current = setInterval(() => scrollFn("right"), 4000);
-  }, [scrollFn]);
-
-  useEffect(() => {
-    if (services.length === 0) return;
-    startAutoScroll();
-    return () => { if (autoScrollRef.current) clearInterval(autoScrollRef.current); };
-  }, [services, startAutoScroll]);
-
   return (
-    <section className="py-24 lg:py-48 bg-white">
+    <section className="py-24 lg:py-48 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-24 gap-8">
           <div className="max-w-3xl">
@@ -92,22 +45,14 @@ export default function HomeServices() {
 
           <div className="flex gap-4">
             <button
-              onClick={() => scroll("left")}
-              disabled={!canScrollLeft}
-              className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all ${canScrollLeft
-                ? "border-primary text-primary hover:bg-primary hover:text-white"
-                : "border-slate-200 text-slate-200 cursor-not-allowed"
-                }`}
+              onClick={() => swiper?.slidePrev()}
+              className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all"
             >
               <span className="material-symbols-outlined text-2xl lg:text-3xl">west</span>
             </button>
             <button
-              onClick={() => scroll("right")}
-              disabled={!canScrollRight}
-              className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all ${canScrollRight
-                ? "border-primary text-primary hover:bg-primary hover:text-white"
-                : "border-slate-200 text-slate-200 cursor-not-allowed"
-                }`}
+              onClick={() => swiper?.slideNext()}
+              className="w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all"
             >
               <span className="material-symbols-outlined text-2xl lg:text-3xl">east</span>
             </button>
@@ -116,53 +61,58 @@ export default function HomeServices() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div
-          ref={scrollRef}
-          onMouseEnter={() => { if (autoScrollRef.current) clearInterval(autoScrollRef.current); }}
-          onMouseLeave={() => startAutoScroll()}
-          onTouchStart={() => startAutoScroll()}
-          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 lg:gap-10 py-10 px-4 -mx-4"
+        <Swiper
+          modules={[Navigation, Autoplay]}
+          onSwiper={setSwiper}
+          spaceBetween={30}
+          slidesPerView={1.2}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 4 },
+          }}
+          className="rounded-[2.5rem]"
         >
           {services.map((item) => (
-            <Link
-              key={item.id}
-              href={`/services/${catSlugMap[item.category || ""] || "all"}/${item.id}`}
-              className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 block flex-none w-[85vw] md:w-[45vw] lg:w-[30vw] snap-center"
-            >
-              {/* Image Wrap */}
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
-                  src={item.image || "/images/services/sea-freight-premium.png"}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 768px) 85vw, (max-width: 1200px) 45vw, 30vw"
-                  className="object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
+            <SwiperSlide key={item.id} className="!h-auto flex">
+              <Link
+                href={`/services/${catSlugMap[item.category || ""] || "all"}/${item.id}`}
+                className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 w-full"
+              >
+                {/* Image Wrap */}
+                <div className="relative aspect-[16/10] overflow-hidden shrink-0">
+                  <Image
+                    src={item.image || "/images/services/sea-freight-premium.png"}
+                    alt={item.title || "VILA SANMYSHI service"}
+                    fill
+                    sizes="(max-width: 768px) 85vw, (max-width: 1200px) 45vw, 25vw"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
 
-              {/* Content */}
-              <div className="p-8 lg:p-10 flex flex-col flex-1">
-                <h3 className="text-xl lg:text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-slate-500 text-sm lg:text-base font-medium line-clamp-2 mb-8 leading-relaxed">
-                  Giải pháp logistics chuyên nghiệp, tối ưu hóa thời gian và chi phí cho mọi lô hàng.
-                </p>
+                {/* Content */}
+                <div className="p-8 lg:p-10 flex flex-col flex-1">
+                  <h3 className="text-xl lg:text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem] md:min-h-[4rem]">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm lg:text-base font-medium line-clamp-2 mb-8 leading-relaxed">
+                    Giải pháp logistics chuyên nghiệp, tối ưu hóa thời gian và chi phí cho mọi lô hàng.
+                  </p>
 
-                <div className="flex items-center justify-between pt-6 border-t border-slate-50 mt-auto">
-                  <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
-                    Chi tiết
-                  </span>
-                  <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                    <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                  <div className="flex items-center justify-between pt-6 border-t border-slate-50 mt-auto">
+                    <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
+                      Chi tiết
+                    </span>
+                    <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                      <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </SwiperSlide>
           ))}
-          <div className="flex-none w-32" />
-        </div>
+        </Swiper>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 text-center">
@@ -174,16 +124,6 @@ export default function HomeServices() {
           <span className="material-symbols-outlined text-lg">arrow_forward</span>
         </Link>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </section>
   );
 }
