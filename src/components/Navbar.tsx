@@ -116,8 +116,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                       <div className="grid grid-cols-1 gap-1">
                         {Object.entries(servicesByCategory)
                           .filter(([cat]) => cat !== "Dịch vụ khác")
-                          .sort(([a], [b]) => {
-                          })
+                          .sort(([a], [b]) => a.localeCompare(b))
                           .map(([cat, { slug, items }]) => (
                             <Link
                               key={cat}

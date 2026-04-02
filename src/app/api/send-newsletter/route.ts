@@ -19,13 +19,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "No subscribers found" });
     }
 
+    const { data: smtp, error: smtpError } = await supabase
+      .from("smtp_settings")
+      .select("*")
+      .single();
+
+    if (smtpError || !smtp) {
+      throw new Error("Cấu hình SMTP chưa được thiết lập trong Database");
+    }
+
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: false,
+      host: smtp.host,
+      port: Number(smtp.port),
+      secure: Number(smtp.port) === 465,
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: smtp.user_email,
+        pass: smtp.password,
       },
     });
 
@@ -33,7 +42,7 @@ export async function POST(req: Request) {
     const postUrl = `${webUrl}/news/${slug}`;
     const emailPromises = subscribers.map((sub) => {
       return transporter.sendMail({
-        from: `"${process.env.SMTP_FROM_NAME}" <${process.env.SMTP_FROM_EMAIL}>`,
+        from: `"${smtp.from_name}" <${smtp.from_email}>`,
         to: sub.email,
         subject: `📬 Tin mới: ${title}`,
         html: `

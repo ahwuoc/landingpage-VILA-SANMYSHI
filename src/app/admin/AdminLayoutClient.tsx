@@ -28,14 +28,14 @@ export default function AdminLayoutClient({
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden min-w-0">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0 w-full overflow-hidden">
         <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 p-4 lg:p-10 bg-slate-50/50 relative overflow-y-auto overflow-x-hidden">
-          {/* Decorative background element */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none -mr-40 -mt-20 lg:-mt-10" />
+        <main className="flex-1 p-4 lg:p-10 bg-slate-50/50 relative overflow-y-auto overflow-x-hidden w-full max-w-full">
+          {/* Decorative background element - constrained to prevent scroll */}
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-primary/5 blur-[80px] md:blur-[120px] rounded-full pointer-events-none -mr-40 -mt-20 lg:-mt-10 overflow-hidden" />
 
-          <div className="relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <div className="relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-1000 max-w-full">
             {children}
           </div>
         </main>

@@ -54,8 +54,8 @@ export default function DataTable({
         </div>
       </div>
 
-      <div className="overflow-x-auto custom-scrollbar">
-        <table className="w-full text-left border-collapse min-w-[800px] lg:min-w-0">
+      <div className="overflow-x-auto custom-scrollbar w-full">
+        <table className="w-full text-left border-collapse min-w-[700px] lg:min-w-full">
           <thead>
             <tr className="bg-slate-50/50">
               {columns.map((col) => (
@@ -63,7 +63,7 @@ export default function DataTable({
                   {col.header}
                 </th>
               ))}
-              <th className="px-6 lg:px-10 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant/40 border-b border-on-surface/5 text-right">
+              <th className="px-6 lg:px-10 py-6 text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant/40 border-b border-on-surface/5 text-right sticky right-0 bg-slate-50/80 backdrop-blur-md">
                 Thao tác
               </th>
             </tr>
@@ -76,8 +76,8 @@ export default function DataTable({
                     {col.render ? col.render(item[col.accessor], item) : <span className="text-sm font-bold text-on-surface">{item[col.accessor]}</span>}
                   </td>
                 ))}
-                <td className="px-6 lg:px-10 py-6 text-right">
-                  <div className="flex items-center justify-end gap-2 lg:opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <td className="px-6 lg:px-10 py-6 text-right sticky right-0 bg-white/80 backdrop-blur-md group-hover:bg-slate-50/80 transition-colors">
+                  <div className="flex items-center justify-end gap-2">
                     <button 
                       onClick={() => onEdit?.(item)}
                       className="w-9 h-9 lg:w-10 lg:h-10 rounded-lg border border-on-surface/5 flex items-center justify-center text-on-surface-variant bg-white lg:bg-transparent hover:bg-white hover:text-primary hover:shadow-sm transition-all"
