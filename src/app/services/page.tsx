@@ -1,5 +1,6 @@
 import ServicesView from "@/views/Services/ServicesView";
 import { getServicesList } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,5 +24,8 @@ export const metadata: Metadata = {
 
 export default async function ServicesPage() {
   const services = await getServicesList();
-  return <ServicesView services={services} />;
+  const { data: cats } = await supabase.from("service_categories").select("name, slug");
+  const catSlugMap = Object.fromEntries((cats || []).map(c => [c.name, c.slug]));
+
+  return <ServicesView services={services} catSlugMap={catSlugMap} />;
 }

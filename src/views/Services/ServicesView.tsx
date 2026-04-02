@@ -1,17 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ServiceItem } from "@/lib/data";
 import ConsultationModal from "@/components/ConsultationModal";
 import PageHero from "@/components/PageHero";
 
-function ServicesViewInner({ services, id, categorySlug, categoryName }: {
+function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMap }: {
   services: ServiceItem[];
   id?: string;
   categorySlug?: string;
   categoryName?: string;
+  catSlugMap?: Record<string, string>;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | undefined>();
@@ -84,77 +86,64 @@ function ServicesViewInner({ services, id, categorySlug, categoryName }: {
         </div>
       )}
 
-      {/* Services Sections */}
-      <section className="py-20 lg:py-40">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-32 lg:space-y-64">
-          {filtered.map((service, index) => (
-            <div
-              key={service.id}
-              id={service.id}
-              className={`flex flex-col gap-16 lg:gap-24 scroll-mt-32 lg:scroll-mt-48 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
-            >
-              {/* Service Meta & Image Block */}
-              <div className="lg:w-2/5 space-y-8">
-                <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl group">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 40vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-60" />
-                  {!isSingle && (
-                    <div className="absolute bottom-10 left-10">
-                      <span className="text-6xl lg:text-8xl font-black text-white/20">0{index + 1}</span>
+      {/* Services Grid Section */}
+      <section className="py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {filtered.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filtered.map((service, index) => (
+                <Link
+                  key={service.id}
+                  href={`/services/${categorySlug || (catSlugMap ? catSlugMap[service.category || ""] : "") || "all"}/${service.id}`}
+                  className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 animate-fade-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  {/* Image Wrap */}
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    
+                    {/* Category Tag */}
+                    <div className="absolute top-6 left-6">
+                      <span className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm border border-slate-100">
+                        {service.category || "Dịch vụ"}
+                      </span>
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                <div className="p-10 bg-surface-container-low rounded-[2.5rem] border border-on-surface/5">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-4">Cam kết chất lượng</h4>
-                  <p className="text-on-surface-variant font-medium leading-relaxed">
-                    Chúng tôi đảm bảo tính minh bạch, an toàn và tiến độ hỏa tốc cho mọi lô hàng thuộc tuyến {service.title}.
-                  </p>
-                </div>
-              </div>
-
-              {/* Service Content Block */}
-              <div className="lg:w-3/5">
-                <div className="flex items-center gap-3 mb-8">
-                  <span className="w-12 h-[2px] bg-primary rounded-full" />
-                  <span className="text-primary text-xs font-black uppercase tracking-widest">
-                    {isSingle ? "Thông tin chi tiết" : "Dịch vụ cốt lõi"}
-                  </span>
-                </div>
-
-                <h2 className="text-heading-lg text-on-surface mb-12">
-                  {service.title}
-                </h2>
-
-                <article
-                  className="prose prose-base max-w-none
-                    prose-headings:font-black prose-headings:tracking-tight prose-headings:uppercase
-                    prose-h3:text-lg prose-h3:mb-4 prose-h3:mt-10 prose-h3:text-primary
-                    prose-p:mb-4 prose-p:leading-relaxed
-                    prose-ul:mb-6 prose-li:mb-1
-                    prose-table:text-sm prose-table:my-8
-                    prose-th:bg-surface-container-high prose-th:p-3 prose-td:p-3 prose-td:border prose-td:border-on-surface/10
-                    prose-strong:text-on-surface prose-strong:font-bold"
-                  dangerouslySetInnerHTML={{ __html: service.content }}
-                />
-
-                <div className="mt-16 pt-12 border-t border-on-surface/10">
-                  <button
-                    onClick={() => openModal(service.title)}
-                    className="px-12 py-5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[0.98] transition-all shadow-glow-primary active:scale-95"
-                  >
-                    Nhận báo giá {service.title}
-                  </button>
-                </div>
-              </div>
+                  {/* Content */}
+                  <div className="p-8 lg:p-10 flex flex-col flex-1">
+                    <h3 className="text-xl lg:text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-primary transition-colors">
+                      {service.title}
+                    </h3>
+                    <div 
+                      className="text-slate-500 text-sm lg:text-base font-medium line-clamp-3 mb-8 leading-relaxed flex-1"
+                      dangerouslySetInnerHTML={{ __html: service.content?.replace(/<[^>]*>/g, "").substring(0, 120) + "..." }}
+                    />
+                    
+                    <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+                      <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
+                        Chi tiết giải pháp
+                      </span>
+                      <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                        <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className="text-center py-40 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+              <span className="material-symbols-outlined text-6xl text-slate-300 mb-6">inventory_2</span>
+              <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">Không tìm thấy giải pháp nào phù hợp</p>
+            </div>
+          )}
         </div>
       </section>
       {/* Global Bottom CTA */}
@@ -195,6 +184,7 @@ export default function ServicesView(props: {
   id?: string;
   categorySlug?: string;
   categoryName?: string;
+  catSlugMap?: Record<string, string>;
 }) {
   return (
     <Suspense fallback={null}>

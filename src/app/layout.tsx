@@ -77,12 +77,15 @@ export default async function RootLayout({
   const services = await getServicesList();
   const { data: cats } = await supabase.from("service_categories").select("name, slug");
   const catSlugMap = Object.fromEntries((cats || []).map(c => [c.name, c.slug]));
-  const serviceNavItems = services.map(s => ({
-    name: s.title,
-    href: `/services/${catSlugMap[s.category || ""] || ""}/${s.id}`,
-    category: s.category || "Dịch vụ",
-    categorySlug: catSlugMap[s.category || ""] || "",
-  }));
+  const serviceNavItems = services.map(s => {
+    const categoryName = s.category && s.category.trim() !== "" ? s.category : "Dịch vụ khác";
+    return {
+      name: s.title,
+      href: `/services/${catSlugMap[categoryName] || ""}/${s.id}`,
+      category: categoryName,
+      categorySlug: catSlugMap[categoryName] || "",
+    };
+  });
   const existingCats = new Set(serviceNavItems.map(s => s.category));
   const emptyCatItems = (cats || [])
     .filter(c => !existingCats.has(c.name))

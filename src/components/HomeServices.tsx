@@ -12,7 +12,8 @@ const GRADIENTS: Record<string, string> = {
 };
 
 export default function HomeServices() {
-  const [services, setServices] = useState<{ id: string; title: string; image: string }[]>([]);
+  const [services, setServices] = useState<{ id: string; title: string; image: string; category?: string }[]>([]);
+  const [catSlugMap, setCatSlugMap] = useState<Record<string, string>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -20,8 +21,15 @@ export default function HomeServices() {
 
   useEffect(() => {
     supabase
+      .from("service_categories")
+      .select("name, slug")
+      .then(({ data }) => {
+        if (data) setCatSlugMap(Object.fromEntries(data.map(c => [c.name, c.slug])));
+      });
+
+    supabase
       .from("services")
-      .select("id, title, image")
+      .select("id, title, image, category")
       .order("created_at", { ascending: true })
       .then(({ data }) => setServices(data || []));
   }, []);
@@ -86,22 +94,20 @@ export default function HomeServices() {
             <button
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all ${
-                canScrollLeft
-                  ? "border-primary text-primary hover:bg-primary hover:text-white"
-                  : "border-slate-200 text-slate-200 cursor-not-allowed"
-              }`}
+              className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all ${canScrollLeft
+                ? "border-primary text-primary hover:bg-primary hover:text-white"
+                : "border-slate-200 text-slate-200 cursor-not-allowed"
+                }`}
             >
               <span className="material-symbols-outlined text-2xl lg:text-3xl">west</span>
             </button>
             <button
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all ${
-                canScrollRight
-                  ? "border-primary text-primary hover:bg-primary hover:text-white"
-                  : "border-slate-200 text-slate-200 cursor-not-allowed"
-              }`}
+              className={`w-16 h-16 lg:w-20 lg:h-20 rounded-full border-2 flex items-center justify-center transition-all ${canScrollRight
+                ? "border-primary text-primary hover:bg-primary hover:text-white"
+                : "border-slate-200 text-slate-200 cursor-not-allowed"
+                }`}
             >
               <span className="material-symbols-outlined text-2xl lg:text-3xl">east</span>
             </button>
@@ -109,55 +115,54 @@ export default function HomeServices() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div
           ref={scrollRef}
           onMouseEnter={() => { if (autoScrollRef.current) clearInterval(autoScrollRef.current); }}
           onMouseLeave={() => startAutoScroll()}
           onTouchStart={() => startAutoScroll()}
-          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 lg:gap-8 px-6 lg:px-8"
+          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 lg:gap-10 py-10 px-4 -mx-4"
         >
           {services.map((item) => (
-          <Link
-            key={item.id}
-            href={`/services/${item.id}`}
-            className="group relative overflow-hidden rounded-2xl lg:rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 aspect-[4/3] block flex-none w-[85vw] md:w-[45vw] lg:w-[30vw] snap-center"
-          >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              {item.image ? (
+            <Link
+              key={item.id}
+              href={`/services/${catSlugMap[item.category || ""] || "all"}/${item.id}`}
+              className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 block flex-none w-[85vw] md:w-[45vw] lg:w-[30vw] snap-center"
+            >
+              {/* Image Wrap */}
+              <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
-                  src={item.image}
+                  src={item.image || "/images/services/sea-freight-premium.png"}
                   alt={item.title}
                   fill
                   sizes="(max-width: 768px) 85vw, (max-width: 1200px) 45vw, 30vw"
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-              ) : (
-                <div className={`w-full h-full bg-gradient-to-br ${GRADIENTS[item.id] || "from-slate-500 to-slate-600"}`} />
-              )}
-            </div>
-
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-            {/* Content */}
-            <div className="absolute inset-0 p-6 lg:p-8 flex flex-col justify-end">
-              <h3 className="text-xl lg:text-2xl font-black text-white uppercase tracking-tight leading-tight mb-3 group-hover:text-primary transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-sm text-white/80 mb-4 line-clamp-2">
-                Giải pháp chuyên nghiệp, tối ưu chi phí và thời gian vận chuyển.
-              </p>
-              <div className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary group-hover:gap-4 transition-all">
-                Xem chi tiết
-                <span className="material-symbols-outlined text-base">arrow_forward</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-            </div>
-          </Link>
-        ))}
-        <div className="flex-none w-32" />
-      </div>
+
+              {/* Content */}
+              <div className="p-8 lg:p-10 flex flex-col flex-1">
+                <h3 className="text-xl lg:text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-primary transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-slate-500 text-sm lg:text-base font-medium line-clamp-2 mb-8 leading-relaxed">
+                  Giải pháp logistics chuyên nghiệp, tối ưu hóa thời gian và chi phí cho mọi lô hàng.
+                </p>
+
+                <div className="flex items-center justify-between pt-6 border-t border-slate-50 mt-auto">
+                  <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
+                    Chi tiết
+                  </span>
+                  <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                    <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+          <div className="flex-none w-32" />
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 text-center">
