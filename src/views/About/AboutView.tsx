@@ -111,7 +111,7 @@ export default function AboutView() {
             {BUSINESS_FIELDS.map((field, i) => (
               <div key={i} className="flex items-start gap-4 py-3 px-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-white hover:border-primary/20 hover:shadow-sm transition-all group">
                 <span className="text-primary font-bold text-xl group-hover:scale-110 transition-transform">➡</span>
-              <span className="text-body-sm font-bold text-on-surface leading-snug">{field}</span>
+                <span className="text-body-sm font-bold text-on-surface leading-snug">{field}</span>
               </div>
             ))}
           </div>
@@ -120,14 +120,14 @@ export default function AboutView() {
 
       {/* History Timeline Section (New) */}
       {TIMELINE_DATA.length > 0 && (
-        <section className="relative py-24 lg:py-40 mt-24 overflow-hidden group/section">
+        <section className="relative py-24 lg:py-40 mt-24 overflow-hidden group/section bg-slate-50">
           <div className="absolute inset-0 z-0">
-            <Image src="/images/about/history-timeline-bg.jpg" alt="Port Background" fill className="object-cover" />
-            <div className="absolute inset-0 bg-black/15" />
+            <Image src="/images/about/history-timeline-bg.jpg" alt="Port Background" fill className="object-cover opacity-30 grayscale-[0.3]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white via-white/80 to-primary/5" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            <h2 className="text-heading-xl text-white text-center mb-24">
+            <h2 className="text-4xl lg:text-7xl font-black text-slate-900 text-center mb-24 uppercase tracking-tighter">
               Lịch sử phát triển
             </h2>
 
@@ -138,50 +138,64 @@ export default function AboutView() {
                 className="flex gap-8 lg:gap-16 overflow-x-auto pb-12 scroll-smooth no-scrollbar snap-x snap-mandatory"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {/* Timeline Line (Inside scrollable container to span full width) */}
+                {/* Timeline Line */}
                 <div
-                  className="absolute top-[124px] h-[2px] bg-primary/30 z-0"
+                  className="absolute top-[124px] h-[4px] bg-slate-200 z-0 rounded-full"
                   style={{ width: `${TIMELINE_DATA.length * 400}px` }}
                 />
 
                 {TIMELINE_DATA.map((item: any, i: number) => (
                   <div
                     key={i}
-                    className="relative flex-shrink-0 w-[280px] md:w-[350px] snap-start group animate-fade-up"
+                    className="relative flex-shrink-0 w-[300px] md:w-[420px] snap-start group animate-fade-up"
                     style={{ animationDelay: `${i * 100}ms` }}
                   >
-                    {/* Year */}
-                    <div className="text-5xl lg:text-7xl font-black text-primary mb-10 tracking-tighter opacity-90 group-hover:scale-110 transition-transform origin-left">
+                    {/* Year Underlay (Outline effect for visibility) */}
+                    <div
+                      className="text-8xl lg:text-[12rem] font-black mb-8 tracking-tighter transition-all duration-700 select-none opacity-20 group-hover:opacity-40 group-hover:scale-105 origin-left"
+                      style={{
+                        WebkitTextStroke: '2px #10b981',
+                        color: 'transparent'
+                      }}
+                    >
                       {item.year}
                     </div>
 
                     {/* Dot */}
-                    <div className="absolute top-[118px] left-0 w-4 h-4 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10 border-4 border-primary group-hover:scale-125 transition-transform" />
+                    <div className="absolute top-[118px] left-0 w-8 h-8 rounded-full bg-white shadow-xl z-20 border-[6px] border-primary flex items-center justify-center">
+                      <div className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse" />
+                    </div>
 
-                    {/* Content */}
-                    <div className="mt-24 space-y-4">
-                      <h4 className="text-lg lg:text-xl font-bold text-white leading-tight">
-                        {BRAND_NAME} – <br />
-                        <span className="text-primary underline underline-offset-4 decoration-2">
+                    {/* Content Card (Bright & Fresh) */}
+                    <div className="mt-24 p-8 lg:p-10 rounded-[3rem] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-slate-100 group-hover:border-primary/20 group-hover:-translate-y-2 transition-all duration-500 relative overflow-hidden z-10 group-hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)]">
+                      <div className="absolute top-0 left-0 w-2 h-full bg-primary" />
+
+                      <div className="space-y-4">
+                        <div className="text-primary font-black text-2xl lg:text-3xl tracking-tight">
+                          {item.year}
+                        </div>
+                        <h4 className="text-xl lg:text-2xl font-black text-slate-900 leading-tight">
                           {item.highlight}
-                        </span>
-                      </h4>
-                      <p className="text-body-sm text-on-dark-muted">{item.desc}</p>
+                        </h4>
+                        <p className="text-sm lg:text-base font-medium text-slate-500 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Navigation Arrows (Functional) */}
+              {/* Navigation Arrows */}
               <button
                 onClick={() => scroll('left')}
-                className="absolute top-[106px] -left-4 md:-left-8 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white text-white hover:text-slate-900 transition-all cursor-pointer opacity-0 group-hover/section:opacity-100"
+                className="absolute top-[110px] -left-4 md:-left-8 z-20 flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-xl border border-slate-100 hover:bg-primary hover:text-white transition-all cursor-pointer opacity-0 group-hover/section:opacity-100 text-slate-600"
               >
                 <span className="material-symbols-outlined">chevron_left</span>
               </button>
               <button
                 onClick={() => scroll('right')}
-                className="absolute top-[106px] -right-4 md:-right-8 z-20 flex items-center justify-center w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white text-white hover:text-slate-900 transition-all cursor-pointer opacity-0 group-hover/section:opacity-100"
+                className="absolute top-[110px] -right-4 md:-right-8 z-20 flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-xl border border-slate-100 hover:bg-primary hover:text-white transition-all cursor-pointer opacity-0 group-hover/section:opacity-100 text-slate-600"
               >
                 <span className="material-symbols-outlined">chevron_right</span>
               </button>
