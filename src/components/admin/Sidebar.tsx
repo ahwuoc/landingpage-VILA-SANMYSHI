@@ -115,7 +115,7 @@ function NavItem({ item, pathname }: { item: NavItemType, pathname: string }) {
   );
 }
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const isLoginPage = pathname === "/admin/login";
@@ -133,7 +133,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-72 bg-slate-950 text-white z-50 border-r border-white/5 overflow-y-auto custom-scrollbar">
+    <aside className="h-full w-72 bg-slate-950 text-white border-r border-white/5 overflow-y-auto custom-scrollbar flex flex-col">
       <div className="p-8 border-b border-white/5">
         <Link href="/" className="flex items-center gap-3">
           <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-glow-primary/20">
@@ -153,7 +153,9 @@ export default function AdminSidebar() {
       <nav className="p-4 mt-6">
         <ul className="space-y-2">
           {NAV_ITEMS.map((item) => (
-            <NavItem key={item.label} item={item} pathname={pathname} />
+            <div key={item.label} onClick={onClose}>
+              <NavItem item={item} pathname={pathname} />
+            </div>
           ))}
         </ul>
       </nav>

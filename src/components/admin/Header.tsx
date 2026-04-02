@@ -11,7 +11,7 @@ import {
   LayoutDashboard
 } from "lucide-react";
 
-export default function AdminHeader() {
+export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const unreadCount = useUnreadContacts();
@@ -34,28 +34,41 @@ export default function AdminHeader() {
   if (pathname === "/admin/login") return null;
 
   return (
-    <header className="sticky top-0 h-24 bg-surface/80 backdrop-blur-3xl z-40 px-10 flex items-center justify-between border-b border-on-surface/5">
-      <div className="flex flex-col">
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-1">Hệ quản trị</p>
-        <h1 className="text-2xl font-black text-on-surface tracking-tight uppercase">{getHeaderTitle()}</h1>
+    <header className="sticky top-0 h-24 bg-surface/80 backdrop-blur-3xl z-40 px-4 lg:px-10 flex items-center justify-between border-b border-on-surface/5">
+      <div className="flex items-center gap-4">
+        <button 
+          onClick={onMenuClick}
+          className="lg:hidden w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-all active:scale-95"
+        >
+          <Search size={20} className="hidden" /> {/* Placeholder just to show how I use icons */}
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="20" height="2" rx="1" fill="currentColor" />
+            <rect y="6" width="14" height="2" rx="1" fill="currentColor" />
+            <rect y="12" width="20" height="2" rx="1" fill="currentColor" />
+          </svg>
+        </button>
+        <div className="flex flex-col">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-0.5">Quản trị</p>
+          <h1 className="text-xl lg:text-2xl font-black text-on-surface tracking-tight uppercase line-clamp-1">{getHeaderTitle()}</h1>
+        </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-2 lg:gap-6">
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 px-6 py-3 rounded-xl bg-white border border-on-surface/10 text-on-surface hover:bg-on-surface/5 transition-all group shadow-sm bg-gradient-to-tr from-surface via-surface to-white"
+          className="hidden sm:flex items-center gap-3 px-6 py-3 rounded-xl bg-white border border-on-surface/10 text-on-surface hover:bg-on-surface/5 transition-all group shadow-sm bg-gradient-to-tr from-surface via-surface to-white"
         >
           <ExternalLink size={16} />
-          <span className="text-xs font-black uppercase tracking-widest">Xem Website</span>
+          <span className="text-xs font-black uppercase tracking-widest">Web</span>
         </Link>
 
-        <div className="w-[1px] h-10 bg-on-surface/10" />
+        <div className="hidden lg:block w-[1px] h-10 bg-on-surface/10" />
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 lg:gap-4">
           <Link
             href="/admin/contacts"
-            className="relative w-12 h-12 rounded-xl border border-on-surface/10 flex items-center justify-center text-on-surface hover:bg-white transition-all shadow-sm group"
+            className="relative w-10 h-10 lg:w-12 lg:h-12 rounded-xl border border-on-surface/10 flex items-center justify-center text-on-surface hover:bg-white transition-all shadow-sm group"
           >
             <Bell size={20} className="group-hover:rotate-12 transition-transform" />
 
@@ -72,18 +85,17 @@ export default function AdminHeader() {
 
           <Link
             href="/admin/profile"
-            className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white font-black shadow-glow-primary cursor-pointer hover:scale-105 active:scale-95 transition-all overflow-hidden"
+            className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-primary flex items-center justify-center text-white shadow-glow-primary hover:scale-105 active:scale-95 transition-all overflow-hidden"
           >
-            {/* Replace with actual image in profile update */}
-            <User size={20} />
+            <User size={18} />
           </Link>
 
           <button
             onClick={handleLogout}
             title="Đăng xuất"
-            className="w-12 h-12 rounded-xl border border-on-surface/10 flex items-center justify-center text-on-surface hover:bg-rose-50 hover:text-rose-500 hover:border-rose-200 transition-all shadow-sm active:scale-95"
+            className="hidden sm:flex w-10 h-10 lg:w-12 lg:h-12 rounded-xl border border-on-surface/10 items-center justify-center text-on-surface hover:bg-rose-50 hover:text-rose-500 hover:border-rose-200 transition-all shadow-sm active:scale-95"
           >
-            <LogOut size={20} />
+            <LogOut size={18} />
           </button>
         </div>
       </div>
