@@ -1,7 +1,9 @@
 import HomeView from "@/views/Home/view";
 import { Metadata } from "next";
+import { getHeroSlides } from "@/lib/data";
 
 export const metadata: Metadata = {
+  // ... (keeping existing metadata)
   title: "VILA SANMYSHI | Logistics & Khai báo Hải quan chuyên nghiệp tại Quảng Trị",
   description:
     "VILA SANMYSHI - Chuyên khai báo hải quan, vận tải quốc tế chính ngạch tại Cửa khẩu Lao Bảo (Quảng Trị). Dịch vụ UY TÍN - TẬN TÂM - GIÁ CỰC TỐT. MST: 3200659885.",
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  return <HomeView />;
+export default async function Home() {
+  const slides = await getHeroSlides();
+  return <HomeView slides={slides} />;
 }

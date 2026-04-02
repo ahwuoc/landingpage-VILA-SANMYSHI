@@ -25,6 +25,7 @@ interface NavItemType {
 
 const NAV_ITEMS: NavItemType[] = [
   { label: "Tổng quan", href: "/admin", icon: LayoutDashboard },
+  { label: "Slide trang chủ", href: "/admin/hero-slides", icon: Grid },
   {
     label: "Quản lý Dịch vụ",
     icon: Package,

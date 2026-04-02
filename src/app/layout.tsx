@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { getServicesList } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
+import { Toaster } from "sonner";
 
 const roboto = Roboto({
   subsets: ["latin", "vietnamese"],
@@ -66,9 +69,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { getServicesList } from "@/lib/data";
-import { supabase } from "@/lib/supabase";
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -88,6 +88,7 @@ export default async function RootLayout({
     .filter(c => !existingCats.has(c.name))
     .map(c => ({ name: "", href: `/services/${c.slug}`, category: c.name, categorySlug: c.slug }));
   const navServices = [...serviceNavItems, ...emptyCatItems];
+
   return (
     <html lang="vi" className={`${roboto.variable} light scroll-smooth`} data-scroll-behavior="smooth">
       <head>
@@ -145,6 +146,7 @@ export default async function RootLayout({
         <ClientLayout navServices={navServices}>
           {children}
         </ClientLayout>
+        <Toaster position="top-right" richColors closeButton />
       </body>
     </html>
   );

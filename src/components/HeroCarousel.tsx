@@ -3,10 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { HERO_SLIDES } from "@/constants/home";
+import { HeroSlide } from "@/lib/data";
 import ConsultationModal from "@/components/ConsultationModal";
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,27 +24,30 @@ export default function HeroCarousel() {
   };
 
   const nextSlide = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || !slides.length) return;
     setIsTransitioning(true);
-    setCurrent((prev) => (prev + 1) % HERO_SLIDES.length);
+    setCurrent((prev) => (prev + 1) % slides.length);
     setTimeout(() => setIsTransitioning(false), 800);
-  }, [isTransitioning]);
+  }, [isTransitioning, slides.length]);
 
   const prevSlide = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || !slides.length) return;
     setIsTransitioning(true);
-    setCurrent((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
     setTimeout(() => setIsTransitioning(false), 800);
-  }, [isTransitioning]);
+  }, [isTransitioning, slides.length]);
 
   useEffect(() => {
+    if (!slides.length) return;
     const timer = setInterval(nextSlide, 7000);
     return () => clearInterval(timer);
-  }, [nextSlide]);
+  }, [nextSlide, slides.length]);
+
+  if (!slides || !slides.length) return null;
 
   return (
     <section className="relative h-[85vh] min-h-[800px] lg:min-h-[900px] w-full overflow-hidden flex items-center bg-slate-900 pt-40 md:pt-56 lg:pt-64 pb-32 md:pb-40 lg:pb-48">
-      {HERO_SLIDES.map((slide, index) => (
+      {slides.map((slide, index) => (
         <div
           key={slide.id}
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}
@@ -62,7 +65,7 @@ export default function HeroCarousel() {
       ))}
 
       <div className="relative z-20 max-w-7xl mx-auto px-8 w-full">
-        {HERO_SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <div
             key={slide.id}
             className={`${index === current ? 'block animate-fade-in' : 'hidden'
@@ -81,15 +84,17 @@ export default function HeroCarousel() {
             </p>
             <div className="flex flex-wrap gap-4 md:gap-6">
               <button
-                onClick={() => handleCta(slide.ctaPrimaryAction, (slide as any).ctaPrimaryHref, (slide as any).ctaPrimaryService)}
+                onClick={() => handleCta(slide.cta_primary_action, slide.cta_primary_href, slide.cta_primary_service)}
                 className="bg-primary text-on-primary px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:shadow-glow-primary transition-all active:scale-95 duration-300">
-                {slide.ctaPrimary}
+                {slide.cta_primary}
               </button>
-              <button
-                onClick={() => handleCta((slide as any).ctaSecondaryAction, (slide as any).ctaSecondaryHref, (slide as any).ctaSecondaryService)}
-                className="bg-on-dark/10 backdrop-blur-xl border border-on-dark/20 text-on-dark px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:bg-on-dark/20 transition-all duration-300">
-                {slide.ctaSecondary}
-              </button>
+              {slide.cta_secondary && (
+                <button
+                  onClick={() => handleCta(slide.cta_secondary_action, slide.cta_secondary_href, slide.cta_secondary_service)}
+                  className="bg-on-dark/10 backdrop-blur-xl border border-on-dark/20 text-on-dark px-6 py-4 md:px-10 md:py-6 rounded-xl md:rounded-2xl font-black text-sm md:text-base lg:text-lg uppercase tracking-wider hover:bg-on-dark/20 transition-all duration-300">
+                  {slide.cta_secondary}
+                </button>
+              )}
             </div>
           </div>
         ))}
@@ -105,7 +110,7 @@ export default function HeroCarousel() {
         </button>
 
         <div className="flex gap-2">
-          {HERO_SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => i !== current && setCurrent(i)}

@@ -17,8 +17,9 @@ export default function ClientLayout({
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
   const isMaintenancePage = pathname === "/maintenance";
+  const isComingSoonPage = pathname === "/coming-soon";
 
-  if (isAdminPage || isMaintenancePage) {
+  if (isAdminPage || isMaintenancePage || isComingSoonPage) {
     return <main>{children}</main>;
   }
 

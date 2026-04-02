@@ -7,12 +7,12 @@ import NewsSlider from "@/components/NewsSlider";
 import HomeServices from "@/components/HomeServices";
 import HomeStats from "@/components/HomeStats";
 import PartnerSection from "@/components/PartnerSection";
-import { BRAND_NAME } from "@/constants/company";
+import { HeroSlide } from "@/lib/data";
 
-export default function HomeView() {
+export default function HomeView({ slides }: { slides: HeroSlide[] }) {
   return (
     <div className="bg-surface selection:bg-primary-container/30">
-      <HeroCarousel />
+      <HeroCarousel slides={slides} />
 
       <HomeServices />
       <HomeStats />
