@@ -97,8 +97,8 @@ export default function AdminLoginPage() {
             <h1 className="text-2xl font-black text-inverse-on-surface tracking-tight">VILA SANMYSHI</h1>
           </div>
         </div>
-        <div className="bg-inverse-on-surface/5 border border-inverse-on-surface/10 rounded-[2rem] p-10 backdrop-blur-sm">
-          <h2 className="text-sm font-black text-inverse-on-surface uppercase tracking-[0.3em] mb-8">Đăng nhập</h2>
+        <div className="bg-inverse-on-surface/5 border border-inverse-on-surface/10 rounded-[2rem] p-6 lg:p-10 backdrop-blur-sm">
+          <h2 className="text-xs lg:text-sm font-black text-inverse-on-surface uppercase tracking-[0.3em] mb-6 lg:mb-8">Đăng nhập</h2>
           <Suspense fallback={null}>
             <LoginForm />
           </Suspense>

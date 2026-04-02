@@ -88,8 +88,7 @@ export default function HeroSlideForm({ slide, onClose, onSuccess }: HeroSlideFo
 
       {/* Drawer */}
       <div className="relative w-full max-w-xl bg-white h-screen shadow-[-20px_0_80px_-15px_rgba(0,0,0,0.15)] flex flex-col animate-in slide-in-from-right duration-500">
-        {/* Header */}
-        <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-20">
+        <div className="p-6 lg:p-8 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-20">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
               {slide ? <Edit3 size={20} /> : <LayoutGrid size={20} />}
@@ -110,7 +109,7 @@ export default function HeroSlideForm({ slide, onClose, onSuccess }: HeroSlideFo
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-10">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-8 space-y-6 lg:space-y-10">
           {/* Section: Visuals */}
           <section className="space-y-6">
             <div className="flex items-center gap-2 text-primary">
@@ -150,8 +149,8 @@ export default function HeroSlideForm({ slide, onClose, onSuccess }: HeroSlideFo
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, is_visible: !prev.is_visible }))}
                   className={`p-4 rounded-2xl border transition-all flex items-center justify-between ${formData.is_visible
-                      ? "bg-emerald-50 border-emerald-100 text-emerald-600"
-                      : "bg-red-50 border-red-100 text-red-600"
+                    ? "bg-emerald-50 border-emerald-100 text-emerald-600"
+                    : "bg-red-50 border-red-100 text-red-600"
                     }`}
                 >
                   <span className="text-[10px] font-black uppercase tracking-widest">
@@ -283,7 +282,7 @@ export default function HeroSlideForm({ slide, onClose, onSuccess }: HeroSlideFo
         </form>
 
         {/* Footer Actions */}
-        <div className="p-8 border-t border-slate-100 bg-slate-50/50 flex gap-3 sticky bottom-0 z-20">
+        <div className="p-6 lg:p-8 border-t border-slate-100 bg-slate-50/50 flex gap-3 sticky bottom-0 z-20">
           <button
             type="button"
             onClick={onClose}

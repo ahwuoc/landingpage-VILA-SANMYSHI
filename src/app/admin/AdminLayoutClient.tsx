@@ -21,7 +21,7 @@ export default function AdminLayoutClient({
       )}
 
       <div className={`
-        fixed lg:static inset-y-0 left-0 z-[70] transition-all duration-500 ease-in-out
+        fixed lg:static inset-y-0 left-0 z-[70] w-72 h-screen lg:h-auto transition-all duration-500 ease-in-out
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
         <AdminSidebar onClose={() => setSidebarOpen(false)} />
@@ -31,7 +31,7 @@ export default function AdminLayoutClient({
       <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden min-w-0">
         <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 p-4 lg:p-10 bg-slate-50/50 relative overflow-y-auto">
+        <main className="flex-1 p-4 lg:p-10 bg-slate-50/50 relative overflow-y-auto overflow-x-hidden">
           {/* Decorative background element */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none -mr-40 -mt-20 lg:-mt-10" />
 

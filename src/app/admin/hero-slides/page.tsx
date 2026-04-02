@@ -101,8 +101,8 @@ export default function HeroSlidesPage() {
     <div className="space-y-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black text-on-surface tracking-tighter uppercase mb-2">Slide Trang Chủ</h1>
-          <p className="text-on-surface-variant font-medium text-sm">Quản lý nội dung hiển thị tại phần Hero Carousel trên trang chủ.</p>
+          <h1 className="text-2xl lg:text-4xl font-black text-on-surface tracking-tighter uppercase mb-2">Slide Trang Chủ</h1>
+          <p className="text-on-surface-variant font-medium text-xs lg:text-sm">Quản lý nội dung hiển thị tại phần Hero Carousel trên trang chủ.</p>
         </div>
       </div>
 
