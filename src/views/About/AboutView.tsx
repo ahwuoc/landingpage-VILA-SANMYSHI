@@ -150,7 +150,6 @@ export default function AboutView() {
                     className="relative flex-shrink-0 w-[300px] md:w-[420px] snap-start group animate-fade-up"
                     style={{ animationDelay: `${i * 100}ms` }}
                   >
-                    {/* Year Underlay (Outline effect for visibility) */}
                     <div
                       className="text-8xl lg:text-[12rem] font-black mb-8 tracking-tighter transition-all duration-700 select-none opacity-20 group-hover:opacity-40 group-hover:scale-105 origin-left"
                       style={{
