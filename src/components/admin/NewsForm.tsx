@@ -7,6 +7,7 @@ import { ArrowLeft, Save, Upload, User, Tag, Zap, FileText, Plus } from "lucide-
 import TiptapEditor from "./TiptapEditor";
 import { supabase } from "@/lib/supabase";
 import { useUsers, useNewsCategories, useTemplates } from "@/hooks/useAdminData";
+import { ADMIN_LANGS, AdminLang } from "@/constants/languages";
 import { slugify } from "@/lib/slugify";
 
 interface NewsFormProps {
@@ -19,15 +20,22 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
+  const [activeLang, setActiveLang] = useState<AdminLang>("vi");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
+    title_en: initialData?.title_en || "",
+    title_th: initialData?.title_th || "",
     category: initialData?.category || "Tin tức",
     author: initialData?.author || "Admin",
     image: initialData?.image || "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
     summary: initialData?.excerpt || initialData?.summary || "",
+    summary_en: initialData?.excerpt_en || "",
+    summary_th: initialData?.excerpt_th || "",
     content: initialData?.content || "",
+    content_en: initialData?.content_en || "",
+    content_th: initialData?.content_th || "",
     status: initialData?.status || "Published",
   });
 
@@ -54,7 +62,10 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
   }
 
   const handleApplyTemplate = (content: string) => {
-    setFormData(prev => ({ ...prev, content }));
+    setFormData(prev => ({ 
+      ...prev, 
+      [activeLang === "vi" ? "content" : activeLang === "en" ? "content_en" : "content_th"]: content 
+    }));
     setShowTemplates(false);
   };
 
@@ -64,8 +75,14 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
     try {
       const payload = {
         title: formData.title,
+        title_en: formData.title_en,
+        title_th: formData.title_th,
         excerpt: formData.summary,
+        excerpt_en: formData.summary_en,
+        excerpt_th: formData.summary_th,
         content: formData.content,
+        content_en: formData.content_en,
+        content_th: formData.content_th,
         image: formData.image,
         author: formData.author,
         category: formData.category,
@@ -110,6 +127,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
     }
   };
 
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8 pb-20 w-full animate-in fade-in duration-500">
       {/* Header */}
@@ -120,7 +138,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
           </button>
           <div>
             <h1 className="text-xl font-bold text-on-surface">{isEdit ? "Chỉnh sửa tin tức" : "Thêm tin tức mới"}</h1>
-            <p className="text-xs text-on-surface-variant/60">Quản lý nội dung và hiển thị bài viết</p>
+            <p className="text-xs text-on-surface-variant/60">Quản lý nội dung đa ngôn ngữ bài viết</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -134,25 +152,50 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
         </div>
       </div>
 
+      {/* Language Tabs */}
+      <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl w-fit">
+        {ADMIN_LANGS.map((lang) => (
+          <button
+            key={lang.id}
+            type="button"
+            onClick={() => setActiveLang(lang.id)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeLang === lang.id ? "bg-white text-primary shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
+          >
+            <span className="text-lg">{lang.icon}</span>
+            {lang.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-8 rounded-3xl border border-on-surface/5 shadow-sm space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-bold text-on-surface/80">Tiêu đề bài viết</label>
+              <label className="text-sm font-bold text-on-surface/80">Tiêu đề bài viết ({ADMIN_LANGS.find(l => l.id === activeLang)?.label})</label>
               <input
-                type="text" required value={formData.title}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="VD: Vila Sanmyshi mở rộng mạng lưới vận chuyển quốc tế..."
+                type="text"
+                required={activeLang === "vi"}
+                value={activeLang === "vi" ? formData.title : activeLang === "en" ? formData.title_en : formData.title_th}
+                onChange={(e) => setFormData(prev => ({ 
+                  ...prev, 
+                  [activeLang === "vi" ? "title" : activeLang === "en" ? "title_en" : "title_th"]: e.target.value 
+                }))}
+                placeholder={`VD: ${activeLang === "vi" ? "Tin tức logistics..." : activeLang === "en" ? "Logistics news..." : "ข่าวโลจิสติกส์..."}`}
                 className="w-full px-5 py-4 bg-slate-50 border border-on-surface/5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-lg font-medium"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-bold text-on-surface/80">Tóm tắt ngắn gọn</label>
+              <label className="text-sm font-bold text-on-surface/80">Tóm tắt ngắn gọn ({ADMIN_LANGS.find(l => l.id === activeLang)?.label})</label>
               <textarea
-                required rows={3} value={formData.summary}
-                onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+                required={activeLang === "vi"}
+                rows={3}
+                value={activeLang === "vi" ? formData.summary : activeLang === "en" ? formData.summary_en : formData.summary_th}
+                onChange={(e) => setFormData(prev => ({ 
+                  ...prev, 
+                  [activeLang === "vi" ? "summary" : activeLang === "en" ? "summary_en" : "summary_th"]: e.target.value 
+                }))}
                 placeholder="Mô tả ngắn hiển thị trên danh sách tin bài..."
                 className="w-full px-5 py-4 bg-slate-50 border border-on-surface/5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               />
@@ -160,7 +203,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
 
             <div className="space-y-2">
               <label className="text-sm font-bold text-on-surface/80 flex items-center justify-between">
-                <span>Nội dung chi tiết</span>
+                <span>Nội dung chi tiết ({ADMIN_LANGS.find(l => l.id === activeLang)?.label})</span>
                 <div className="relative">
                   <button type="button" onClick={() => setShowTemplates(!showTemplates)}
                     className="p-2 bg-slate-50 border border-on-surface/10 rounded-lg hover:bg-white hover:shadow-sm transition-all flex items-center gap-1 text-[10px] font-black uppercase text-primary">
@@ -198,7 +241,14 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                   )}
                 </div>
               </label>
-              <TiptapEditor value={formData.content} onChange={(content) => setFormData(prev => ({ ...prev, content }))} placeholder="Viết nội dung bài viết tại đây..." />
+              <TiptapEditor
+                value={activeLang === "vi" ? formData.content : activeLang === "en" ? formData.content_en : formData.content_th}
+                onChange={(content) => setFormData(prev => ({ 
+                  ...prev, 
+                  [activeLang === "vi" ? "content" : activeLang === "en" ? "content_en" : "content_th"]: content 
+                }))}
+                placeholder="Viết nội dung bài viết tại đây..."
+              />
             </div>
           </div>
         </div>

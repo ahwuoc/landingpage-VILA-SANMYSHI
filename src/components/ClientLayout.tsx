@@ -15,9 +15,10 @@ export default function ClientLayout({
   navServices?: NavService[];
 }) {
   const pathname = usePathname();
-  const isAdminPage = pathname?.startsWith("/admin");
-  const isMaintenancePage = pathname === "/maintenance";
-  const isComingSoonPage = pathname === "/coming-soon";
+  const segments = pathname?.split("/") || [];
+  const isAdminPage = segments.includes("admin");
+  const isMaintenancePage = segments.includes("maintenance");
+  const isComingSoonPage = segments.includes("coming-soon");
 
   if (isAdminPage || isMaintenancePage || isComingSoonPage) {
     return <main>{children}</main>;

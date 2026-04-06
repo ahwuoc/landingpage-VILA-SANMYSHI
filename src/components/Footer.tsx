@@ -1,10 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { COMPANY_INFO, SOCIAL_LINKS, BRAND_NAME } from "@/constants/company";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("Footer");
+  const nt = useTranslations("Navbar");
+
   const partners = [
     { name: "Thuế Quảng Trị", icon: "shield" },
     { name: "Lao Bảo Border", icon: "sailing" },
@@ -37,18 +41,18 @@ export default function Footer() {
                   {BRAND_NAME.split(' ')[0]} <span className="text-primary italic">{BRAND_NAME.split(' ').slice(1).join(' ')}</span>
                 </h3>
                 <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em] leading-none mt-2">
-                  B2B Logistics Solutions
+                  {t('solution')}
                 </p>
               </div>
             </div>
             <p className="text-white text-sm lg:text-base leading-relaxed max-w-sm font-medium">
-              Giải pháp cung ứng xuyên biên giới chuyên biệt cho tuyến EWEC. Kết nối thị trường Việt Nam - Lào - Thái Lan với hiệu suất tối đa.
+              {t('about_text')}
             </p>
             <div className="flex gap-3">
               {SOCIAL_LINKS.map((social) => (
                 <Link
                   key={social.name}
-                  href={social.href}
+                  href={social.href as any}
                   className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center hover:bg-primary hover:border-primary group transition-all duration-300"
                 >
                   <span className="material-symbols-outlined text-[18px] text-white group-hover:text-white group-hover:scale-110 transition-transform">{social.icon}</span>
@@ -59,17 +63,17 @@ export default function Footer() {
 
           {/* Links Column */}
           <div className="lg:col-span-12 xl:col-span-2">
-            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-primary mb-8 border-l-2 border-primary pl-4">Điều hướng</h4>
+            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-primary mb-8 border-l-2 border-primary pl-4">{t('nav_title')}</h4>
             <ul className="space-y-4">
               {[
-                { name: "Trang chủ", href: "/" },
-                { name: "Về chúng tôi", href: "/about" },
-                { name: "Dịch vụ", href: "/services" },
-                { name: "Tin tức", href: "/news" },
-                { name: "Liên hệ", href: "/contact" },
+                { name: nt("home"), href: "/" },
+                { name: nt("about"), href: "/about" },
+                { name: nt("services"), href: "/services" },
+                { name: nt("news"), href: "/news" },
+                { name: nt("contact"), href: "/contact" },
               ].map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-sm font-bold text-white hover:text-primary transition-all flex items-center gap-2 group">
+                  <Link href={link.href as any} className="text-sm font-bold text-white hover:text-primary transition-all flex items-center gap-2 group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full scale-0 group-hover:scale-100 transition-transform" />
                     {link.name}
                   </Link>
@@ -80,7 +84,7 @@ export default function Footer() {
 
           {/* Contact Column */}
           <div className="lg:col-span-12 xl:col-span-3">
-            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-primary mb-8 border-l-2 border-primary pl-4">Liên hệ</h4>
+            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-primary mb-8 border-l-2 border-primary pl-4">{t('contact_title')}</h4>
             <ul className="space-y-6">
               <li className="flex gap-4 group">
                 <span className="material-symbols-outlined text-primary text-xl shrink-0">location_on</span>
@@ -105,7 +109,7 @@ export default function Footer() {
 
           {/* Map/Facebook Embed Column */}
           <div className="lg:col-span-12 xl:col-span-3">
-            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-primary mb-8 border-l-2 border-primary pl-4">Cộng đồng</h4>
+            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-primary mb-8 border-l-2 border-primary pl-4">{t('community_title')}</h4>
             <div className="bg-white/5 rounded-[2rem] p-1.5 border border-white/10 overflow-hidden shadow-2xl backdrop-blur-md">
               <iframe
                 src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61580846237727&tabs=timeline&width=340&height=220&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
@@ -137,15 +141,15 @@ export default function Footer() {
         {/* Footer Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 pt-4 pb-8">
           <p className="text-[10px] font-bold text-white uppercase tracking-widest text-center md:text-left opacity-60">
-            © 2018 - {new Date().getFullYear()} {COMPANY_INFO.shortName}. CHUYÊN TÒA KHAI HẢI QUAN & LOGISTICS.
+            {t('copyright', { year: new Date().getFullYear(), company: COMPANY_INFO.shortName })}
           </p>
           <div className="flex items-center gap-8">
-            <Link href="#" className="text-[10px] font-black text-white hover:text-primary transition-colors uppercase tracking-widest opacity-60">Privacy Policy</Link>
+            <Link href="#" className="text-[10px] font-black text-white hover:text-primary transition-colors uppercase tracking-widest opacity-60">{t('privacy')}</Link>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="group flex items-center gap-2.5 text-[10px] font-black text-primary uppercase tracking-widest border border-primary/20 px-4 py-2 rounded-full hover:bg-primary hover:text-white transition-all shadow-glow-primary/10"
             >
-              Lên đầu trang
+              {t('back_to_top')}
               <span className="material-symbols-outlined text-xs group-hover:-translate-y-1 transition-transform">arrow_upward</span>
             </button>
           </div>

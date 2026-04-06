@@ -6,6 +6,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { getHierarchicalIndexes, TableOfContents as TocExtension } from "@tiptap/extension-table-of-contents";
 import { TextSelection } from "@tiptap/pm/state";
 import type { Editor } from "@tiptap/react";
+import { useTranslations } from "next-intl";
 
 interface TocItem {
   id: string;
@@ -64,6 +65,7 @@ export function ArticleBody() {
 // Render TOC sidebar
 export const ArticleToc = memo(function ArticleToc() {
   const { editor, items } = useContext(ArticleCtx);
+  const t = useTranslations("NewsDetail");
 
   if (!editor || items.length === 0) return null;
 
@@ -85,10 +87,10 @@ export const ArticleToc = memo(function ArticleToc() {
   };
 
   return (
-    <div className="p-8 bg-blue-50 border border-blue-100 rounded-[2rem]">
-      <h4 className="text-sm font-black uppercase tracking-widest text-blue-700 mb-4 flex items-center gap-2">
+    <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2rem]">
+      <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
         <span className="material-symbols-outlined text-base">format_list_bulleted</span>
-        Các nội dung chính của bài viết
+        {t('toc_title')}
       </h4>
       <ul className="space-y-0.5">
         {items.map((item) => (
@@ -99,13 +101,13 @@ export const ArticleToc = memo(function ArticleToc() {
               style={{ paddingLeft: `${(item.level - 2) * 14}px` }}
               className={`flex items-start gap-2 py-1 text-sm leading-snug transition-colors ${
                 item.isActive && !item.isScrolledOver
-                  ? "text-blue-700 font-bold"
+                  ? "text-primary font-black uppercase tracking-tight"
                   : item.isScrolledOver
-                  ? "text-blue-400/50"
-                  : "text-blue-600/80 hover:text-blue-700"
+                  ? "text-slate-300"
+                  : "text-slate-500 hover:text-primary font-bold"
               }`}
             >
-              <span className="mt-2 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+              <span className={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 ${item.isActive && !item.isScrolledOver ? 'bg-primary' : 'bg-slate-200'}`} />
               {item.textContent}
             </a>
           </li>

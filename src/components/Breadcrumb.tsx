@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 interface BreadcrumbItem {
   label: string;
@@ -13,13 +14,15 @@ interface BreadcrumbProps {
 }
 
 export default function Breadcrumb({ items, isDark = false }: BreadcrumbProps) {
+  const t = useTranslations("Navbar");
+
   return (
     <nav
       className={`flex items-center gap-2 mb-8 text-[10px] uppercase font-bold tracking-[0.2em] animate-fade-up ${isDark ? "text-slate-400" : "text-slate-400"
         }`}
     >
       <Link href="/" className="hover:text-primary transition-colors">
-        Trang chủ
+        {t('home')}
       </Link>
 
       {items.map((item, index) => (
@@ -27,7 +30,7 @@ export default function Breadcrumb({ items, isDark = false }: BreadcrumbProps) {
           <span className="opacity-40">/</span>
           {item.href ? (
             <Link
-              href={item.href}
+              href={item.href as any}
               className="hover:text-primary transition-colors"
             >
               {item.label}

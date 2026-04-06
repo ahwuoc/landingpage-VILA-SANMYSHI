@@ -3,21 +3,24 @@
 import Image from "next/image";
 import { BRAND_NAME } from "@/constants/company";
 import { INITIAL_PARTNERS } from "@/constants/partners";
+import { useTranslations } from "next-intl";
 
 export default function PartnerSection() {
+  const t = useTranslations("Home.partners");
+
   return (
     <section className="py-24 lg:py-48 bg-card relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="max-w-3xl mb-16 lg:mb-24">
           <div className="flex items-center gap-3 mb-6">
             <span className="w-10 h-[2px] bg-primary rounded-full" />
-            <span className="text-primary text-label-md">Mạng lưới kết nối</span>
+            <span className="text-primary text-label-md">{t('badge')}</span>
           </div>
           <h2 className="text-heading-xl text-default">
-            Đối tác & <span className="text-primary">Khách hàng</span>
+            {t('title_prefix')} <span className="text-primary">{t('title_highlight')}</span>
           </h2>
           <p className="mt-6 text-body-lg text-muted max-w-2xl">
-            Hợp tác cùng các hãng tàu và tập đoàn logistics hàng đầu thế giới để mang đến dịch vụ vượt trội.
+            {t('description')}
           </p>
         </div>
 
@@ -42,7 +45,7 @@ export default function PartnerSection() {
 
         <div className="mt-12 text-center">
           <p className="text-body-sm text-faint italic">
-            ... và 500+ doanh nghiệp xuất nhập khẩu trên toàn quốc đã tin tưởng {BRAND_NAME}.
+            {t('footer_note', { count: 500, brand: BRAND_NAME })}
           </p>
         </div>
       </div>

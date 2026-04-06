@@ -1,0 +1,311 @@
+{
+  "Metadata": {
+    "title": "VILA SANMYSHI | Professional Logistics & Customs Declaration in Quang Tri",
+    "description": "VILA SANMYSHI - Specialist in customs declaration and official international transport at Lao Bảo (Quang Tri). PRESTIGE - DEDICATION - BEST PRICE.",
+    "og_locale": "en_US",
+    "contact": {
+      "title": "Contact VILA SANMYSHI | 24/7 Logistics & Customs Consulting",
+      "description": "Solve all problems with Customs procedures and transport Vietnam - Laos - Thailand with VILA SANMYSHI. Contact the expert team in Quang Tri."
+    },
+    "about": {
+      "title": "About VILA SANMYSHI | Capacity Profiles & History",
+      "description": "Learn about the journey, vision and mission of VILA SANMYSHI - your reliable logistics partner in Quang Tri."
+    },
+    "services": {
+      "title": "Customs Clearance & Transport Services | Lao Bao Border",
+      "description": "Customs declaration, cross-border transport Vietnam - Laos - Thailand, warehousing and full package import-export consulting in Quang Tri by VILA SANMYSHI."
+    },
+    "news": {
+      "title": "News & Import-Export Market | Vila Sanmyshi",
+      "description": "Update the latest news on Customs policy, import-export market and activities of Vila Sanmyshi in Quang Tri."
+    },
+    "not_found": "Content not found",
+    "home": "Home",
+    "services_label": "Services",
+    "news_label": "News",
+    "service_desc_template": "Professional {title} solution at Lao Bao Border Gate.",
+    "category_not_found": "Category not found",
+    "category_desc_template": "Professional {name} services at Lao Bao Border Gate."
+  },
+  "Index": {
+    "title": "Home",
+    "cta_title": "Ready to optimize your supply chain?",
+    "cta_button_contact": "Contact us now",
+    "cta_button_services": "Explore services"
+  },
+  "Navbar": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "news": "News",
+    "contact": "Contact",
+    "consult": "Consult Now",
+    "all_services": "View All",
+    "brand_tag": "IMPORT-EXPORT",
+    "category_title": "Service Categories",
+    "other_services": "Other Services",
+    "coming_soon": "Coming soon",
+    "services_count": "services",
+    "hotline": "Hotline 24/7"
+  },
+  "Footer": {
+    "about_text": "Specialized cross-border supply chain solutions for the EWEC route. Connecting Vietnam - Laos - Thailand markets with maximum efficiency.",
+    "nav_title": "Navigation",
+    "contact_title": "Contact",
+    "community_title": "Community",
+    "copyright": "© 2018 - {year} {company}. SPECIALIST IN CUSTOMS & LOGISTICS.",
+    "privacy": "Privacy Policy",
+    "back_to_top": "Back to top",
+    "solution": "B2B Logistics Solutions"
+  },
+  "FloatingContact": {
+    "zalo": "Chat Zalo now",
+    "call": "Call now (24/7)"
+  },
+  "ConsultationModal": {
+    "success_title": "Sent successfully!",
+    "success_msg": "Our specialist will contact you within 15-30 minutes. Thank you!",
+    "form_label": "Consultation Request",
+    "form_title": "Request optimal solutions",
+    "service_label": "Service",
+    "name_label": "Full Name*",
+    "name_placeholder": "John Doe",
+    "phone_label": "Phone Number*",
+    "phone_placeholder": "090 000 0000",
+    "message_label": "Specific Needs",
+    "message_placeholder": "Example: Need clearance for 2 containers at Lao Bao...",
+    "btn_submit": "Send Request Now",
+    "btn_loading": "Sending...",
+    "privacy_note": "By submitting information, you agree to our privacy policy. We are committed to no spam.",
+    "error_msg": "Submission failed, please try again later",
+    "default_message": "I need advice on {service} service"
+  },
+  "Home": {
+    "services": {
+      "title": "Our Services",
+      "description": "Professional transport and customs declaration solutions, optimizing time and costs for businesses.",
+      "item_default_desc": "Professional logistics solutions, optimizing time and costs for every shipment.",
+      "view_details": "Details",
+      "view_all": "View all services"
+    },
+    "stats": {
+      "partners": "Trusted Partners",
+      "quality": "Quality Commitment",
+      "support": "Ready to Support",
+      "goods": "Product Categories",
+      "items": [
+        { "label": "Experience", "desc": "Years of international operation" },
+        { "label": "Partners", "desc": "Across all fields" },
+        { "label": "Shipments", "desc": "Safe delivery" },
+        { "label": "Customers", "desc": "100% Satisfied" }
+      ]
+    },
+    "core_values": {
+      "badge": "Why choose us?",
+      "title_prefix": "Why choose",
+      "quote": "\"We don't just move goods, we build sustainable logistics solutions based on dedication, professionalism and modern technology.\"",
+      "cta_question": "Still have questions about the process?",
+      "cta_desc": "Our team of experts is always available 24/7 to answer any legal and technical customs issues.",
+      "cta_btn": "Direct Consultation",
+      "benefits": [
+        {
+          "title": "Practical Experience",
+          "desc": "Over 5 years of operation at Lao Bao border with thousands of successful clearance cases."
+        },
+        {
+          "title": "Digitalized Process",
+          "desc": "Applying modern technology helps shorten document processing time by 30% compared to traditional methods."
+        },
+        {
+          "title": "Expert Team",
+          "desc": "Consultants are knowledgeable in Customs law and available 24/7 to support customers."
+        },
+        {
+          "title": "Wide Network",
+          "desc": "Close links with transport units in Laos - Thailand, ensuring smooth flow of goods."
+        },
+        {
+          "title": "Cost Optimization",
+          "desc": "HS code advice and accurate tax policies help businesses maximize their budget."
+        },
+        {
+          "title": "Absolute Safety",
+          "desc": "Modern warehouse systems and full cargo insurance provide complete peace of mind."
+        }
+      ]
+    },
+    "partners": {
+      "badge": "Our Network",
+      "title_prefix": "Partners &",
+      "title_highlight": "Clients",
+      "description": "Partnering with world-leading shipping lines and logistics corporations to provide superior services.",
+      "footer_note": "... and {count}+ import-export enterprises nationwide have trusted {brand}."
+    },
+    "news": {
+      "badge": "News & Events",
+      "title_prefix": "Market",
+      "title_highlight": "Updates",
+      "description": "Important news on market fluctuations, import-export policies and strategic movements of Vila Sanmyshi.",
+      "author_label": "Author",
+      "read_more": "Read post"
+    }
+  },
+  "Services": {
+    "page_title": "Services",
+    "breadcrumb_all": "All Solutions",
+    "hero_tag": "VILA SANMYSHI LOGISTICS",
+    "hero_title_detail": "Service <br /><span class=\"text-primary\">Details</span>",
+    "hero_title_list": "Comprehensive <br /><span class=\"text-primary\">Logistics</span> <br />Solutions",
+    "filter_all": "All",
+    "view_solution": "Solution Details",
+    "not_found": "No matching solutions found",
+    "cta_title": "Start your journey <br /> <span class=\"text-primary\">Go global</span>",
+    "cta_desc": "Connecting global logistics network with VILA SANMYSHI. We accompany your success.",
+    "cta_expert": "Contact Expert",
+    "cta_process": "Learn the Process"
+  },
+  "About": {
+    "page_title": "About Us",
+    "hero": {
+      "title_small": "COMPANY PROFILE",
+      "title_highlight": "VILA SANMYSHI",
+      "subtitle": "Since its establishment in 2018, VILA SANMYSHI has continuously strived to develop and improve its orientation in the field of commerce and import-export services. With a customer-centric orientation, the company step by step builds prestige through service quality, transparency and spirit of responsibility. We aim to become a reliable partner, accompanying businesses in all logistics and import-export activities, bringing sustainable and long-term value."
+    },
+    "video_title": "Video Opening New Head Office",
+    "profile_title": "COMPANY PROFILE",
+    "info": {
+      "company_name": "Company Name",
+      "main_office": "Main Office",
+      "tax_office": "Registered Tax Office",
+      "tax_id": "Business License & Tax ID",
+      "representative": "Representative",
+      "website": "Website",
+      "phone": "Phone/Fax",
+      "hotline": "Hotline",
+      "email": "Email"
+    },
+    "history": [
+      { "year": "2018", "label": "Establishment", "desc": "VILA SANMYSHI TMDV XNK CO., LTD officially came into operation in Quang Tri." },
+      { "year": "2020", "label": "Market Expansion", "desc": "Developed a network of domestic and international partners, focusing on general wholesale." },
+      { "year": "Present", "highlight": "Sustainable Development", "desc": "Continuing to confirm its position as a prestigious and professional import-export unit in the Central region." }
+    ],
+    "cta": {
+      "title": "Partner with your prosperity",
+      "desc": "Vila Sanmyshi's team of experts are always ready to consult and solve all global logistics challenges.",
+      "btn": "Partner Now"
+    },
+    "capacity": [
+      { "label": "Experience", "value": "6+", "desc": "Years of operation in the trade and import-export industry." },
+      { "label": "Certification", "value": "Prestige", "desc": "Managed by Quang Tri Tax Department with stable operation status." },
+      { "label": "Fields", "value": "Diverse", "desc": "Multidisciplinary business with a focus on general wholesale." },
+      { "label": "Service", "value": "Dedicated", "desc": "Maximum customer support in all commercial transactions." }
+    ],
+    "vision": {
+      "title": "Vision",
+      "content": "To become a leading enterprise in the field of trade and import-export services in the region, connecting the Vietnamese market with international partners through professionalism and prestige."
+    },
+    "mission": {
+      "title": "Mission",
+      "content": "To provide high-quality products and services, optimizing trade processes to bring the best benefits to customers, while contributing to local economic development."
+    },
+    "values": [
+      { "title": "Prestige", "desc": "Always keep commitments with customers and partners." },
+      { "title": "Quality", "desc": "Ensuring the highest standards for all business items." },
+      { "title": "Transparency", "desc": "Clear in all legal and financial transactions." },
+      { "title": "Cooperation", "desc": "Building sustainable win-win relationships." }
+    ],
+    "business_fields_title": "Business Fields",
+    "business_fields": [
+      "Goods import and export services",
+      "Wholesale of food and beverages",
+      "Wholesale of household appliances",
+      "Wholesale of machinery, equipment and spare parts",
+      "Commercial agency services",
+      "Trade brokerage",
+      "Road freight transport",
+      "Warehousing and storage of goods",
+      "Full package customs procedure consulting",
+      "International business cooperation",
+      "Distribution of consumer goods",
+      "General trade"
+    ],
+    "timeline_title": "Development Journey",
+    "timeline": [
+      { "year": "2018", "highlight": "Establishment", "desc": "The company was officially established in Quang Tri, laying the foundation for activities in the field of trade and import-export." },
+      { "year": "2019", "highlight": "Foundation Building", "desc": "Step by step improving operation processes, training personnel and building a sustainable development foundation." },
+      { "year": "2020", "highlight": "Market Expansion", "desc": "Strengthening cooperation with domestic and foreign partners, expanding the scope of activities in the field of import-export." },
+      { "year": "2021", "highlight": "Operation Optimization", "desc": "Applying technology to management and document processing, improving work efficiency and minimizing errors in the process." },
+      { "year": "2022", "highlight": "Strong Growth", "desc": "Recorded clear growth in the number of customers and projects, while improving transport and service processing capacity." },
+      { "year": "2023", "highlight": "Diverse Services", "desc": "Expanding related services such as warehousing, multimodal transport and import-export entrustment for businesses." },
+      { "year": "2024", "highlight": "Quality Enhancement", "desc": "Focusing on standardizing processes, improving service quality and comprehensively improving customer experience." },
+      { "year": "Present", "highlight": "Sustainable Development", "desc": "Continuing to affirm position as a prestigious unit in the field of import-export, aiming for long-term and sustainable development." }
+    ]
+  },
+  "Contact": {
+    "page_title": "Contact",
+    "hero_tag": "Connect with an Expert",
+    "hero_title": "CONTACT <span class=\"text-primary\">{brand}</span>",
+    "hero_desc": "We are always ready to listen and answer all your questions about Logistics and import-export needs 24/7.",
+    "support_badge": "Direct Contact",
+    "support_title": "Support <span class=\"text-primary\">Information</span>",
+    "phone_label": "Phone Number",
+    "phone_note": "24/7 Support (Zalo/Viber)",
+    "email_label": "Email",
+    "email_note": "Response in 2 hours",
+    "team_badge": "Support Team",
+    "team_title": "Dedicated 24/7 Service",
+    "address_title": "Headquarters",
+    "btn_directions": "Directions (Google Maps)",
+    "btn_office": "View Office",
+    "form_badge": "Request a Quote",
+    "form_title": "Send a Message <span class=\"text-primary\">Now</span>",
+    "form_desc": "We will proactively contact you as soon as possible.",
+    "field_name": "Full Name*",
+    "field_phone": "Phone Number*",
+    "field_email": "Email (Optional)",
+    "field_service": "Service of Interest",
+    "field_message": "Specific Request",
+    "placeholder_message": "Please describe your request or shipment...",
+    "btn_submit": "Send Request Now",
+    "btn_loading": "Sending...",
+    "success_msg": "Request sent successfully! We will contact you soon.",
+    "privacy_note": "100% committed to protecting customer information",
+    "map_office": "Representative Office"
+  },
+  "NewsPage": {
+    "page_title": "News & Events",
+    "hero_tag": "Market Updates",
+    "hero_title": "News & <span class=\"text-primary\">Events</span>",
+    "hero_desc": "Update the latest fluctuations in Customs policy, global logistics trends and news from Vila Sanmyshi.",
+    "latest_badge": "Latest",
+    "grid_title": "Market <span class=\"text-primary\">News</span>",
+    "filter_all": "All",
+    "no_posts": "No posts found.",
+    "read_more": "Read more",
+    "newsletter": {
+      "title": "Don't want to miss <br class=\"block md:hidden\" /> important news?",
+      "desc": "Subscribe to receive weekly newsletters directly to your email.",
+      "placeholder": "Your email address",
+      "btn_submit": "Subscribe Now",
+      "btn_loading": "Processing...",
+      "success_msg": "Thank you! We have recorded your successful subscription.",
+      "already_subscribed": "This email has already been registered!",
+      "error_msg": "An error occurred, please try again later!"
+    }
+  },
+  "NewsDetail": {
+    "breadcrumb_news": "News",
+    "breadcrumb_detail": "Detail",
+    "author_label": "Author",
+    "other_news": "Related Posts",
+    "cta_title": "Need Advice?",
+    "cta_desc": "Don't hesitate to contact Vila Sanmyshi's experts.",
+    "cta_btn": "Contact Now",
+    "toc_title": "Main contents of the article",
+    "share_title": "Share this article:",
+    "share_fb": "Share to Facebook",
+    "share_email": "Send via Email",
+    "share_copy": "Copy Link",
+    "copied": "Copied!"
+  }
+}

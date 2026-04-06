@@ -18,6 +18,8 @@ export default function ServiceCategoriesPage() {
 
   const [formData, setFormData] = useState({
     name: "",
+    name_en: "",
+    name_th: "",
     slug: ""
   });
 
@@ -57,7 +59,12 @@ export default function ServiceCategoriesPage() {
     if (editingId) {
       const { error } = await supabase
         .from("service_categories")
-        .update(formData)
+        .update({
+          name: formData.name,
+          name_en: formData.name_en,
+          name_th: formData.name_th,
+          slug: formData.slug
+        })
         .eq("id", editingId);
       if (error) alert(error.message);
       else {
@@ -67,14 +74,19 @@ export default function ServiceCategoriesPage() {
     } else {
       const { error } = await supabase
         .from("service_categories")
-        .insert([formData]);
+        .insert([{
+          name: formData.name,
+          name_en: formData.name_en,
+          name_th: formData.name_th,
+          slug: formData.slug
+        }]);
       if (error) alert(error.message);
       else {
         setIsAdding(false);
         fetchCategories();
       }
     }
-    setFormData({ name: "", slug: "" });
+    setFormData({ name: "", name_en: "", name_th: "", slug: "" });
   }
 
   async function handleDelete(id: number) {
@@ -90,7 +102,12 @@ export default function ServiceCategoriesPage() {
 
   const startEdit = (cat: any) => {
     setEditingId(cat.id);
-    setFormData({ name: cat.name, slug: cat.slug });
+    setFormData({ 
+      name: cat.name, 
+      name_en: cat.name_en || "", 
+      name_th: cat.name_th || "", 
+      slug: cat.slug 
+    });
     setIsAdding(true);
   };
 
@@ -114,7 +131,7 @@ export default function ServiceCategoriesPage() {
           onClick={() => {
             setIsAdding(true);
             setEditingId(null);
-            setFormData({ name: "", slug: "" });
+            setFormData({ name: "", name_en: "", name_th: "", slug: "" });
           }}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-glow-primary hover:scale-105 active:scale-95 transition-all"
         >
@@ -195,12 +212,34 @@ export default function ServiceCategoriesPage() {
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40 ml-1">Tên danh mục</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40 ml-1">Tên danh mục (VI)</label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => handleNameChange(e.target.value)}
                     placeholder="VD: Logistics Quốc Tế"
+                    className="w-full bg-slate-50 border border-transparent rounded-2xl p-4 text-sm font-bold focus:bg-white focus:ring-4 focus:ring-primary/5 focus:border-primary focus:outline-none transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40 ml-1">Category Name (EN)</label>
+                  <input
+                    type="text"
+                    value={formData.name_en}
+                    onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
+                    placeholder="EX: International Logistics"
+                    className="w-full bg-slate-50 border border-transparent rounded-2xl p-4 text-sm font-bold focus:bg-white focus:ring-4 focus:ring-primary/5 focus:border-primary focus:outline-none transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40 ml-1">ชื่อหมวดหมู่ (TH)</label>
+                  <input
+                    type="text"
+                    value={formData.name_th}
+                    onChange={(e) => setFormData({ ...formData, name_th: e.target.value })}
+                    placeholder="เช่น: โลจิสติกส์ระหว่างประเทศ"
                     className="w-full bg-slate-50 border border-transparent rounded-2xl p-4 text-sm font-bold focus:bg-white focus:ring-4 focus:ring-primary/5 focus:border-primary focus:outline-none transition-all"
                   />
                 </div>

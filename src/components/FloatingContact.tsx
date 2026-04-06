@@ -1,6 +1,10 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 export default function FloatingContact() {
+  const t = useTranslations("FloatingContact");
+
   return (
     <div className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[150] flex flex-col gap-4 items-end animate-fade-in delay-1000 floating-contact-container transition-all duration-300">
       {/* Zalo Button */}
@@ -18,7 +22,7 @@ export default function FloatingContact() {
         />
         {/* Tooltip */}
         <span className="absolute right-full mr-4 bg-slate-900/40 backdrop-blur-md text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap border border-white/10">
-          Chat Zalo ngay
+          {t('zalo')}
         </span>
       </a>
 
@@ -32,7 +36,7 @@ export default function FloatingContact() {
         <span className="material-symbols-outlined text-2xl lg:text-3xl">call</span>
         {/* Tooltip */}
         <span className="absolute right-full mr-4 bg-slate-900/40 backdrop-blur-md text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-xl opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap border border-white/10">
-          Gọi ngay (24/7)
+          {t('call')}
         </span>
       </a>
     </div>

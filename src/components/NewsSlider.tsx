@@ -2,18 +2,19 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
+import { useTranslations, useLocale } from "next-intl";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 interface NewsItem {
   id: number;
-  title: string;
-  excerpt: string;
+  title: Record<string, string>;
+  excerpt: Record<string, string>;
   date: string;
   category: string;
   image: string;
@@ -22,6 +23,8 @@ interface NewsItem {
 }
 
 export default function NewsSlider() {
+  const t = useTranslations("Home.news");
+  const locale = useLocale();
   const [newsList, setNewsList] = useState<NewsItem[]>([]);
   const [swiper, setSwiper] = useState<any>(null);
 
@@ -55,13 +58,13 @@ export default function NewsSlider() {
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-10 h-[2px] bg-primary rounded-full" />
-              <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em]">Tin tức & Sự kiện</span>
+              <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em]">{t('badge')}</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight uppercase">
-              Cập nhật <span className="text-primary">Thị trường</span>
+              {t('title_prefix')} <span className="text-primary">{t('title_highlight')}</span>
             </h2>
             <p className="mt-6 text-slate-500 font-medium text-lg lg:text-2xl max-w-2xl leading-relaxed">
-              Điểm tin quan trọng về biến động thị trường, chính sách xuất nhập khẩu và các chuyển động chiến lược của Vila Sanmyshi.
+              {t('description')}
             </p>
           </div>
 
@@ -100,7 +103,7 @@ export default function NewsSlider() {
               <Link href={`/news/${news.slug || news.id}`} className="group relative block aspect-[16/10] lg:aspect-[16/9] rounded-[4rem] lg:rounded-[5rem] overflow-hidden bg-slate-900 shadow-2xl h-full">
                 <Image
                   src={news.image}
-                  alt={news.title}
+                  alt={news.title[locale] || news.title['vi']}
                   fill
                   className="object-cover group-hover:scale-105 transition-all duration-1000 opacity-90 group-hover:opacity-100"
                   sizes="(max-width: 768px) 90vw, (max-width: 1280px) 70vw, 50vw"
@@ -135,7 +138,7 @@ export default function NewsSlider() {
                 {/* Large Immersive Content Overlay */}
                 <div className="absolute bottom-6 lg:bottom-20 left-6 lg:left-20 right-6 lg:right-20">
                   <h3 className="text-base md:text-4xl lg:text-5xl font-black text-white leading-tight lg:leading-[1.1] tracking-tighter uppercase mb-4 lg:mb-8 group-hover:-translate-y-2 transition-transform duration-700 pr-16 md:pr-0">
-                    {news.title}
+                    {news.title[locale] || news.title['vi']}
                   </h3>
 
                   <div className="flex flex-row items-center justify-between gap-4 lg:gap-8 lg:translate-y-8 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 transition-all duration-1000">
@@ -151,13 +154,13 @@ export default function NewsSlider() {
                         </div>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[8px] lg:text-[10px] text-white/40 font-bold uppercase tracking-widest mb-0.5 lg:mb-1">Tác giả</span>
+                        <span className="text-[8px] lg:text-[10px] text-white/40 font-bold uppercase tracking-widest mb-0.5 lg:mb-1">{t('author_label')}</span>
                         <span className="text-white text-[9px] lg:text-xs font-black uppercase tracking-[0.1em] lg:tracking-[0.2em]">{news.author}</span>
                       </div>
                     </div>
 
                     <div className="group/btn flex items-center gap-3 lg:gap-6 cursor-pointer">
-                      <span className="hidden sm:inline text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.4em]">Đọc bài viết</span>
+                      <span className="hidden sm:inline text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.4em]">{t('read_more')}</span>
                       <div className="w-10 h-10 lg:w-16 lg:h-16 rounded-full bg-primary text-white flex items-center justify-center group-hover/btn:scale-110 transition-transform shadow-glow-primary">
                         <span className="material-symbols-outlined text-xl lg:text-3xl">arrow_outward</span>
                       </div>

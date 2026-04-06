@@ -9,7 +9,7 @@ export const COMPANY_INFO = {
   registrationAddress: "Số 13B Ông Ích Khiêm, Xã Lao Bảo, Tỉnh Quảng Trị, Việt Nam",
   phone: "0913497246",
   hotline: "0913497246",
-  email: "contact@vilasanmyshi.com",
+  email: "admin@vilasanmyshi.com",
   representative: "NGUYỄN THỊ HẰNG LY",
   website: "www.vilasanmyshi.com.vn",
   founded: "2018-05-02",

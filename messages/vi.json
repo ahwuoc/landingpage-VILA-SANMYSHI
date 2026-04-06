@@ -1,0 +1,311 @@
+{
+  "Metadata": {
+    "title": "VILA SANMYSHI | Logistics & Khai báo Hải quan chuyên nghiệp tại Quảng Trị",
+    "description": "VILA SANMYSHI - Chuyên khai báo hải quan, vận tải quốc tế chính ngạch tại Cửa khẩu Lao Bảo (Quảng Trị). Dịch vụ UY TÍN - TẬN TÂM - GIÁ CỰC TỐT. MST: 3200659885.",
+    "og_locale": "vi_VN",
+    "contact": {
+      "title": "Liên hệ VILA SANMYSHI | Tư vấn Logistics & Hải quan 24/7",
+      "description": "Giải quyết mọi khó khăn về thủ tục Hải quan và vận chuyển Việt - Lào - Thái cùng VILA SANMYSHI. Liên hệ đội ngũ chuyên gia tại Quảng Trị."
+    },
+    "about": {
+      "title": "Về VILA SANMYSHI | Hồ sơ năng lực & Lịch sử phát triển",
+      "description": "Tìm hiểu về hành trình phát triển, tầm nhìn và sứ mệnh của VILA SANMYSHI - đối tác logistics tin cậy tại Quảng Trị."
+    },
+    "services": {
+      "title": "Dịch vụ Khai báo Hải quan & Vận tải | Cửa khẩu Lao Bảo",
+      "description": "Dịch vụ khai báo hải quan, vận chuyển liên vận Việt - Lào - Thái, kho bãi và tư vấn XNK trọn gói tại Quảng Trị bởi VILA SANMYSHI."
+    },
+    "news": {
+      "title": "Tin tức & Thị trường XNK | Vila Sanmyshi",
+      "description": "Cập nhật các tin tức mới nhất về chính sách Hải quan, thị trường xuất nhập khẩu và các hoạt động của Vila Sanmyshi tại Quảng Trị."
+    },
+    "not_found": "Nội dung không tồn tại",
+    "home": "Trang chủ",
+    "services_label": "Dịch vụ",
+    "news_label": "Tin tức",
+    "service_desc_template": "Giải pháp {title} chuyên nghiệp tại Cửa khẩu Lao Bảo.",
+    "category_not_found": "Danh mục không tồn tại",
+    "category_desc_template": "Các dịch vụ {name} chuyên nghiệp tại Cửa khẩu Lao Bảo."
+  },
+  "Index": {
+    "title": "Trang chủ",
+    "cta_title": "Sẵn sàng tối ưu chuỗi cung ứng của bạn?",
+    "cta_button_contact": "Liên hệ tư vấn ngay",
+    "cta_button_services": "Khám phá dịch vụ"
+  },
+  "Navbar": {
+    "home": "Trang chủ",
+    "about": "Về chúng tôi",
+    "services": "Dịch vụ",
+    "news": "Tin tức",
+    "contact": "Liên hệ",
+    "consult": "Tư vấn ngay",
+    "all_services": "Xem tất cả",
+    "brand_tag": "XUẤT NHẬP KHẨU",
+    "category_title": "Danh mục dịch vụ",
+    "other_services": "Dịch vụ khác",
+    "coming_soon": "Sắp ra mắt",
+    "services_count": "dịch vụ",
+    "hotline": "Hotline 24/7"
+  },
+  "Footer": {
+    "about_text": "Giải pháp cung ứng xuyên biên giới chuyên biệt cho tuyến EWEC. Kết nối thị trường Việt Nam - Lào - Thái Lan với hiệu suất tối đa.",
+    "nav_title": "Điều hướng",
+    "contact_title": "Liên hệ",
+    "community_title": "Cộng đồng",
+    "copyright": "© 2018 - {year} {company}. CHUYÊN TÒA KHAI HẢI QUAN & LOGISTICS.",
+    "privacy": "Chính sách bảo mật",
+    "back_to_top": "Lên đầu trang",
+    "solution": "B2B Logistics Solutions"
+  },
+  "FloatingContact": {
+    "zalo": "Chat Zalo ngay",
+    "call": "Gọi ngay (24/7)"
+  },
+  "ConsultationModal": {
+    "success_title": "Gửi thành công!",
+    "success_msg": "Chuyên viên của chúng tôi sẽ liên hệ lại với bạn trong vòng 15-30 phút tới. Trân trọng!",
+    "form_label": "Đăng ký tư vấn",
+    "form_title": "Yêu cầu nhận giải pháp tối ưu",
+    "service_label": "Dịch vụ",
+    "name_label": "Họ và Tên*",
+    "name_placeholder": "Nguyễn Văn A",
+    "phone_label": "Số điện thoại*",
+    "phone_placeholder": "090 000 0000",
+    "message_label": "Nhu cầu cụ thể",
+    "message_placeholder": "Ví dụ: Cần thông quan 2 container tại Lao Bảo...",
+    "btn_submit": "Gửi yêu cầu ngay",
+    "btn_loading": "Đang gửi...",
+    "privacy_note": "Bằng việc gửi thông tin, bạn đồng ý với chính sách bảo mật của chúng tôi. Chúng tôi cam kết không spam.",
+    "error_msg": "Gửi thất bại, vui lòng thử lại sau",
+    "default_message": "Tôi cần tư vấn về dịch vụ {service}"
+  },
+  "Home": {
+    "services": {
+      "title": "Dịch vụ của chúng tôi",
+      "description": "Giải pháp vận tải và khai báo hải quan chuyên nghiệp, giúp tối ưu hóa thời gian và chi phí cho doanh nghiệp.",
+      "item_default_desc": "Giải pháp logistics chuyên nghiệp, tối ưu hóa thời gian và chi phí cho mọi lô hàng.",
+      "view_details": "Chi tiết",
+      "view_all": "Xem tất cả dịch vụ"
+    },
+    "stats": {
+      "partners": "Đối tác tin dùng",
+      "quality": "Cam kết chất lượng",
+      "support": "Sẵn sàng hỗ trợ",
+      "goods": "Danh mục hàng hóa",
+      "items": [
+        { "label": "Kinh nghiệm", "desc": "Năm vận hành quốc tế" },
+        { "label": "Đối tác", "desc": "Trong mọi lĩnh vực" },
+        { "label": "Chuyến hàng", "desc": "Vận chuyển an toàn" },
+        { "label": "Khách hàng", "desc": "Hài lòng 100%" }
+      ]
+    },
+    "core_values": {
+      "badge": "Tại sao là chúng tôi?",
+      "title_prefix": "Vì sao chọn",
+      "quote": "\"Chúng tôi không chỉ vận chuyển hàng hóa, chúng tôi xây dựng giải pháp logistics bền vững dựa trên sự tận tâm, chuyên nghiệp và công nghệ hiện đại.\"",
+      "cta_question": "Vẫn còn thắc mắc về quy trình?",
+      "cta_desc": "Đội ngũ chuyên gia của chúng tôi luôn trực chốt 24/7 để giải đáp mọi vấn đề về pháp lý và kỹ thuật hải quan.",
+      "cta_btn": "Tư vấn trực tiếp",
+      "benefits": [
+        {
+          "title": "Kinh nghiệm thực chiến",
+          "desc": "Hơn 5 năm hoạt động tại cửa khẩu Lao Bảo với hàng ngàn lô hàng thông quan thành công."
+        },
+        {
+          "title": "Quy trình số hóa",
+          "desc": "Ứng dụng công nghệ hiện đại giúp rút ngắn 30% thời gian xử lý hồ sơ so với cách làm truyền thống."
+        },
+        {
+          "title": "Đội ngũ chuyên gia",
+          "desc": "Chuyên viên tư vấn am hiểu luật pháp Hải quan trực chiến 24/7 để hỗ trợ khách hàng."
+        },
+        {
+          "title": "Mạng lưới kết nối rộng",
+          "desc": "Liên kết chặt chẽ với các đơn vị vận tải Lào - Thái Lan, đảm bảo hàng lưu thông thông suốt."
+        },
+        {
+          "title": "Tối ưu hóa chi phí",
+          "desc": "Tư vấn mã HS và chính sách thuế chính xác giúp doanh nghiệp tiết kiệm tối đa ngân sách."
+        },
+        {
+          "title": "An toàn tuyệt đối",
+          "desc": "Hệ thống kho bãi hiện đại, bảo hiểm hàng hóa đầy đủ mang lại sự an tâm tuyệt đối."
+        }
+      ]
+    },
+    "partners": {
+      "badge": "Mạng lưới kết nối",
+      "title_prefix": "Đối tác &",
+      "title_highlight": "Khách hàng",
+      "description": "Hợp tác cùng các hãng tàu và tập đoàn logistics hàng đầu thế giới để mang đến dịch vụ vượt trội.",
+      "footer_note": "... và {count}+ doanh nghiệp xuất nhập khẩu trên toàn quốc đã tin tưởng {brand}."
+    },
+    "news": {
+      "badge": "Tin tức & Sự kiện",
+      "title_prefix": "Cập nhật",
+      "title_highlight": "Thị trường",
+      "description": "Điểm tin quan trọng về biến động thị trường, chính sách xuất nhập khẩu và các chuyển động chiến lược của Vila Sanmyshi.",
+      "author_label": "Tác giả",
+      "read_more": "Đọc bài viết"
+    }
+  },
+  "Services": {
+    "page_title": "Dịch vụ",
+    "breadcrumb_all": "Tất cả giải pháp",
+    "hero_tag": "VILA SANMYSHI LOGISTICS",
+    "hero_title_detail": "Chi tiết <br /><span class=\"text-primary\">Dịch vụ</span>",
+    "hero_title_list": "Giải pháp <br /><span class=\"text-primary\">Logistics</span> <br />Toàn diện",
+    "filter_all": "Tất cả",
+    "view_solution": "Chi tiết giải pháp",
+    "not_found": "Không tìm thấy giải pháp nào phù hợp",
+    "cta_title": "Bắt đầu hành trình <br /> <span class=\"text-primary\">Vươn tầm quốc tế</span>",
+    "cta_desc": "Kết nối mạng lưới logistics toàn cầu với VILA SANMYSHI. Chúng tôi đồng hành cùng sự thành công của bạn.",
+    "cta_expert": "Liên hệ chuyên gia",
+    "cta_process": "Tìm hiểu quy trình"
+  },
+  "About": {
+    "page_title": "Về chúng tôi",
+    "hero": {
+      "title_small": "HỒ SƠ CÔNG TY",
+      "title_highlight": "VILA SANMYSHI",
+      "subtitle": "Kể từ khi thành lập vào năm 2018, VILA SANMYSHI đã không ngừng nỗ lực phát triển và hoàn thiện năng lực trong lĩnh vực thương mại và dịch vụ xuất nhập khẩu. Với định hướng lấy khách hàng làm trung tâm, công ty từng bước xây dựng uy tín thông qua chất lượng dịch vụ, sự minh bạch và tinh thần trách nhiệm. Chúng tôi hướng đến việc trở thành đối tác tin cậy, đồng hành cùng doanh nghiệp trong mọi hoạt động logistics và xuất nhập khẩu, mang lại giá trị bền vững và lâu dài."
+    },
+    "video_title": "Video Khai Trương Văn Phòng Trụ Sở Mới",
+    "profile_title": "HỒ SƠ CÔNG TY",
+    "info": {
+      "company_name": "Tên công ty",
+      "main_office": "Văn Phòng Chính",
+      "tax_office": "Trụ sở đăng ký thuế",
+      "tax_id": "GPĐKKD & Mã số thuế",
+      "representative": "Đại diện",
+      "website": "Website",
+      "phone": "Điện thoại/Fax",
+      "hotline": "Hotline",
+      "email": "Email"
+    },
+    "history": [
+      { "year": "2018", "label": "Thành lập", "desc": "CÔNG TY TNHH TMDV XNK VILA SANMYSHI chính thức đi vào hoạt động tại Quảng Trị." },
+      { "year": "2020", "label": "Mở rộng thị trường", "desc": "Phát triển mạng lưới đối tác trong nước và quốc tế, tập trung vào lĩnh vực bán buôn tổng hợp." },
+      { "year": "Hiện nay", "label": "Phát triển bền vững", "desc": "Khẳng định vị thế là đơn vị xuất nhập khẩu uy tín, chuyên nghiệp tại khu vực miền Trung." }
+    ],
+    "capacity": [
+      { "label": "Kinh nghiệm", "value": "6+", "desc": "Năm hoạt động trong ngành thương mại và xuất nhập khẩu." },
+      { "label": "Chứng nhận", "value": "Uy tín", "desc": "Được quản lý bởi Thuế tỉnh Quảng Trị với tình trạng hoạt động ổn định." },
+      { "label": "Lĩnh vực", "value": "Đa dạng", "desc": "Kinh doanh đa ngành nghề với trọng tâm là bán buôn tổng hợp." },
+      { "label": "Dịch vụ", "value": "Tận tâm", "desc": "Hỗ trợ khách hàng tối đa trong mọi giao dịch thương mại." }
+    ],
+    "vision": {
+      "title": "Tầm nhìn",
+      "content": "Trở thành doanh nghiệp hàng đầu trong lĩnh vực thương mại và dịch vụ xuất nhập khẩu tại khu vực, kết nối thị trường Việt Nam với các đối tác quốc tế thông qua sự chuyên nghiệp và uy tín."
+    },
+    "mission": {
+      "title": "Sứ mệnh",
+      "content": "Cung cấp các sản phẩm và dịch vụ chất lượng cao, tối ưu hóa quy trình thương mại để mang lại lợi ích tốt nhất cho khách hàng, đồng thời đóng góp vào sự phát triển kinh tế địa phương."
+    },
+    "values": [
+      { "title": "Uy tín", "desc": "Luôn giữ đúng cam kết với khách hàng và đối tác." },
+      { "title": "Chất lượng", "desc": "Đảm bảo tiêu chuẩn cao nhất cho mọi mặt hàng kinh doanh." },
+      { "title": "Minh bạch", "desc": "Rõ ràng trong mọi giao dịch pháp lý và tài chính." },
+      { "title": "Hợp tác", "desc": "Xây dựng mối quan hệ win-win bền vững." }
+    ],
+    "business_fields_title": "Lĩnh vực kinh doanh",
+    "business_fields": [
+      "Dịch vụ xuất nhập khẩu hàng hóa",
+      "Bán buôn thực phẩm và đồ uống",
+      "Bán buôn đồ dùng gia đình",
+      "Bán buôn máy móc, thiết bị phụ tùng",
+      "Dịch vụ đại lý thương mại",
+      "Môi giới thương mại",
+      "Vận tải hàng hóa bằng đường bộ",
+      "Kho bãi và lưu giữ hàng hóa",
+      "Tư vấn thủ tục hải quan trọn gói",
+      "Hợp tác kinh doanh quốc tế",
+      "Phân phối hàng tiêu dùng",
+      "Thương mại tổng hợp"
+    ],
+    "timeline_title": "Hành trình phát triển",
+    "timeline": [
+      { "year": "2018", "highlight": "Thành lập", "desc": "Công ty chính thức được thành lập tại Quảng Trị, đặt nền móng cho hoạt động trong lĩnh vực thương mại và xuất nhập khẩu." },
+      { "year": "2019", "highlight": "Xây dựng nền tảng", "desc": "Từng bước hoàn thiện quy trình vận hành, đào tạo đội ngũ nhân sự và xây dựng nền tảng phát triển bền vững." },
+      { "year": "2020", "highlight": "Mở rộng thị trường", "desc": "Đẩy mạnh hợp tác với các đối tác trong và ngoài nước, mở rộng phạm vi hoạt động trong lĩnh vực xuất nhập khẩu." },
+      { "year": "2021", "highlight": "Tối ưu vận hành", "desc": "Ứng dụng công nghệ vào quản lý và xử lý hồ sơ, nâng cao hiệu quả làm việc và giảm thiểu sai sót trong quy trình." },
+      { "year": "2022", "highlight": "Tăng trưởng mạnh", "desc": "Ghi nhận sự tăng trưởng rõ rệt về số lượng khách hàng và dự án, đồng thời nâng cao năng lực vận chuyển và xử lý dịch vụ." },
+      { "year": "2023", "highlight": "Đa dạng dịch vụ", "desc": "Mở rộng thêm các dịch vụ liên quan như kho bãi, vận chuyển đa phương thức và ủy thác xuất nhập khẩu cho doanh nghiệp." },
+      { "year": "2024", "highlight": "Nâng cao chất lượng", "desc": "Tập trung chuẩn hóa quy trình, nâng cao chất lượng dịch vụ và cải thiện trải nghiệm khách hàng một cách toàn diện." },
+      { "year": "Hiện nay", "highlight": "Phát triển bền vững", "desc": "Tiếp tục khẳng định vị thế là đơn vị uy tín trong lĩnh vực xuất nhập khẩu, hướng tới phát triển lâu dài và bền vững." }
+    ],
+    "cta": {
+      "title": "Đồng hành cùng sự thịnh vượng của bạn",
+      "desc": "Đội ngũ chuyên gia của Vila Sanmyshi luôn sẵn sàng tư vấn và giải quyết mọi thách thức về logistics toàn cầu.",
+      "btn": "Hợp tác ngay"
+    }
+  },
+  "Contact": {
+    "page_title": "Liên hệ",
+    "hero_tag": "Kết nối với chuyên gia",
+    "hero_title": "LIÊN HỆ <span class=\"text-primary\">{brand}</span>",
+    "hero_desc": "Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc về nhu cầu Logistics và XNK của bạn 24/7.",
+    "support_badge": "Liên hệ trực tiếp",
+    "support_title": "Thông tin <span class=\"text-primary\">Hỗ trợ</span>",
+    "phone_label": "Số điện thoại",
+    "phone_note": "Hỗ trợ 24/7 (Zalo/Viber)",
+    "email_label": "Email",
+    "email_note": "Phản hồi trong 2 giờ",
+    "team_badge": "Đội ngũ hỗ trợ",
+    "team_title": "Tận tâm phục vụ 24/7",
+    "address_title": "Trụ sở chính",
+    "btn_directions": "Chỉ đường (Google Maps)",
+    "btn_office": "Xem văn phòng",
+    "form_badge": "Yêu cầu báo giá",
+    "form_title": "Gửi tin nhắn <span class=\"text-primary\">ngay</span>",
+    "form_desc": "Chúng tôi sẽ chủ động liên hệ lại với bạn trong thời gian sớm nhất.",
+    "field_name": "Họ và Tên*",
+    "field_phone": "Số điện thoại*",
+    "field_email": "Email (Không bắt buộc)",
+    "field_service": "Dịch vụ quan tâm",
+    "field_message": "Yêu cầu cụ thể",
+    "placeholder_message": "Vui lòng mô tả yêu cầu hoặc lô hàng của bạn...",
+    "btn_submit": "Gửi yêu cầu ngay",
+    "btn_loading": "Đang gửi...",
+    "success_msg": "Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ lại sớm.",
+    "privacy_note": "Cam kết bảo mật thông tin khách hàng 100%",
+    "map_office": "Văn phòng đại diện"
+  },
+  "NewsPage": {
+    "page_title": "Tin tức & Sự kiện",
+    "hero_tag": "Cập nhật thị trường",
+    "hero_title": "Tin tức & <span class=\"text-primary\">Sự kiện</span>",
+    "hero_desc": "Cập nhật những biến động mới nhất về chính sách Hải quan, xu hướng logistics toàn cầu và các tin tức từ Vila Sanmyshi.",
+    "latest_badge": "Mới nhất",
+    "grid_title": "Tin tức <span class=\"text-primary\">thị trường</span>",
+    "filter_all": "Tất cả",
+    "no_posts": "Không có bài viết nào.",
+    "read_more": "Đọc thêm",
+    "newsletter": {
+      "title": "Không muốn bỏ lỡ <br class=\"block md:hidden\" /> tin tức quan trọng?",
+      "desc": "Đăng ký nhận bản tin định kỳ hàng tuần trực tiếp vào email của bạn.",
+      "placeholder": "Địa chỉ email của bạn",
+      "btn_submit": "Đăng ký ngay",
+      "btn_loading": "Đang xử lý...",
+      "success_msg": "Cảm ơn bạn! Chúng tôi đã ghi nhận đăng ký thành công.",
+      "already_subscribed": "Email này đã đăng ký trước đó rồi ạ!",
+      "error_msg": "Có lỗi xảy ra, vui lòng thử lại sau nhé!"
+    }
+  },
+  "NewsDetail": {
+    "breadcrumb_news": "Tin tức",
+    "breadcrumb_detail": "Chi tiết",
+    "author_label": "Tác giả",
+    "other_news": "Bài viết khác",
+    "cta_title": "Cần tư vấn ngay?",
+    "cta_desc": "Đừng ngần ngại liên hệ với chuyên gia của Vila Sanmyshi.",
+    "cta_btn": "Liên hệ ngay",
+    "toc_title": "Các nội dung chính của bài viết",
+    "share_title": "Chia sẻ bài viết:",
+    "share_fb": "Chia sẻ lên Facebook",
+    "share_email": "Gửi qua Email",
+    "share_copy": "Sao chép đường dẫn",
+    "copied": "Đã sao chép!"
+  }
+}

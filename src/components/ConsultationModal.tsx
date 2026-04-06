@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 interface ConsultationModalProps {
    isOpen: boolean;
@@ -9,6 +10,7 @@ interface ConsultationModalProps {
 }
 
 export default function ConsultationModal({ isOpen, onClose, serviceName }: ConsultationModalProps) {
+   const t = useTranslations("ConsultationModal");
    const [isSubmitted, setIsSubmitted] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
          });
          if (!res.ok) {
             const json = await res.json();
-            throw new Error(json.error || "Gửi thất bại");
+            throw new Error(json.error || (res.statusText === "Internal Server Error" ? t('error_msg') : res.statusText));
          }
          setIsSubmitted(true);
          setTimeout(() => { onClose(); setIsSubmitted(false); }, 3000);
@@ -71,8 +73,8 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                   <div className="w-16 h-16 lg:w-20 lg:h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary animate-bounce">
                      <span className="material-symbols-outlined text-4xl lg:text-5xl">check_circle</span>
                   </div>
-                  <h2 className="text-xl lg:text-3xl font-black text-slate-900 uppercase tracking-tighter">Gửi thành công!</h2>
-                  <p className="text-sm lg:text-base text-slate-500 font-medium px-4">Chuyên viên của chúng tôi sẽ liên hệ lại với bạn trong vòng 15-30 phút tới. Trân trọng!</p>
+                  <h2 className="text-xl lg:text-3xl font-black text-slate-900 uppercase tracking-tighter">{t('success_title')}</h2>
+                  <p className="text-sm lg:text-base text-slate-500 font-medium px-4">{t('success_msg')}</p>
                </div>
             ) : (
                <>
@@ -87,11 +89,11 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
 
                   <div className="p-6 lg:p-12 overflow-y-auto max-h-[90vh]">
                      <div className="mb-6 lg:mb-10 mt-4 lg:mt-0">
-                        <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] mb-3 block">Đăng ký tư vấn</span>
-                        <h2 className="text-2xl lg:text-4xl font-black text-slate-900 tracking-tighter uppercase leading-tight">Yêu cầu nhận giải pháp tối ưu</h2>
+                        <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] mb-3 block">{t('form_label')}</span>
+                        <h2 className="text-2xl lg:text-4xl font-black text-slate-900 tracking-tighter uppercase leading-tight">{t('form_title')}</h2>
                         {serviceName && (
                            <div className="mt-4 inline-flex items-center gap-2 bg-primary/5 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-primary/10">
-                              Dịch vụ: {serviceName}
+                              {t('service_label')}: {serviceName}
                            </div>
                         )}
                      </div>
@@ -99,18 +101,18 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                      <form className="space-y-6 lg:space-y-8" onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                            <div className="space-y-2 lg:space-y-3">
-                              <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Họ và Tên*</label>
-                           <input required type="text" name="name" placeholder="Nguyễn Văn A" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
+                              <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">{t('name_label')}</label>
+                           <input required type="text" name="name" placeholder={t('name_placeholder')} className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
                            </div>
                            <div className="space-y-2 lg:space-y-3">
-                              <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Số điện thoại*</label>
-                              <input required type="tel" name="phone" placeholder="090 000 0000" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
+                              <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">{t('phone_label')}</label>
+                              <input required type="tel" name="phone" placeholder={t('phone_placeholder')} className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
                            </div>
                         </div>
 
                         <div className="space-y-2 lg:space-y-3">
-                           <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Nhu cầu cụ thể</label>
-                           <textarea rows={3} name="message" defaultValue={serviceName ? `Tôi cần tư vấn về dịch vụ ${serviceName}` : ""} placeholder="Ví dụ: Cần thông quan 2 container tại Lao Bảo..." className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all resize-none shadow-inner" />
+                           <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">{t('message_label')}</label>
+                           <textarea rows={3} name="message" defaultValue={serviceName ? t('default_message', {service: serviceName}) : ""} placeholder={t('message_placeholder')} className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all resize-none shadow-inner" />
                         </div>
 
                         {error && (
@@ -123,11 +125,11 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                            type="submit"
                            disabled={isLoading}
                            className="w-full bg-primary text-white py-5 lg:py-6 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100">
-                           {isLoading ? "Đang gửi..." : "Gửi yêu cầu ngay"}
+                           {isLoading ? t('btn_loading') : t('btn_submit')}
                         </button>
 
                         <p className="text-[9px] text-center font-bold text-slate-400 leading-relaxed max-w-sm mx-auto">
-                           Bằng việc gửi thông tin, bạn đồng ý với chính sách bảo mật của chúng tôi. Chúng tôi cam kết không spam.
+                           {t('privacy_note')}
                         </p>
                      </form>
                   </div>

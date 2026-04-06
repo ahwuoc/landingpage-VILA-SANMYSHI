@@ -1,14 +1,25 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+const intlMiddleware = createMiddleware(routing);
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check admin authentication
-  const isAdminRoute = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
+  const localeAdminMatch = pathname.match(/^\/(vi|en|th)\/admin/);
+  if (localeAdminMatch) {
+    const newPath = pathname.replace(/^\/(vi|en|th)\/admin/, '/admin');
+    return NextResponse.redirect(new URL(newPath, request.url));
+  }
+  const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+  const isLoginPage = pathname === "/admin/login";
+  const isAdminAuthCheck = isAdminRoute && !isLoginPage;
+
   const isAdminApiRoute = pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/auth");
-  
-  if (isAdminRoute || isAdminApiRoute) {
+
+  if (isAdminAuthCheck || isAdminApiRoute) {
     const adminSession = request.cookies.get("admin_session");
     if (!adminSession || adminSession.value !== "authenticated") {
       const loginUrl = new URL("/admin/login", request.url);
@@ -17,30 +28,29 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Bypass maintenance cho admin routes và maintenance page
+  // 3. Skip intl for admin, api, maintenance, images etc.
   if (
-    pathname.startsWith("/admin") ||
+    isAdminRoute ||
     pathname.startsWith("/api/admin") ||
-    pathname.startsWith("/maintenance") ||
-    pathname.startsWith("/_next") ||
+    pathname === "/maintenance" ||
+    pathname.includes("/_next") ||
     pathname.startsWith("/images") ||
     pathname.startsWith("/icon")
   ) {
     return NextResponse.next();
   }
 
-  // Check maintenance mode từ env
   const isMaintenanceMode = process.env.NEXT_PUBLIC_MAINTENANCE_MODE === "true";
-
   if (isMaintenanceMode) {
     return NextResponse.redirect(new URL("/maintenance", request.url));
   }
 
-  return NextResponse.next();
+  return intlMiddleware(request);
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/", "/(vi|en|th)/:path*",
+    "/admin/:path*", "/api/admin/:path*"
   ],
 };

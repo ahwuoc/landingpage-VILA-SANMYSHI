@@ -3,14 +3,16 @@
 import { useState, useEffect, FormEvent } from "react";
 import Image from "next/image";
 import { COMPANY_INFO, BRAND_NAME } from "@/constants/company";
-import Breadcrumb from "@/components/Breadcrumb";
 import PageHero from "@/components/PageHero";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function ContactView() {
+  const t = useTranslations("Contact");
+  const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
-  const [services, setServices] = useState<{ id: string; title: string }[]>([]);
+  const [services, setServices] = useState<{ id: string; title: Record<string, string> }[]>([]);
 
   useEffect(() => {
     fetch("/api/services")
@@ -24,6 +26,7 @@ export default function ContactView() {
     setLoading(true);
     setError("");
     setSuccess(false);
+ 
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -46,7 +49,7 @@ export default function ContactView() {
         (e.target as HTMLFormElement).reset();
       } else {
         const errorData = await res.json();
-        throw new Error(errorData.error || "Gửi yêu cầu thất bại");
+        throw new Error(errorData.error || t('error_msg'));
       }
     } catch (err: any) {
       setError(err.message);
@@ -59,13 +62,13 @@ export default function ContactView() {
     <div className="bg-surface selection:bg-primary/30 text-on-surface">
       <PageHero
         image="/images/contact/hero.png"
-        imageAlt="Liên hệ tư vấn Logistics VILA SANMYSHI"
+        imageAlt="VILA SANMYSHI Contact"
         overlay="bg-black/20"
         align="center"
-        breadcrumb={[{ label: "Liên hệ" }]}
-        tag="Kết nối với chuyên gia"
-        title={<>LIÊN HỆ <span className="text-primary">{BRAND_NAME}</span></>}
-        description="Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc về nhu cầu Logistics và XNK của bạn 24/7."
+        breadcrumb={[{ label: t('page_title') }]}
+        tag={t('hero_tag')}
+        title={<span dangerouslySetInnerHTML={{ __html: t.raw('hero_title').replace('{brand}', BRAND_NAME) }} />}
+        description={t('hero_desc')}
       />
 
       <section className="py-20 lg:py-32 max-w-7xl mx-auto px-6 lg:px-8">
@@ -76,9 +79,9 @@ export default function ContactView() {
               <div className="mb-10 lg:mb-16">
                 <div className="flex items-center gap-3 mb-6">
                   <span className="w-10 h-[2px] bg-primary rounded-full" />
-                  <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em]">Liên hệ trực tiếp</span>
+                  <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] uppercase">{t('support_badge')}</span>
                 </div>
-                <h2 className="text-3xl lg:text-4xl font-black tracking-tight uppercase">Thông tin <span className="text-primary">Hỗ trợ</span></h2>
+                <h2 className="text-3xl lg:text-4xl font-black tracking-tight uppercase" dangerouslySetInnerHTML={{ __html: t.raw('support_title') }} />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
@@ -86,17 +89,17 @@ export default function ContactView() {
                   <div className="w-10 lg:w-12 h-10 lg:h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 lg:mb-6">
                     <span className="material-symbols-outlined text-primary text-xl lg:text-2xl">call</span>
                   </div>
-                  <h3 className="text-base lg:text-lg font-black mb-1 lg:mb-2 uppercase tracking-tight">Số điện thoại</h3>
+                  <h3 className="text-base lg:text-lg font-black mb-1 lg:mb-2 uppercase tracking-tight">{t('phone_label')}</h3>
                   <p className="text-sm lg:text-base text-on-surface-variant font-bold">{COMPANY_INFO.phone}</p>
-                  <p className="text-[10px] lg:text-xs text-slate-400 mt-2 font-medium">Hỗ trợ 24/7 (Zalo/Viber)</p>
+                  <p className="text-[10px] lg:text-xs text-slate-400 mt-2 font-medium">{t('phone_note')}</p>
                 </div>
                 <div className="p-6 lg:p-8 bg-slate-900 text-white rounded-3xl lg:rounded-[2.5rem] shadow-xl lg:shadow-2xl">
                   <div className="w-10 lg:w-12 h-10 lg:h-12 bg-primary rounded-xl flex items-center justify-center mb-4 lg:mb-6">
                     <span className="material-symbols-outlined text-white text-xl lg:text-2xl">mail</span>
                   </div>
-                  <h3 className="text-base lg:text-lg font-black mb-1 lg:mb-2 uppercase tracking-tight">Email</h3>
+                  <h3 className="text-base lg:text-lg font-black mb-1 lg:mb-2 uppercase tracking-tight">{t('email_label')}</h3>
                   <p className="text-sm lg:text-base text-primary font-bold">{COMPANY_INFO.email}</p>
-                  <p className="text-[10px] lg:text-xs text-slate-500 mt-2 font-medium">Phản hồi trong 2 giờ</p>
+                  <p className="text-[10px] lg:text-xs text-slate-500 mt-2 font-medium">{t('email_note')}</p>
                 </div>
               </div>
             </div>
@@ -111,15 +114,15 @@ export default function ContactView() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 text-white">
-                <div className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1 lg:mb-2 italic">Đội ngũ hỗ trợ</div>
-                <div className="text-xl lg:text-2xl font-black tracking-tight uppercase">Tận tâm phục vụ 24/7</div>
+                <div className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1 lg:mb-2 italic">{t('team_badge')}</div>
+                <div className="text-xl lg:text-2xl font-black tracking-tight uppercase">{t('team_title')}</div>
               </div>
             </div>
 
             <div className="p-6 lg:p-10 bg-surface-container-high rounded-3xl lg:rounded-[3rem] border border-on-surface/5">
               <h3 className="text-lg lg:text-xl font-black mb-4 lg:mb-6 uppercase tracking-tight flex items-center gap-3">
                 <span className="material-symbols-outlined text-primary lg:text-3xl">location_on</span>
-                Trụ sở chính
+                {t('address_title')}
               </h3>
               <p className="text-sm lg:text-base text-on-surface-variant font-bold leading-relaxed">
                 {COMPANY_INFO.address.split(',').slice(0, 2).join(',')}, <br />
@@ -127,10 +130,10 @@ export default function ContactView() {
               </p>
               <div className="mt-6 lg:mt-8 flex flex-col sm:flex-row gap-4">
                 <button className="flex-1 bg-white border border-on-surface/10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-colors shadow-sm">
-                  Chỉ đường (Google Maps)
+                  {t('btn_directions')}
                 </button>
                 <button className="flex-1 bg-white border border-on-surface/10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-colors shadow-sm">
-                  Xem văn phòng
+                  {t('btn_office')}
                 </button>
               </div>
             </div>
@@ -141,49 +144,52 @@ export default function ContactView() {
             <div className="mb-8 lg:mb-12">
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-10 h-[2px] bg-primary rounded-full" />
-                <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em]">Yêu cầu báo giá</span>
+                <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] uppercase">{t('form_badge')}</span>
               </div>
-              <h2 className="text-2xl lg:text-3xl font-black tracking-tight mb-3 lg:mb-4 uppercase text-slate-900">Gửi tin nhắn <span className="text-primary">ngay</span></h2>
-              <p className="text-on-surface-variant text-base lg:text-xl font-medium opacity-70">Chúng tôi sẽ chủ động liên hệ lại với bạn trong thời gian sớm nhất.</p>
+              <h2 className="text-2xl lg:text-3xl font-black tracking-tight mb-3 lg:mb-4 uppercase text-slate-900" dangerouslySetInnerHTML={{ __html: t.raw('form_title') }} />
+              <p className="text-on-surface-variant text-base lg:text-xl font-medium opacity-70">{t('form_desc')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-8 flex-grow">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
                 <div className="space-y-2 lg:space-y-3">
-                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Họ và Tên*</label>
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_name')}</label>
                   <input name="name" type="text" required placeholder="Nguyễn Văn A" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
                 </div>
                 <div className="space-y-2 lg:space-y-3">
-                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Số điện thoại*</label>
+                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_phone')}</label>
                   <input name="phone" type="tel" required placeholder="090 000 0000" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
                 </div>
               </div>
 
               <div className="space-y-2 lg:space-y-3">
-                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Email (Không bắt buộc)</label>
+                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_email')}</label>
                 <input name="email" type="email" placeholder="email@gmail.com" className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all shadow-inner" />
               </div>
 
               <div className="space-y-2 lg:space-y-3">
-                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Dịch vụ quan tâm</label>
+                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_service')}</label>
                 <div className="relative">
                   <select name="service" className="w-full bg-surface-container-low border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-black appearance-none focus:bg-card focus:border-primary focus:outline-none transition-all shadow-inner">
-                    {services.map(s => (
-                      <option key={s.id} value={s.title}>{s.title}</option>
-                    ))}
+                    {services.map(s => {
+                      const title = s.title[locale] || s.title['vi'];
+                      return (
+                        <option key={s.id} value={title}>{title}</option>
+                      );
+                    })}
                   </select>
                   <span className="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-faint">expand_more</span>
                 </div>
               </div>
 
               <div className="space-y-2 lg:space-y-3">
-                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500">Yêu cầu cụ thể</label>
-                <textarea name="message" rows={4} placeholder="Vui lòng mô tả yêu cầu hoặc lô hàng của bạn..." className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all resize-none shadow-inner" />
+                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_message')}</label>
+                <textarea name="message" rows={4} placeholder={t('placeholder_message')} className="w-full bg-slate-50 border border-transparent rounded-xl lg:rounded-2xl p-4 lg:p-5 text-sm font-medium focus:bg-white focus:border-primary focus:outline-none transition-all resize-none shadow-inner" />
               </div>
 
               {success && (
                 <div className="p-5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl">
-                  <p className="text-emerald-500 text-xs font-black uppercase tracking-widest text-center">Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ lại sớm.</p>
+                  <p className="text-emerald-500 text-xs font-black uppercase tracking-widest text-center">{t('success_msg')}</p>
                 </div>
               )}
 
@@ -198,11 +204,11 @@ export default function ContactView() {
                 disabled={loading}
                 className="w-full bg-primary text-on-primary py-5 lg:py-6 rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Đang gửi..." : "Gửi yêu cầu ngay"}
+                {loading ? t('btn_loading') : t('btn_submit')}
               </button>
 
               <p className="text-[8px] lg:text-[9px] text-center font-bold text-slate-400 uppercase tracking-widest mt-4">
-                Cam kết bảo mật thông tin khách hàng 100%
+                {t('privacy_note')}
               </p>
             </form>
           </div>
@@ -223,7 +229,7 @@ export default function ContactView() {
         <div className="absolute top-6 left-6 lg:top-10 lg:left-10 bg-white/90 backdrop-blur-md p-4 lg:p-6 rounded-2xl shadow-xl border border-slate-100 max-w-xs group-hover:translate-y-[-10px] transition-transform">
           <div className="flex items-center gap-3 mb-2">
             <span className="material-symbols-outlined text-primary">location_on</span>
-            <h4 className="font-black text-xs lg:text-sm uppercase tracking-tight">Văn phòng đại diện</h4>
+            <h4 className="font-black text-xs lg:text-sm uppercase tracking-tight">{t('map_office')}</h4>
           </div>
           <p className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase leading-relaxed uppercase tracking-tighter">Cửa khẩu Lao Bảo, <br />Quảng Trị, Việt Nam</p>
         </div>

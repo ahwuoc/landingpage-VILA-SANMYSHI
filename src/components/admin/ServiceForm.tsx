@@ -6,7 +6,8 @@ import Image from "next/image";
 import { ArrowLeft, Save, Upload, Info, LayoutGrid, Settings, Zap, FileText, Plus } from "lucide-react";
 import TiptapEditor from "./TiptapEditor";
 import { supabase } from "@/lib/supabase";
-import { useTemplates, useServiceCategories } from "@/hooks/useAdminData";
+import { useServiceCategories, useTemplates } from "@/hooks/useAdminData";
+import { ADMIN_LANGS, AdminLang } from "@/constants/languages";
 import { slugify } from "@/lib/slugify";
 
 interface ServiceFormProps {
@@ -19,12 +20,17 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
+  const [activeLang, setActiveLang] = useState<AdminLang>("vi");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
+    title_en: initialData?.title_en || "",
+    title_th: initialData?.title_th || "",
     image: initialData?.image || "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
     content: initialData?.content || "",
+    content_en: initialData?.content_en || "",
+    content_th: initialData?.content_th || "",
     status: initialData?.status || "Active",
     category: initialData?.category || "",
   });
@@ -56,8 +62,12 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
     try {
       const payload = {
         title: formData.title,
+        title_en: formData.title_en,
+        title_th: formData.title_th,
         image: formData.image,
         content: formData.content,
+        content_en: formData.content_en,
+        content_th: formData.content_th,
         status: formData.status,
         category: formData.category,
         updated_at: new Date().toISOString(),
@@ -92,7 +102,7 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
           </button>
           <div>
             <h1 className="text-xl font-bold text-on-surface">{isEdit ? "Chỉnh sửa dịch vụ" : "Thêm dịch vụ mới"}</h1>
-            <p className="text-xs text-on-surface-variant/60">Quản lý danh mục dịch vụ logistics</p>
+            <p className="text-xs text-on-surface-variant/60">Quản lý nội dung đa ngôn ngữ cho dịch vụ</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -106,18 +116,38 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
         </div>
       </div>
 
+      {/* Language Tabs */}
+      <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl w-fit">
+        {ADMIN_LANGS.map((lang) => (
+          <button
+            key={lang.id}
+            type="button"
+            onClick={() => setActiveLang(lang.id)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeLang === lang.id ? "bg-white text-primary shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
+          >
+            <span className="text-lg">{lang.icon}</span>
+            {lang.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white p-8 rounded-3xl border border-on-surface/5 shadow-sm space-y-6">
             <div className="space-y-2">
               <label className="text-sm font-bold text-on-surface/80 flex items-center gap-2">
-                <LayoutGrid size={16} className="text-primary" /> Tên dịch vụ
+                <LayoutGrid size={16} className="text-primary" /> Tên dịch vụ ({ADMIN_LANGS.find(l => l.id === activeLang)?.label})
               </label>
               <input
-                type="text" required value={formData.title}
-                onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                placeholder="VD: Vận tải đường biển quốc tế"
+                type="text"
+                required={activeLang === "vi"}
+                value={activeLang === "vi" ? formData.title : activeLang === "en" ? formData.title_en : formData.title_th}
+                onChange={(e) => setFormData(prev => ({ 
+                  ...prev, 
+                  [activeLang === "vi" ? "title" : activeLang === "en" ? "title_en" : "title_th"]: e.target.value 
+                }))}
+                placeholder={`VD: ${activeLang === "vi" ? "Vận tải đường biển" : activeLang === "en" ? "Sea Freight" : "การขน gửiทางทะเล"}`}
                 className="w-full px-5 py-4 bg-slate-50 border border-on-surface/5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-lg font-medium"
               />
             </div>
@@ -125,7 +155,7 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-bold text-on-surface/80 flex items-center gap-2">
-                  <Info size={16} className="text-primary" /> Nội dung chi tiết
+                  <Info size={16} className="text-primary" /> <span>Nội dung chi tiết ({ADMIN_LANGS.find(l => l.id === activeLang)?.label})</span>
                 </label>
                 <div className="relative">
                   <button type="button" onClick={() => setShowTemplates(!showTemplates)}
@@ -142,7 +172,13 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
                       </div>
                       <div className="max-h-[320px] overflow-y-auto p-2">
                         {templates.map((t) => (
-                          <button key={t.id} type="button" onClick={() => { setFormData(prev => ({ ...prev, content: t.content })); setShowTemplates(false); }}
+                          <button key={t.id} type="button" onClick={() => { 
+                            setFormData(prev => ({ 
+                              ...prev, 
+                              [activeLang === "vi" ? "content" : activeLang === "en" ? "content_en" : "content_th"]: t.content 
+                            })); 
+                            setShowTemplates(false); 
+                          }}
                             className="w-full text-left p-3 rounded-2xl hover:bg-slate-50 transition-all group flex items-start gap-3">
                             <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center group-hover:bg-primary/10 group-hover:text-primary transition-colors flex-shrink-0">
                               <FileText size={16} />
@@ -164,8 +200,11 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
                 </div>
               </div>
               <TiptapEditor
-                value={formData.content}
-                onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                value={activeLang === "vi" ? formData.content : activeLang === "en" ? formData.content_en : formData.content_th}
+                onChange={(content) => setFormData(prev => ({ 
+                  ...prev, 
+                  [activeLang === "vi" ? "content" : activeLang === "en" ? "content_en" : "content_th"]: content 
+                }))}
                 placeholder="Mô tả chi tiết và bảng quy cách kỹ thuật..."
               />
             </div>

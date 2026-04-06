@@ -34,7 +34,7 @@ export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void 
   if (pathname === "/admin/login") return null;
 
   return (
-    <header className="sticky top-0 h-24 bg-surface/80 backdrop-blur-3xl z-40 px-4 lg:px-10 flex items-center justify-between border-b border-on-surface/5">
+    <header className="sticky top-0 h-20 lg:h-24 bg-surface/80 backdrop-blur-3xl z-40 px-4 lg:px-10 flex items-center justify-between border-b border-on-surface/5">
       <div className="flex items-center gap-4">
         <button 
           onClick={onMenuClick}
