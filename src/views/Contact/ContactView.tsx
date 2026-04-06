@@ -74,7 +74,7 @@ export default function ContactView() {
       <section className="py-20 lg:py-32 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Contact Info & Support Image */}
-          <div className="space-y-12 lg:space-y-16">
+          <div className="space-y-12 lg:space-y-16 order-2 lg:order-1">
             <div>
               <div className="mb-10 lg:mb-16">
                 <div className="flex items-center gap-3 mb-6">
@@ -140,7 +140,7 @@ export default function ContactView() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-3xl lg:rounded-[4rem] p-8 md:p-12 lg:p-16 shadow-xl lg:shadow-2xl border border-on-surface/5 flex flex-col h-fit">
+          <div className="bg-white rounded-3xl lg:rounded-[4rem] p-8 md:p-12 lg:p-16 shadow-xl lg:shadow-2xl border border-on-surface/5 flex flex-col h-fit order-1 lg:order-2">
             <div className="mb-8 lg:mb-12">
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-10 h-[2px] bg-primary rounded-full" />

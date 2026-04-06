@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import Image from "next/image";
 import { useResponsive } from "@/hooks/useResponsive";
-import { BRAND_NAME } from "@/constants/company";
+import { BRAND_NAME, COMPANY_INFO } from "@/constants/company";
 import ConsultationModal from "./ConsultationModal";
 import { useLocale, useTranslations } from "next-intl";
 import { ADMIN_LANGS as LANGUAGES } from "@/constants/languages";
@@ -23,6 +23,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
   const dropdownRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const servicesByCategory = navServices.reduce((acc, svc) => {
     const cat = svc.category || t('other_services');
@@ -75,14 +76,80 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
       <ConsultationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <nav className={`fixed top-0 w-full z-[120] transition-all duration-300 ${isOpen ? 'bg-transparent shadow-none border-none' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-slate-100/50'}`}>
-        <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-24 md:h-28 lg:h-32">
+      <nav className={`fixed top-0 w-full z-[120] transition-all duration-500 ${isOpen ? 'bg-transparent shadow-none border-none' : (isScrolled ? 'bg-white/95 backdrop-blur-2xl shadow-md border-b border-slate-100/50' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-slate-100/50')}`}>
+        {/* Top Bar - Hides on scroll for a focused experience */}
+        <div className={`hidden sm:block bg-primary text-white border-b border-primary-variant/20 transition-all duration-500 ease-in-out ${isScrolled ? 'h-0 opacity-0 overflow-hidden border-none' : 'h-10 opacity-100'}`}>
+          <div className="max-w-7xl mx-auto px-6 h-10 flex justify-between items-center text-[10px] lg:text-xs font-black tracking-widest uppercase">
+            <div className={`flex items-center gap-6 transition-transform duration-500 ${isScrolled ? '-translate-y-full' : 'translate-y-0'}`}>
+              <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+                <span className="material-symbols-outlined text-sm">call</span>
+                {t('hotline')}: {COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3')}
+              </a>
+              <a href={`mailto:${COMPANY_INFO.email}`} className="hidden md:flex items-center gap-1.5 hover:text-white/80 transition-colors">
+                <span className="material-symbols-outlined text-sm">mail</span>
+                {COMPANY_INFO.email}
+              </a>
+            </div>
+            <div className={`flex items-center gap-6 transition-transform duration-500 ${isScrolled ? '-translate-y-full' : 'translate-y-0'}`}>
+              <span className="hidden xl:flex items-center gap-1.5 italic opacity-90">
+                <span className="material-symbols-outlined text-sm animate-pulse">verified_user</span>
+                {t('topbar_slogan')}
+              </span>
+
+              <div className="h-4 w-[1px] bg-white/20 hidden sm:block" />
+
+              {/* Language Switcher Dropdown (Moved to Top Bar) */}
+              <div className="relative" ref={langRef}>
+                <button
+                  onClick={() => setIsLangOpen(!isLangOpen)}
+                  className="flex items-center gap-2 px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all font-black text-[10px] tracking-widest uppercase"
+                >
+                  <span className="text-sm leading-none">{LANGUAGES.find(l => l.id === locale)?.icon}</span>
+                  <span className="leading-none">{locale.toUpperCase()}</span>
+                  <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                </button>
+
+                {isLangOpen && (
+                  <div className="absolute top-[calc(100%+8px)] right-0 w-44 bg-card shadow-2xl rounded-2xl p-2 border border-on-surface/5 animate-fade-in origin-top-right z-[150]">
+                    <div className="flex flex-col gap-1">
+                      {LANGUAGES.map((lang) => (
+                        <button
+                          key={lang.id}
+                          onClick={() => changeLanguage(lang.id)}
+                          className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group ${locale === lang.id ? 'bg-primary/5 text-primary' : 'hover:bg-section text-on-surface-variant'}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-base grayscale-[0.2] group-hover:grayscale-0 font-normal">{lang.icon}</span>
+                            <span className="text-[11px] font-black tracking-tight uppercase">{lang.label}</span>
+                          </div>
+                          {locale === lang.id && (
+                            <span className="material-symbols-outlined text-base">check</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={`flex justify-between items-center max-w-7xl mx-auto px-6 transition-all duration-500 ${isScrolled ? 'h-20 lg:h-24' : 'h-24 md:h-28 lg:h-32'}`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 md:gap-4 lg:gap-6 group shrink-0 relative z-[110]">
-            <div className="relative w-30 h-30 md:w-34 md:h-44 lg:w-52 lg:h-52 rounded-xl transition-all duration-700">
+            <div className={`relative transition-all duration-500 drop-shadow-md ${isScrolled ? 'w-20 h-20 lg:w-24 lg:h-24' : 'w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40'}`}>
               <Image
                 src="/images/logo.jpg"
                 alt="Logo VILA SANMYSHI"
@@ -92,10 +159,10 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                 loading="eager"
               />
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <h2 className={`text-lg md:text-xl lg:text-2xl font-black tracking-tight text-primary leading-none mb-1`}>{BRAND_NAME.split(' ')[0]} <span className={`transition-colors duration-300 ${isOpen ? 'text-on-dark' : 'text-default'}`}>{BRAND_NAME.split(' ').slice(1).join(' ')}</span></h2>
               <span className="text-label-sm text-faint opacity-80 uppercase">{t('brand_tag')}</span>
-            </div>
+            </div> */}
           </Link>
           <div className="hidden lg:flex items-center space-x-8 font-black text-base tracking-tight h-full">
             {navLinks.map((link) => {
@@ -161,40 +228,6 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
           </div>
 
           <div className="flex items-center gap-3 shrink-0 ml-auto lg:ml-0">
-            {/* Language Switcher Dropdown */}
-            <div className="relative" ref={langRef}>
-              <button
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border border-on-surface/10 hover:bg-white hover:border-primary/30 transition-all font-black text-[10px] tracking-widest uppercase shadow-sm ${isOpen ? 'text-white border-white/20' : 'text-on-surface'}`}
-              >
-                <span className="text-sm">{LANGUAGES.find(l => l.id === locale)?.icon}</span>
-                <span className="hidden sm:inline">{locale.toUpperCase()}</span>
-                <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`}>expand_more</span>
-              </button>
-
-              {isLangOpen && (
-                <div className="absolute top-[calc(100%+8px)] right-0 w-44 bg-card shadow-2xl rounded-2xl p-2 border border-on-surface/5 animate-fade-in origin-top-right z-[150]">
-                  <div className="flex flex-col gap-1">
-                    {LANGUAGES.map((lang) => (
-                      <button
-                        key={lang.id}
-                        onClick={() => changeLanguage(lang.id)}
-                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group ${locale === lang.id ? 'bg-primary/5 text-primary' : 'hover:bg-section text-on-surface-variant'}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-base grayscale-[0.2] group-hover:grayscale-0">{lang.icon}</span>
-                          <span className="text-[11px] font-black tracking-tight">{lang.label}</span>
-                        </div>
-                        {locale === lang.id && (
-                          <span className="material-symbols-outlined text-base">check</span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
             <button
               onClick={() => setIsModalOpen(true)}
               className={`hidden sm:block bg-primary text-white px-5 py-2.5 lg:px-6 lg:py-3 rounded-full font-black text-[10px] lg:text-xs uppercase tracking-widest shadow-glow-primary hover:scale-[0.98] transition-all active:scale-95 duration-200 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}

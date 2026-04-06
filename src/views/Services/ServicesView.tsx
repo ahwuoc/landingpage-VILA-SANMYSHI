@@ -69,11 +69,13 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
       />
 
       {!isSingle && categories.length > 0 && (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16">
-          <div className="flex flex-wrap gap-3">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 relative">
+          <div className="lg:hidden absolute left-6 top-16 bottom-0 w-8 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
+          <div className="lg:hidden absolute right-6 top-16 bottom-0 w-8 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
+          <div className="flex flex-nowrap lg:flex-wrap gap-3 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 no-scrollbar select-none scroll-smooth">
             <button
               onClick={() => setActiveCategory("all")}
-              className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${activeCategory === "all" ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
+              className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === "all" ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
             >
               {t('filter_all')}
             </button>
@@ -81,7 +83,7 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${activeCategory === cat ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
+                className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === cat ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
               >
                 {cat}
               </button>
@@ -89,8 +91,6 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
           </div>
         </div>
       )}
-
-      {/* Services Grid Section */}
       <section className="py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {filtered.length > 0 ? (

@@ -46,7 +46,8 @@
     "other_services": "Dịch vụ khác",
     "coming_soon": "Sắp ra mắt",
     "services_count": "dịch vụ",
-    "hotline": "Hotline 24/7"
+    "hotline": "Hotline 24/7",
+    "topbar_slogan": "Chuyên nghiệp - Tận tâm - Uy tín"
   },
   "Footer": {
     "about_text": "Giải pháp cung ứng xuyên biên giới chuyên biệt cho tuyến EWEC. Kết nối thị trường Việt Nam - Lào - Thái Lan với hiệu suất tối đa.",
@@ -162,7 +163,12 @@
     "cta_title": "Bắt đầu hành trình <br /> <span class=\"text-primary\">Vươn tầm quốc tế</span>",
     "cta_desc": "Kết nối mạng lưới logistics toàn cầu với VILA SANMYSHI. Chúng tôi đồng hành cùng sự thành công của bạn.",
     "cta_expert": "Liên hệ chuyên gia",
-    "cta_process": "Tìm hiểu quy trình"
+    "cta_process": "Tìm hiểu quy trình",
+    "category_label": "Danh mục",
+    "category_desc_template": "Các dịch vụ {name} chuyên nghiệp tại Cửa khẩu Lao Bảo.",
+    "results_label": "kết quả",
+    "search_placeholder": "Tìm kiếm dịch vụ...",
+    "view_detail": "Xem chi tiết"
   },
   "About": {
     "page_title": "Về chúng tôi",

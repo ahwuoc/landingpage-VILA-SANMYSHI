@@ -46,7 +46,8 @@
     "other_services": "Other Services",
     "coming_soon": "Coming soon",
     "services_count": "services",
-    "hotline": "Hotline 24/7"
+    "hotline": "Hotline 24/7",
+    "topbar_slogan": "Professional - Dedicated - Reliable"
   },
   "Footer": {
     "about_text": "Specialized cross-border supply chain solutions for the EWEC route. Connecting Vietnam - Laos - Thailand markets with maximum efficiency.",
@@ -162,7 +163,12 @@
     "cta_title": "Start your journey <br /> <span class=\"text-primary\">Go global</span>",
     "cta_desc": "Connecting global logistics network with VILA SANMYSHI. We accompany your success.",
     "cta_expert": "Contact Expert",
-    "cta_process": "Learn the Process"
+    "cta_process": "Learn the Process",
+    "category_label": "Category",
+    "category_desc_template": "Professional {name} services at Lao Bao Border Gate.",
+    "results_label": "results",
+    "search_placeholder": "Search services...",
+    "view_detail": "View Details"
   },
   "About": {
     "page_title": "About Us",

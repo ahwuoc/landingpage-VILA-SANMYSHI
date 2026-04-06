@@ -85,7 +85,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 {tag}
               </span>
               <h1
-                className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-on-dark mb-6 md:mb-10 leading-[0.9] text-balance uppercase [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.8))]"
+                className="text-[clamp(2.25rem,8vw,4.5rem)] md:text-[clamp(4.5rem,10vw,7.5rem)] lg:text-8xl font-black tracking-tighter text-on-dark mb-6 md:mb-10 leading-[0.9] text-balance uppercase [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.8))]"
                 dangerouslySetInnerHTML={{ __html: title }}
               />
               <p className="text-lg md:text-xl lg:text-2xl text-on-dark leading-relaxed mb-8 md:mb-12 max-w-xl font-medium [text-shadow:0_2px_20px_rgba(0,0,0,0.9),0_4px_40px_rgba(0,0,0,0.7)]">

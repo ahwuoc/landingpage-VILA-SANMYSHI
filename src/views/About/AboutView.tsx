@@ -69,7 +69,7 @@ export default function AboutView() {
 
         {/* Company Profile (List Style) */}
         <div className="max-w-4xl">
-          <h2 className="text-heading-lg mb-12 border-l-4 border-primary pl-6 uppercase">
+          <h2 className="text-heading-lg mb-6 md:mb-12 border-l-4 border-primary pl-4 md:pl-6 uppercase">
             {t('profile_title')} {BRAND_NAME}:
           </h2>
           <div className="space-y-4 text-body-md">
@@ -115,14 +115,16 @@ export default function AboutView() {
 
         {/* Business Fields (Simple Grid) */}
         <div>
-          <h2 className="text-heading-lg mb-12 border-l-4 border-primary pl-6 uppercase">
+          <h2 className="text-heading-lg mb-6 md:mb-12 border-l-4 border-primary pl-4 md:pl-6 uppercase">
             {t('business_fields_title')}:
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-x-12 lg:gap-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 lg:gap-x-12 lg:gap-y-6">
             {businessFields.map((field, i) => (
-              <div key={i} className="flex items-start gap-4 py-3 px-4 bg-slate-50 rounded-xl border border-slate-100 hover:bg-white hover:border-primary/20 hover:shadow-sm transition-all group">
-                <span className="text-primary font-bold text-xl group-hover:scale-110 transition-transform">➡</span>
-                <span className="text-body-sm font-bold text-on-surface leading-snug">{field}</span>
+              <div key={i} className="flex items-center gap-4 py-4 px-5 bg-surface-container-low rounded-2xl border border-outline-variant hover:bg-surface-container hover:border-primary/30 transition-all group active:scale-[0.98]">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <span className="material-symbols-outlined text-lg">arrow_right_alt</span>
+                </div>
+                <span className="text-body-md font-bold text-on-surface leading-tight">{field}</span>
               </div>
             ))}
           </div>
@@ -130,14 +132,14 @@ export default function AboutView() {
       </div>
 
       {/* History Timeline Section */}
-      <section className="relative py-24 lg:py-40 mt-24 overflow-hidden group/section bg-slate-50">
+      <section className="relative py-16 lg:py-40 mt-12 md:mt-24 overflow-hidden group/section bg-slate-50">
         <div className="absolute inset-0 z-0">
           <Image src="/images/about/history-timeline-bg.jpg" alt="Port Background" fill className="object-cover opacity-30 grayscale-[0.3]" />
           <div className="absolute inset-0 bg-gradient-to-br from-white via-white/80 to-primary/5" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-4xl lg:text-7xl font-black text-slate-900 text-center mb-24 uppercase tracking-tighter">
+          <h2 className="text-3xl md:text-4xl lg:text-7xl font-black text-slate-900 text-center mb-12 md:mb-24 uppercase tracking-tighter">
             {t('timeline_title')}
           </h2>
 
@@ -157,7 +159,7 @@ export default function AboutView() {
               {timeline.map((item, i) => (
                 <div
                   key={i}
-                  className="relative flex-shrink-0 w-[300px] md:w-[420px] snap-start group animate-fade-up"
+                  className="relative flex-shrink-0 w-[280px] sm:w-[350px] md:w-[420px] snap-start group animate-fade-up"
                   style={{ animationDelay: `${i * 100}ms` }}
                 >
                   <div
@@ -236,7 +238,7 @@ export default function AboutView() {
         </div>
 
         {/* Final CTA */}
-        <div className="bg-page-dark rounded-[2rem] lg:rounded-[4rem] p-12 lg:p-24 text-center">
+        <div className="bg-page-dark rounded-3xl lg:rounded-[4rem] p-8 md:p-12 lg:p-24 text-center">
           <h2 className="text-heading-xl text-on-dark mb-8">
             {t('cta.title')}
           </h2>

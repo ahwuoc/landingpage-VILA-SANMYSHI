@@ -29,7 +29,8 @@ export const COMPANY_INFO = {
 };
 
 export const SOCIAL_LINKS = [
-  { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61580846237727", icon: "facebook" },
-  { name: "Website", href: "https://www.vilasanmyshi.com.vn", icon: "public" },
-  { name: "Email", href: `mailto:${COMPANY_INFO.email}`, icon: "alternate_email" }
+  { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61580846237727", icon: "facebook_svg" },
+  { name: "Zalo", href: "https://zalo.me/0913497246", icon: "zalo_svg" },
+  { name: "Website", href: "https://www.vilasanmyshi.com.vn", icon: "language" },
+  { name: "Email", href: `mailto:${COMPANY_INFO.email}`, icon: "mail" }
 ];
