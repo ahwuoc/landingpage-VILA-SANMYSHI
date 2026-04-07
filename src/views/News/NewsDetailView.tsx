@@ -40,7 +40,9 @@ export default async function NewsDetailView({ id }: { id: string }) {
             isDark={true}
           />
           <div className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-primary mb-6">
-            <span className="bg-primary/20 text-primary px-4 py-1.5 rounded-full border border-primary/20">{newsItem.category}</span>
+            <span className="bg-primary/20 text-primary px-4 py-1.5 rounded-full border border-primary/20">
+              {newsItem.news_categories?.name[locale] || newsItem.news_categories?.name['vi'] || ""}
+            </span>
             <span className="text-on-dark-faint">{newsItem.date ? new Date(newsItem.date).toLocaleDateString(locale === 'vi' ? "vi-VN" : "en-US", { day: "2-digit", month: "2-digit", year: "numeric" }) : ""}</span>
           </div>
           <h1 className="text-display-md text-on-dark mb-8 uppercase leading-tight">{title}</h1>
@@ -97,7 +99,9 @@ export default async function NewsDetailView({ id }: { id: string }) {
                             />
                           </div>
                           <div>
-                            <div className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 line-clamp-1">{item.category}</div>
+                            <div className="text-[10px] font-black uppercase tracking-widest text-primary mb-2 line-clamp-1">
+                              {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
+                            </div>
                             <h5 className="text-sm font-black tracking-tight leading-tight group-hover:text-primary transition-colors line-clamp-2 uppercase">
                               {otherTitle}
                             </h5>

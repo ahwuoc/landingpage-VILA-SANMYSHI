@@ -10,11 +10,11 @@ export default function Footer() {
   const nt = useTranslations("Navbar");
 
   const partners = [
-    { name: "Thuế Quảng Trị", icon: "verified_user" },
-    { name: "Lao Bảo Border", icon: "hub" },
-    { name: "VILA Group", icon: "corporate_fare" },
-    { name: "MSC", icon: "directions_boat" },
-    { name: "CMA CGM", icon: "anchor" },
+    { name: t('partner_tax'), icon: "verified_user" },
+    { name: t('partner_border'), icon: "hub" },
+    { name: t('partner_vila'), icon: "corporate_fare" },
+    { name: t('partner_msc'), icon: "directions_boat" },
+    { name: t('partner_cma'), icon: "anchor" },
   ];
 
   return (

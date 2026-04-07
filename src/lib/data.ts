@@ -3,11 +3,11 @@ import { supabase } from "@/lib/supabase";
 export interface NewsItem {
   id: number;
   title: Record<string, string>;
-  excerpt: Record<string, string>;
   content: Record<string, string>;
   image: string;
   author: string;
-  category: string;
+  category_id: number;
+  news_categories: { name: Record<string, string>; slug: string };
   date: string;
   created_at: string;
   slug?: string;
@@ -19,7 +19,8 @@ export interface ServiceItem {
   image: string;
   content: Record<string, string>;
   created_at: string;
-  category?: string;
+  category_id?: number;
+  service_categories?: { name: Record<string, string>; slug: string };
 }
 
 export interface HeroSlide {
@@ -41,14 +42,14 @@ export interface HeroSlide {
 }
 
 export async function getNewsList(): Promise<NewsItem[]> {
-  const { data, error } = await supabase.from("news").select("*").order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("news").select("*, news_categories(name, slug)").order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return data || [];
+  return data as any || [];
 }
 
 export async function getNewsById(id: string): Promise<NewsItem | null> {
-  const { data } = await supabase.from("news").select("*").eq("id", id).single();
-  return data || null;
+  const { data } = await supabase.from("news").select("*, news_categories(name, slug)").eq("id", id).single();
+  return data as any || null;
 }
 
 export async function getNewsCategories(): Promise<{ id: number; name: Record<string, string>; slug: string }[]> {
@@ -58,14 +59,14 @@ export async function getNewsCategories(): Promise<{ id: number; name: Record<st
 }
 
 export async function getServicesList(): Promise<ServiceItem[]> {
-  const { data, error } = await supabase.from("services").select("*").order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("services").select("*, service_categories(name, slug)").order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return data || [];
+  return data as any || [];
 }
 
 export async function getServiceById(id: string): Promise<ServiceItem | null> {
-  const { data } = await supabase.from("services").select("*").eq("id", id).single();
-  return data || null;
+  const { data } = await supabase.from("services").select("*, service_categories(name, slug)").eq("id", id).single();
+  return data as any || null;
 }
 
 const HERO_SLIDES: HeroSlide[] = [

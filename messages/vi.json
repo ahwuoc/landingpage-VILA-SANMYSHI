@@ -35,7 +35,9 @@
   },
   "Navbar": {
     "home": "Trang chủ",
-    "about": "Về chúng tôi",
+    "about": "Giới thiệu",
+    "about_us": "Về chúng tôi",
+    "branches": "Mạng lưới chi nhánh",
     "services": "Dịch vụ",
     "news": "Tin tức",
     "contact": "Liên hệ",
@@ -57,7 +59,12 @@
     "copyright": "© 2018 - {year} {company}. CHUYÊN TÒA KHAI HẢI QUAN & LOGISTICS.",
     "privacy": "Chính sách bảo mật",
     "back_to_top": "Lên đầu trang",
-    "solution": "B2B Logistics Solutions"
+    "solution": "B2B Logistics Solutions",
+    "partner_tax": "Thuế Quảng Trị",
+    "partner_border": "Cửa khẩu Lao Bảo",
+    "partner_vila": "VILA Group",
+    "partner_msc": "MSC",
+    "partner_cma": "CMA CGM"
   },
   "FloatingContact": {
     "zalo": "Chat Zalo ngay",
@@ -95,10 +102,22 @@
       "support": "Sẵn sàng hỗ trợ",
       "goods": "Danh mục hàng hóa",
       "items": [
-        { "label": "Kinh nghiệm", "desc": "Năm vận hành quốc tế" },
-        { "label": "Đối tác", "desc": "Trong mọi lĩnh vực" },
-        { "label": "Chuyến hàng", "desc": "Vận chuyển an toàn" },
-        { "label": "Khách hàng", "desc": "Hài lòng 100%" }
+        {
+          "label": "Kinh nghiệm",
+          "desc": "Năm vận hành quốc tế"
+        },
+        {
+          "label": "Đối tác",
+          "desc": "Trong mọi lĩnh vực"
+        },
+        {
+          "label": "Chuyến hàng",
+          "desc": "Vận chuyển an toàn"
+        },
+        {
+          "label": "Khách hàng",
+          "desc": "Hài lòng 100%"
+        }
       ]
     },
     "core_values": {
@@ -168,7 +187,10 @@
     "category_desc_template": "Các dịch vụ {name} chuyên nghiệp tại Cửa khẩu Lao Bảo.",
     "results_label": "kết quả",
     "search_placeholder": "Tìm kiếm dịch vụ...",
-    "view_detail": "Xem chi tiết"
+    "view_detail": "Xem chi tiết",
+    "category_title": "Danh mục dịch vụ",
+    "sidebar_cta_check1": "Tư vấn miễn phí 24/7",
+    "sidebar_cta_check2": "Giải pháp tối ưu chi phí"
   },
   "About": {
     "page_title": "Về chúng tôi",
@@ -191,15 +213,43 @@
       "email": "Email"
     },
     "history": [
-      { "year": "2018", "label": "Thành lập", "desc": "CÔNG TY TNHH TMDV XNK VILA SANMYSHI chính thức đi vào hoạt động tại Quảng Trị." },
-      { "year": "2020", "label": "Mở rộng thị trường", "desc": "Phát triển mạng lưới đối tác trong nước và quốc tế, tập trung vào lĩnh vực bán buôn tổng hợp." },
-      { "year": "Hiện nay", "label": "Phát triển bền vững", "desc": "Khẳng định vị thế là đơn vị xuất nhập khẩu uy tín, chuyên nghiệp tại khu vực miền Trung." }
+      {
+        "year": "2018",
+        "label": "Thành lập",
+        "desc": "CÔNG TY TNHH TMDV XNK VILA SANMYSHI chính thức đi vào hoạt động tại Quảng Trị."
+      },
+      {
+        "year": "2020",
+        "label": "Mở rộng thị trường",
+        "desc": "Phát triển mạng lưới đối tác trong nước và quốc tế, tập trung vào lĩnh vực bán buôn tổng hợp."
+      },
+      {
+        "year": "Hiện nay",
+        "label": "Phát triển bền vững",
+        "desc": "Khẳng định vị thế là đơn vị xuất nhập khẩu uy tín, chuyên nghiệp tại khu vực miền Trung."
+      }
     ],
     "capacity": [
-      { "label": "Kinh nghiệm", "value": "6+", "desc": "Năm hoạt động trong ngành thương mại và xuất nhập khẩu." },
-      { "label": "Chứng nhận", "value": "Uy tín", "desc": "Được quản lý bởi Thuế tỉnh Quảng Trị với tình trạng hoạt động ổn định." },
-      { "label": "Lĩnh vực", "value": "Đa dạng", "desc": "Kinh doanh đa ngành nghề với trọng tâm là bán buôn tổng hợp." },
-      { "label": "Dịch vụ", "value": "Tận tâm", "desc": "Hỗ trợ khách hàng tối đa trong mọi giao dịch thương mại." }
+      {
+        "label": "Kinh nghiệm",
+        "value": "6+",
+        "desc": "Năm hoạt động trong ngành thương mại và xuất nhập khẩu."
+      },
+      {
+        "label": "Chứng nhận",
+        "value": "Uy tín",
+        "desc": "Được quản lý bởi Thuế tỉnh Quảng Trị với tình trạng hoạt động ổn định."
+      },
+      {
+        "label": "Lĩnh vực",
+        "value": "Đa dạng",
+        "desc": "Kinh doanh đa ngành nghề với trọng tâm là bán buôn tổng hợp."
+      },
+      {
+        "label": "Dịch vụ",
+        "value": "Tận tâm",
+        "desc": "Hỗ trợ khách hàng tối đa trong mọi giao dịch thương mại."
+      }
     ],
     "vision": {
       "title": "Tầm nhìn",
@@ -210,10 +260,22 @@
       "content": "Cung cấp các sản phẩm và dịch vụ chất lượng cao, tối ưu hóa quy trình thương mại để mang lại lợi ích tốt nhất cho khách hàng, đồng thời đóng góp vào sự phát triển kinh tế địa phương."
     },
     "values": [
-      { "title": "Uy tín", "desc": "Luôn giữ đúng cam kết với khách hàng và đối tác." },
-      { "title": "Chất lượng", "desc": "Đảm bảo tiêu chuẩn cao nhất cho mọi mặt hàng kinh doanh." },
-      { "title": "Minh bạch", "desc": "Rõ ràng trong mọi giao dịch pháp lý và tài chính." },
-      { "title": "Hợp tác", "desc": "Xây dựng mối quan hệ win-win bền vững." }
+      {
+        "title": "Uy tín",
+        "desc": "Luôn giữ đúng cam kết với khách hàng và đối tác."
+      },
+      {
+        "title": "Chất lượng",
+        "desc": "Đảm bảo tiêu chuẩn cao nhất cho mọi mặt hàng kinh doanh."
+      },
+      {
+        "title": "Minh bạch",
+        "desc": "Rõ ràng trong mọi giao dịch pháp lý và tài chính."
+      },
+      {
+        "title": "Hợp tác",
+        "desc": "Xây dựng mối quan hệ win-win bền vững."
+      }
     ],
     "business_fields_title": "Lĩnh vực kinh doanh",
     "business_fields": [
@@ -232,14 +294,46 @@
     ],
     "timeline_title": "Hành trình phát triển",
     "timeline": [
-      { "year": "2018", "highlight": "Thành lập", "desc": "Công ty chính thức được thành lập tại Quảng Trị, đặt nền móng cho hoạt động trong lĩnh vực thương mại và xuất nhập khẩu." },
-      { "year": "2019", "highlight": "Xây dựng nền tảng", "desc": "Từng bước hoàn thiện quy trình vận hành, đào tạo đội ngũ nhân sự và xây dựng nền tảng phát triển bền vững." },
-      { "year": "2020", "highlight": "Mở rộng thị trường", "desc": "Đẩy mạnh hợp tác với các đối tác trong và ngoài nước, mở rộng phạm vi hoạt động trong lĩnh vực xuất nhập khẩu." },
-      { "year": "2021", "highlight": "Tối ưu vận hành", "desc": "Ứng dụng công nghệ vào quản lý và xử lý hồ sơ, nâng cao hiệu quả làm việc và giảm thiểu sai sót trong quy trình." },
-      { "year": "2022", "highlight": "Tăng trưởng mạnh", "desc": "Ghi nhận sự tăng trưởng rõ rệt về số lượng khách hàng và dự án, đồng thời nâng cao năng lực vận chuyển và xử lý dịch vụ." },
-      { "year": "2023", "highlight": "Đa dạng dịch vụ", "desc": "Mở rộng thêm các dịch vụ liên quan như kho bãi, vận chuyển đa phương thức và ủy thác xuất nhập khẩu cho doanh nghiệp." },
-      { "year": "2024", "highlight": "Nâng cao chất lượng", "desc": "Tập trung chuẩn hóa quy trình, nâng cao chất lượng dịch vụ và cải thiện trải nghiệm khách hàng một cách toàn diện." },
-      { "year": "Hiện nay", "highlight": "Phát triển bền vững", "desc": "Tiếp tục khẳng định vị thế là đơn vị uy tín trong lĩnh vực xuất nhập khẩu, hướng tới phát triển lâu dài và bền vững." }
+      {
+        "year": "2018",
+        "highlight": "Thành lập",
+        "desc": "Công ty chính thức được thành lập tại Quảng Trị, đặt nền móng cho hoạt động trong lĩnh vực thương mại và xuất nhập khẩu."
+      },
+      {
+        "year": "2019",
+        "highlight": "Xây dựng nền tảng",
+        "desc": "Từng bước hoàn thiện quy trình vận hành, đào tạo đội ngũ nhân sự và xây dựng nền tảng phát triển bền vững."
+      },
+      {
+        "year": "2020",
+        "highlight": "Mở rộng thị trường",
+        "desc": "Đẩy mạnh hợp tác với các đối tác trong và ngoài nước, mở rộng phạm vi hoạt động trong lĩnh vực xuất nhập khẩu."
+      },
+      {
+        "year": "2021",
+        "highlight": "Tối ưu vận hành",
+        "desc": "Ứng dụng công nghệ vào quản lý và xử lý hồ sơ, nâng cao hiệu quả làm việc và giảm thiểu sai sót trong quy trình."
+      },
+      {
+        "year": "2022",
+        "highlight": "Tăng trưởng mạnh",
+        "desc": "Ghi nhận sự tăng trưởng rõ rệt về số lượng khách hàng và dự án, đồng thời nâng cao năng lực vận chuyển và xử lý dịch vụ."
+      },
+      {
+        "year": "2023",
+        "highlight": "Đa dạng dịch vụ",
+        "desc": "Mở rộng thêm các dịch vụ liên quan như kho bãi, vận chuyển đa phương thức và ủy thác xuất nhập khẩu cho doanh nghiệp."
+      },
+      {
+        "year": "2024",
+        "highlight": "Nâng cao chất lượng",
+        "desc": "Tập trung chuẩn hóa quy trình, nâng cao chất lượng dịch vụ và cải thiện trải nghiệm khách hàng một cách toàn diện."
+      },
+      {
+        "year": "Hiện nay",
+        "highlight": "Phát triển bền vững",
+        "desc": "Tiếp tục khẳng định vị thế là đơn vị uy tín trong lĩnh vực xuất nhập khẩu, hướng tới phát triển lâu dài và bền vững."
+      }
     ],
     "cta": {
       "title": "Đồng hành cùng sự thịnh vượng của bạn",
@@ -313,5 +407,39 @@
     "share_email": "Gửi qua Email",
     "share_copy": "Sao chép đường dẫn",
     "copied": "Đã sao chép!"
+  },
+  "Maintenance": {
+    "metadata_title": "Đang bảo trì | VILA SANMYSHI",
+    "status_badge": "Trạng thái vận hành: Đang tối ưu",
+    "title_part1": "Hệ thống đang",
+    "title_highlight": "Được tối ưu",
+    "description": "Chúng tôi đang thực hiện bảo trì định kỳ để đảm bảo tính ổn định và tốc độ xử lý hàng hóa nhanh nhất tại cửa khẩu.",
+    "load_label": "Tải hiệu suất",
+    "loading_text": "Đang nạp cơ sở dữ liệu mới...",
+    "channels_label": "Kênh hỗ trợ",
+    "hotline_label": "Hotline 24/7",
+    "email_label": "Hỗ trợ Email",
+    "access_portal": "Truy cập Portal",
+    "est_year": "Thành lập 2026"
+  },
+  "Branches": {
+    "metadata_title": "Mạng lưới chi nhánh | VILA SANMYSHI",
+    "hero_tag": "KẾT NỐI TOÀN CẦU",
+    "hero_title": "Mạng lưới <highlight>Chi nhánh</highlight>",
+    "hero_desc": "VILA SANMYSHI mở rộng hiện diện tại các trung tâm kinh tế và cửa khẩu trọng yếu, đảm bảo luồng hàng hóa lưu thông liên tục.",
+    "card_hotline": "Hotline",
+    "card_email": "Email",
+    "card_address": "Địa chỉ",
+    "btn_map": "Xem bản đồ",
+    "hq_label": "Trụ sở chính",
+    "rep_label": "Văn phòng đại diện",
+    "branch_label": "Chi nhánh",
+    "cta_title": "Đối tác tin cậy cho mọi hành trình",
+    "cta_desc": "Liên hệ ngay với chi nhánh gần nhất để được tư vấn giải pháp Logistics tối ưu nhất cho doanh nghiệp của bạn.",
+    "map_tag": "Mạng lưới thực tế",
+    "map_title": "Chiến lược <highlight>phủ sóng</highlight> khu vực",
+    "map_desc": "Hệ thống văn phòng và chi nhánh được đặt tại các cửa khẩu, cảng biển và trung tâm kinh tế trọng điểm, đảm bảo khả năng đáp ứng nhanh chóng mọi nhu cầu của khách hàng trên toàn khu vực Đông Nam Á.",
+    "stat_offices": "Văn phòng & Chi nhánh",
+    "stat_countries": "Quốc gia vận hành"
   }
 }

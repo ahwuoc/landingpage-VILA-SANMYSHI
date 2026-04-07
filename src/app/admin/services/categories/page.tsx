@@ -56,13 +56,17 @@ export default function ServiceCategoriesPage() {
   async function handleSave() {
     if (!formData.name || !formData.slug) return;
 
+    const nameObj = {
+      vi: formData.name,
+      en: formData.name_en,
+      th: formData.name_th
+    };
+
     if (editingId) {
       const { error } = await supabase
         .from("service_categories")
         .update({
-          name: formData.name,
-          name_en: formData.name_en,
-          name_th: formData.name_th,
+          name: nameObj,
           slug: formData.slug
         })
         .eq("id", editingId);
@@ -75,9 +79,7 @@ export default function ServiceCategoriesPage() {
       const { error } = await supabase
         .from("service_categories")
         .insert([{
-          name: formData.name,
-          name_en: formData.name_en,
-          name_th: formData.name_th,
+          name: nameObj,
           slug: formData.slug
         }]);
       if (error) alert(error.message);
@@ -103,9 +105,9 @@ export default function ServiceCategoriesPage() {
   const startEdit = (cat: any) => {
     setEditingId(cat.id);
     setFormData({ 
-      name: cat.name, 
-      name_en: cat.name_en || "", 
-      name_th: cat.name_th || "", 
+      name: typeof cat.name === 'object' ? (cat.name?.vi || "") : (cat.name || ""), 
+      name_en: typeof cat.name === 'object' ? (cat.name?.en || "") : "", 
+      name_th: typeof cat.name === 'object' ? (cat.name?.th || "") : "", 
       slug: cat.slug 
     });
     setIsAdding(true);
@@ -165,7 +167,9 @@ export default function ServiceCategoriesPage() {
                   {categories.map((cat) => (
                     <tr key={cat.id} className="group hover:bg-slate-50/50 transition-colors">
                       <td className="px-8 py-6">
-                        <span className="text-sm font-black text-on-surface">{cat.name}</span>
+                        <span className="text-sm font-black text-on-surface">
+                          {typeof cat.name === 'object' ? (cat.name?.vi || cat.name?.en || "") : cat.name}
+                        </span>
                       </td>
                       <td className="px-8 py-6">
                         <span className="text-xs font-mono text-on-surface-variant/60">{cat.slug}</span>

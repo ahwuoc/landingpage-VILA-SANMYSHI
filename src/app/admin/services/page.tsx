@@ -14,7 +14,7 @@ export default function AdminServices() {
   useEffect(() => {
     supabase
       .from("services")
-      .select("*")
+      .select("*, service_categories(name)")
       .order("created_at", { ascending: false })
       .then(({ data: services }) => {
         setData(services || []);
@@ -32,12 +32,12 @@ export default function AdminServices() {
     {
       header: "Dịch vụ",
       accessor: "title",
-      render: (value: string, item: any) => (
+      render: (value: any, item: any) => (
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl overflow-hidden relative border border-on-surface/5 bg-slate-50 flex-none shadow-sm">
-            <Image src={item.image || "/images/logo.jpg"} alt={value} fill className="object-cover" />
+            <Image src={item.image || "/images/logo.jpg"} alt={value?.vi || value?.en || ""} fill className="object-cover" />
           </div>
-          <span className="text-sm font-black text-on-surface">{value}</span>
+          <span className="text-sm font-black text-on-surface">{value?.vi || value?.en || ""}</span>
         </div>
       )
     },
@@ -53,8 +53,10 @@ export default function AdminServices() {
     {
       header: "Danh mục",
       accessor: "category",
-      render: (value: string) => (
-        <span className="text-xs font-bold text-on-surface-variant">{value || "—"}</span>
+      render: (_: any, item: any) => (
+        <span className="text-xs font-bold text-on-surface-variant">
+          {item.service_categories?.name?.vi || item.service_categories?.name?.en || "—"}
+        </span>
       )
     },
     {

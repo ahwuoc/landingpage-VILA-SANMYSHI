@@ -18,7 +18,7 @@ export default async function EditNewsPage({ params }: { params: Promise<{ id: s
       <div className="mb-10">
         <h2 className="text-3xl font-black text-on-surface tracking-tighter uppercase mb-2">Chỉnh sửa bài viết</h2>
         <p className="text-sm text-on-surface-variant/60 font-medium italic">
-          Cập nhật nội dung cho bài viết: <span className="text-primary font-bold">"{newsItem.title}"</span>
+          Cập nhật nội dung cho bài viết: <span className="text-primary font-bold">"{newsItem.title?.vi || newsItem.title?.en || ""}"</span>
         </p>
       </div>
       <NewsForm initialData={newsItem} isEdit={true} />

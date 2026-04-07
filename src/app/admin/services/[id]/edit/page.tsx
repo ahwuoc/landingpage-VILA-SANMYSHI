@@ -13,7 +13,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
       <div className="mb-10">
         <h2 className="text-3xl font-black text-on-surface tracking-tighter uppercase mb-2">Chỉnh sửa dịch vụ</h2>
         <p className="text-sm text-on-surface-variant/60 font-medium">
-          Cập nhật thông tin cho dịch vụ: <span className="text-primary font-bold">"{serviceItem.title}"</span>
+          Cập nhật thông tin cho dịch vụ: <span className="text-primary font-bold">"{serviceItem.title?.vi || serviceItem.title?.en || ""}"</span>
         </p>
       </div>
       <ServiceForm initialData={serviceItem} isEdit={true} />

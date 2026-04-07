@@ -1,12 +1,22 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
+import { COMPANY_INFO } from "@/constants/company";
 
-export const metadata = {
-  title: "Đang bảo trì | VILA SANMYSHI",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Maintenance" });
 
-export default function MaintenancePage() {
+  return {
+    title: t("metadata_title"),
+    robots: { index: false, follow: false },
+  };
+}
+
+export default async function MaintenancePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Maintenance" });
+
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row relative overflow-hidden font-sans selection:bg-primary/30 selection:text-white">
       {/* Immersive Background Layer */}
@@ -39,8 +49,8 @@ export default function MaintenancePage() {
               <Image src="/images/logo.jpg" alt="VILA SANMYSHI" fill className="object-contain p-2" />
             </div>
             <div className="hidden sm:block">
-              <p className="text-white font-black tracking-tighter text-lg leading-none">VILA</p>
-              <p className="text-primary font-black tracking-tighter text-lg leading-none">SANMYSHI</p>
+              <p className="text-white font-black tracking-tighter text-lg leading-none uppercase">VILA</p>
+              <p className="text-primary font-black tracking-tighter text-lg leading-none uppercase">SANMYSHI</p>
             </div>
           </Link>
         </div>
@@ -57,23 +67,23 @@ export default function MaintenancePage() {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-md">
                 <div className="w-1.5 h-1.5 bg-primary rounded-full animate-ping" />
-                <span className="text-[9px] font-black text-primary uppercase tracking-[0.3em]">Operational Status: Optimizing</span>
+                <span className="text-[9px] font-black text-primary uppercase tracking-[0.3em]">{t("status_badge")}</span>
               </div>
 
               <h1 className="text-4xl lg:text-5xl font-black text-white leading-[1.1] tracking-tight uppercase">
-                Hệ thống đang <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">Được tối ưu</span>
+                {t("title_part1")} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">{t("title_highlight")}</span>
               </h1>
 
               <p className="text-slate-400 text-sm leading-relaxed font-medium">
-                Chúng tôi đang thực hiện bảo trì định kỳ để đảm bảo tính ổn định và tốc độ xử lý hàng hóa nhanh nhất tại cửa khẩu.
+                {t("description")}
               </p>
             </div>
 
             {/* Advanced Progress Card */}
             <div className="p-8 bg-white/[0.02] border border-white/5 rounded-[2rem] space-y-6 relative overflow-hidden group/progress">
               <div className="flex justify-between items-end relative z-10">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Efficiency Load</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("load_label")}</span>
                 <span className="text-3xl font-black text-white tabular-nums">65%</span>
               </div>
 
@@ -88,17 +98,17 @@ export default function MaintenancePage() {
 
               <div className="flex items-center gap-2 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
                 <span className="material-symbols-outlined text-xs animate-spin">sync</span>
-                Đang nạp cơ sở dữ liệu mới...
+                {t("loading_text")}
               </div>
             </div>
 
             {/* Quick Contact - Simplified & Elegant */}
             <div className="space-y-3">
-              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em] pl-2">Support Channels</p>
+              <p className="text-[10px] font-bold text-slate-600 uppercase tracking-[0.3em] pl-2">{t("channels_label")}</p>
 
               <div className="grid grid-cols-1 gap-3">
                 <a
-                  href="tel:0913497246"
+                  href={`tel:${COMPANY_INFO.hotline}`}
                   className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-white/5 hover:border-primary/50 transition-all group/item"
                 >
                   <div className="flex items-center gap-4">
@@ -106,15 +116,15 @@ export default function MaintenancePage() {
                       <span className="material-symbols-outlined text-primary text-xl">phone_iphone</span>
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mb-1">Hotline 24/7</p>
-                      <p className="text-white font-black group-hover/item:text-primary transition-colors">0913 497 246</p>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mb-1">{t("hotline_label")}</p>
+                      <p className="text-white font-black group-hover/item:text-primary transition-colors">{COMPANY_INFO.hotline}</p>
                     </div>
                   </div>
                   <span className="material-symbols-outlined text-slate-700 group-hover/item:translate-x-1 group-hover/item:text-primary transition-all">chevron_right</span>
                 </a>
 
                 <a
-                  href="mailto:contact@vila-sanmyshi.com"
+                  href={`mailto:${COMPANY_INFO.email}`}
                   className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-white/5 hover:border-emerald-500/50 transition-all group/item"
                 >
                   <div className="flex items-center gap-4">
@@ -122,8 +132,8 @@ export default function MaintenancePage() {
                       <span className="material-symbols-outlined text-emerald-400 text-xl">alternate_email</span>
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mb-1">Email Support</p>
-                      <p className="text-white font-black group-hover/item:text-emerald-400 transition-colors">contact@vila-sanmyshi.com</p>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mb-1">{t("email_label")}</p>
+                      <p className="text-white font-black group-hover/item:text-emerald-400 transition-colors">{COMPANY_INFO.email}</p>
                     </div>
                   </div>
                   <span className="material-symbols-outlined text-slate-700 group-hover/item:translate-x-1 group-hover/item:text-emerald-400 transition-all">chevron_right</span>
@@ -137,10 +147,10 @@ export default function MaintenancePage() {
                 href="/admin"
                 className="text-[10px] font-black text-slate-600 hover:text-primary uppercase tracking-[0.2em] transition-colors"
               >
-                Access Portal
+                {t("access_portal")}
               </Link>
               <div className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">
-                Est. 2026
+                {t("est_year")}
               </div>
             </div>
           </div>

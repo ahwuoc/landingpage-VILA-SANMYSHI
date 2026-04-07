@@ -19,7 +19,7 @@ export default function AdminNews() {
     setLoading(true);
     const { data: news } = await supabase
       .from("news")
-      .select("*")
+      .select("*, news_categories(name)")
       .order("created_at", { ascending: false });
     setData(news || []);
     setLoading(false);
@@ -41,15 +41,17 @@ export default function AdminNews() {
     {
       header: "Bài viết",
       accessor: "title",
-      render: (value: string, item: any) => (
+      render: (value: any, item: any) => (
         <div className="flex items-center gap-4">
           <div className="w-16 h-10 rounded-xl overflow-hidden relative border border-on-surface/5 bg-slate-50 flex-none shadow-sm">
             <Image src={item.image || "/images/logo.jpg"} alt={value} fill className="object-cover" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-black text-on-surface leading-snug">{value?.length > 50 ? value.substring(0, 50) + "..." : value}</span>
+            <span className="text-sm font-black text-on-surface leading-snug">{(value?.vi || value?.en || "")?.length > 50 ? (value?.vi || value?.en || "").substring(0, 50) + "..." : (value?.vi || value?.en || "")}</span>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-[8px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-black uppercase tracking-widest">{item.category}</span>
+              <span className="text-[8px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-black uppercase tracking-widest">
+                {item.news_categories?.name?.vi || item.news_categories?.name?.en || ""}
+              </span>
               <span className="text-[10px] text-on-surface-variant/40 font-bold">{item.date ? new Date(item.date).toLocaleDateString("vi-VN") : "..."}</span>
             </div>
           </div>

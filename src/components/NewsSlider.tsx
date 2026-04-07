@@ -14,9 +14,9 @@ import "swiper/css/navigation";
 interface NewsItem {
   id: number;
   title: Record<string, string>;
-  excerpt: Record<string, string>;
   date: string;
-  category: string;
+  category_id: number;
+  news_categories: { name: Record<string, string> };
   image: string;
   author: string;
   slug?: string;
@@ -31,11 +31,11 @@ export default function NewsSlider() {
   useEffect(() => {
     supabase
       .from("news")
-      .select("id, title, excerpt, date, category, image, author, slug")
+      .select("id, title, date, category_id, news_categories(name), image, author, slug")
       .eq("status", "Published")
       .order("created_at", { ascending: false })
       .limit(8)
-      .then(({ data }) => setNewsList(data || []));
+      .then(({ data }) => setNewsList(data as any || []));
   }, []);
 
   const formatDate = (dateStr: string) => {
@@ -118,7 +118,7 @@ export default function NewsSlider() {
                   <div className="flex items-center gap-2 lg:gap-4">
                     <span className="h-[2px] w-4 lg:w-6 bg-primary" />
                     <span className="bg-white/10 backdrop-blur-2xl border border-white/20 text-white px-4 py-2 lg:px-8 lg:py-3 rounded-full text-[8px] lg:text-[10px] font-black uppercase tracking-[0.2em] lg:tracking-[0.3em]">
-                      {news.category}
+                      {news.news_categories?.name[locale] || news.news_categories?.name['vi'] || ""}
                     </span>
                   </div>
                 </div>

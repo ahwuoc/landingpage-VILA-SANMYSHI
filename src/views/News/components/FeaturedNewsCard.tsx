@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
 
-import { NewsItem } from "../types";
+import { NewsItem } from "@/lib/data";
 
 interface FeaturedNewsCardProps {
   news: NewsItem;
@@ -13,7 +13,8 @@ export default function FeaturedNewsCard({ news }: FeaturedNewsCardProps) {
   const t = useTranslations("News");
 
   const title = news.title[locale] || news.title['vi'];
-  const excerpt = news.excerpt[locale] || news.excerpt['vi'];
+  const content = news.content[locale] || news.content['vi'] || "";
+  const excerpt = content.replace(/<[^>]*>/g, "").split(".").slice(0, 2).join(".") + ".";
 
   return (
     <section className="relative -mt-20 z-20 max-w-7xl mx-auto px-8">
@@ -23,7 +24,7 @@ export default function FeaturedNewsCard({ news }: FeaturedNewsCardProps) {
         </div>
         <div className="lg:w-2/5 p-12 md:p-20 flex flex-col justify-center">
           <span className="text-primary text-xs font-black uppercase tracking-widest mb-6 block">
-            {news.category} | {news.date ? new Date(news.date).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US') : ""}
+            {news.news_categories?.name[locale] || news.news_categories?.name['vi'] || ""} | {news.date ? new Date(news.date).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US') : ""}
           </span>
           <h2 className="text-4xl font-black tracking-tight mb-8 leading-tight hover:text-primary transition-colors cursor-pointer">
             {title}

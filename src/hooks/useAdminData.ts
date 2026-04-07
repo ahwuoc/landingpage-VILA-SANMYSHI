@@ -18,7 +18,7 @@ export function useUsers() {
 }
 
 export function useNewsCategories() {
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: any }[]>([]);
 
   useEffect(() => {
     supabase
@@ -32,7 +32,7 @@ export function useNewsCategories() {
 }
 
 export function useServiceCategories() {
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: any }[]>([]);
 
   useEffect(() => {
     supabase
@@ -127,8 +127,8 @@ export function useDashboardStats() {
 
       const activities = [
         ...(rc.data || []).map(i => ({ id: `contact-${i.id}`, type: "contact", title: `Tin nhắn mới từ: ${i.name}`, time: i.created_at, status: "Mới", color: "text-rose-500 bg-rose-500/10", icon: "mail" })),
-        ...(rn.data || []).map(i => ({ id: `news-${i.id}`, type: "news", title: `Bài viết mới: ${i.title}`, time: i.created_at, status: "Đã đăng", color: "text-emerald-500 bg-emerald-500/10", icon: "newspaper" })),
-        ...(rs.data || []).map(i => ({ id: `service-${i.id}`, type: "service", title: `Cập nhật dịch vụ: ${i.title}`, time: i.updated_at, status: "Cập nhật", color: "text-blue-500 bg-blue-500/10", icon: "inventory_2" })),
+        ...(rn.data || []).map(i => ({ id: `news-${i.id}`, type: "news", title: `Bài viết mới: ${i.title?.vi || i.title?.en || ""}`, time: i.created_at, status: "Đã đăng", color: "text-emerald-500 bg-emerald-500/10", icon: "newspaper" })),
+        ...(rs.data || []).map(i => ({ id: `service-${i.id}`, type: "service", title: `Cập nhật dịch vụ: ${i.title?.vi || i.title?.en || ""}`, time: i.updated_at, status: "Cập nhật", color: "text-blue-500 bg-blue-500/10", icon: "inventory_2" })),
       ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 5);
 
       setRecentActivities(activities);

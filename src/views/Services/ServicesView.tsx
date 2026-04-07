@@ -34,14 +34,20 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
   };
 
   const categories = useMemo(() => {
-    const cats = [...new Set(services.map(s => s.category).filter(Boolean))];
-    return cats as string[];
-  }, [services]);
+    const unique = new Map<string, { name: string; slug: string }>();
+    services.forEach(s => {
+      if (s.service_categories) {
+        const name = s.service_categories.name[locale] || s.service_categories.name['vi'];
+        unique.set(name, { name, slug: s.service_categories.slug });
+      }
+    });
+    return Array.from(unique.values());
+  }, [services, locale]);
 
   const filtered = useMemo(() => {
     if (id) return services.filter(s => s.id === id);
     if (activeCategory === "all") return services;
-    return services.filter(s => s.category === activeCategory);
+    return services.filter(s => s.service_categories?.slug === activeCategory);
   }, [services, id, activeCategory]);
 
   const isSingle = !!id && filtered.length === 1;
@@ -81,11 +87,11 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
             </button>
             {categories.map(cat => (
               <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === cat ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
+                key={cat.slug}
+                onClick={() => setActiveCategory(cat.slug)}
+                className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === cat.slug ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
               >
-                {cat}
+                {cat.name}
               </button>
             ))}
           </div>
@@ -93,65 +99,159 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
       )}
       <section className="py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filtered.map((service, index) => {
-                const title = service.title[locale] || service.title['vi'];
-                const content = service.content[locale] || service.content['vi'];
+          {isSingle && singleService ? (
+            <div className="flex flex-col lg:flex-row gap-16">
+              {/* Main Content */}
+              <div className="flex-1 min-w-0">
+                <div className="mb-12">
+                  <span className="inline-block px-5 py-2 bg-primary/10 rounded-full text-xs font-black uppercase tracking-widest text-primary mb-6">
+                    {categoryName}
+                  </span>
+                  <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 leading-tight uppercase">
+                    {singleService.title[locale] || singleService.title['vi']}
+                  </h1>
+                  
+                  <div className="relative aspect-[21/9] rounded-[2rem] overflow-hidden mb-12 shadow-2xl">
+                    <Image
+                      src={singleService.image}
+                      alt={singleService.title[locale] || singleService.title['vi']}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
 
-                return (
-                  <Link
-                    key={service.id}
-                    href={`/services/${categorySlug || (catSlugMap ? catSlugMap[service.category || ""] : "") || "all"}/${service.id}`}
-                    className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 animate-fade-up"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    {/* Image Wrap */}
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <Image
-                        src={service.image}
-                        alt={title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div 
+                    className="prose prose-lg prose-slate max-w-none 
+                      prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight
+                      prose-h2:text-3xl prose-h3:text-2xl
+                      prose-p:text-slate-600 prose-p:leading-relaxed
+                      prose-strong:text-slate-900 prose-strong:font-black
+                      prose-li:text-slate-600
+                      prose-img:rounded-[2rem] prose-img:shadow-xl
+                      prose-table:border-collapse prose-th:bg-slate-50 prose-th:p-4 prose-td:p-4 prose-td:border prose-td:border-slate-100"
+                    dangerouslySetInnerHTML={{ __html: singleService.content[locale] || singleService.content['vi'] || "" }}
+                  />
+                </div>
+              </div>
 
-                      {/* Category Tag */}
-                      <div className="absolute top-6 left-6">
-                        <span className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm border border-slate-100">
-                          {service.category || t('page_title')}
-                        </span>
+              {/* Sidebar */}
+              <div className="lg:w-96 flex-shrink-0">
+                <div className="sticky top-32 space-y-8">
+                  <div className="p-10 bg-slate-900 rounded-[2.5rem] text-white shadow-glow-dark relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-all" />
+                    <h3 className="text-2xl font-black mb-4 relative z-10">{t('cta_expert')}</h3>
+                    <p className="text-slate-400 mb-8 text-sm leading-relaxed relative z-10">
+                      {t('cta_desc')}
+                    </p>
+                    <button
+                      onClick={() => openModal(singleService.title[locale] || singleService.title['vi'])}
+                      className="w-full py-5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:shadow-glow-primary transition-all relative z-10"
+                    >
+                      {t('cta_expert')}
+                    </button>
+                    
+                    <div className="mt-8 pt-8 border-t border-white/10 space-y-4 relative z-10">
+                      <div className="flex items-center gap-4 text-sm text-slate-300">
+                        <span className="material-symbols-outlined text-primary">check_circle</span>
+                        {t('sidebar_cta_check1')}
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-slate-300">
+                        <span className="material-symbols-outlined text-primary">check_circle</span>
+                        {t('sidebar_cta_check2')}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Content */}
-                    <div className="p-8 lg:p-10 flex flex-col flex-1">
-                      <h3 className="text-xl lg:text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-primary transition-colors uppercase">
-                        {title}
-                      </h3>
-                      <div
-                        className="text-slate-500 text-sm lg:text-base font-medium line-clamp-3 mb-8 leading-relaxed flex-1"
-                        dangerouslySetInnerHTML={{ __html: (content || "").replace(/<[^>]*>/g, "").substring(0, 120) + "..." }}
-                      />
-
-                      <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-                        <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
-                          {t('view_solution')}
-                        </span>
-                        <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                          <span className="material-symbols-outlined text-xl">arrow_forward</span>
-                        </div>
-                      </div>
+                  {/* Related Services Links or Other Info */}
+                  <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100">
+                    <h4 className="text-sm font-black uppercase tracking-widest text-slate-900 mb-6">{t('category_title')}</h4>
+                    <div className="space-y-3">
+                      <Link
+                        href="/services"
+                        className={`block w-full text-left px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${activeCategory === "all" ? "bg-primary text-white shadow-md" : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-100"}`}
+                      >
+                        {t('filter_all')}
+                      </Link>
+                      {categories.map(cat => {
+                        return (
+                          <Link
+                            key={cat.slug}
+                            href={`/services/${cat.slug}`}
+                            className={`block w-full text-left px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${activeCategory === cat.slug ? "bg-primary text-white shadow-md" : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-100"}`}
+                          >
+                            {cat.name}
+                          </Link>
+                        );
+                      })}
                     </div>
-                  </Link>
-                );
-              })}
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
-            <div className="text-center py-40 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
-              <span className="material-symbols-outlined text-6xl text-slate-300 mb-6">inventory_2</span>
-              <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">{t('not_found')}</p>
-            </div>
+            <>
+              {filtered.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filtered.map((service, index) => {
+                    const title = service.title[locale] || service.title['vi'];
+                    const content = service.content[locale] || service.content['vi'];
+
+                    return (
+                      <Link
+                        key={service.id}
+                        href={`/services/${categorySlug || service.service_categories?.slug || "all"}/${service.id}`}
+                        className="group relative flex flex-col bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 animate-fade-up"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                      >
+                        {/* Image Wrap */}
+                        <div className="relative aspect-[16/10] overflow-hidden">
+                          <Image
+                            src={service.image}
+                            alt={title}
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-700"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                          {/* Category Tag */}
+                          <div className="absolute top-6 left-6">
+                            <span className="px-5 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm border border-slate-100">
+                              {service.service_categories?.name[locale] || service.service_categories?.name['vi'] || t('page_title')}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-8 lg:p-10 flex flex-col flex-1">
+                          <h3 className="text-xl lg:text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-primary transition-colors uppercase">
+                            {title}
+                          </h3>
+                          <div
+                            className="text-slate-500 text-sm lg:text-base font-medium line-clamp-3 mb-8 leading-relaxed flex-1"
+                            dangerouslySetInnerHTML={{ __html: (content || "").replace(/<[^>]*>/g, "").substring(0, 120) + "..." }}
+                          />
+
+                          <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+                            <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
+                              {t('view_solution')}
+                            </span>
+                            <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                              <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-40 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+                  <span className="material-symbols-outlined text-6xl text-slate-300 mb-6">inventory_2</span>
+                  <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">{t('not_found')}</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

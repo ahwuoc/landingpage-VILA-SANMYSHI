@@ -24,15 +24,15 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    title: initialData?.title || "",
-    title_en: initialData?.title_en || "",
-    title_th: initialData?.title_th || "",
+    title: initialData?.title?.vi || (typeof initialData?.title === 'string' ? initialData.title : ""),
+    title_en: initialData?.title?.en || "",
+    title_th: initialData?.title?.th || "",
     image: initialData?.image || "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
-    content: initialData?.content || "",
-    content_en: initialData?.content_en || "",
-    content_th: initialData?.content_th || "",
+    content: initialData?.content?.vi || (typeof initialData?.content === 'string' ? initialData.content : ""),
+    content_en: initialData?.content?.en || "",
+    content_th: initialData?.content?.th || "",
     status: initialData?.status || "Active",
-    category: initialData?.category || "",
+    category_id: initialData?.category_id || "",
   });
 
   const templates = useTemplates("service");
@@ -61,15 +61,19 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
     setLoading(true);
     try {
       const payload = {
-        title: formData.title,
-        title_en: formData.title_en,
-        title_th: formData.title_th,
+        title: {
+          vi: formData.title,
+          en: formData.title_en,
+          th: formData.title_th
+        },
         image: formData.image,
-        content: formData.content,
-        content_en: formData.content_en,
-        content_th: formData.content_th,
+        content: {
+          vi: formData.content,
+          en: formData.content_en,
+          th: formData.content_th
+        },
         status: formData.status,
-        category: formData.category,
+        category_id: parseInt(formData.category_id as any),
         updated_at: new Date().toISOString(),
       };
 
@@ -232,10 +236,12 @@ export default function ServiceForm({ initialData, isEdit = false }: ServiceForm
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold text-on-surface-variant/60 uppercase tracking-wider">Danh mục</label>
-              <select value={formData.category} onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+              <select value={formData.category_id} onChange={(e) => setFormData(prev => ({ ...prev, category_id: e.target.value }))}
                 className="w-full px-4 py-3 bg-slate-50 border border-on-surface/5 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold cursor-pointer">
                 <option value="">Chọn danh mục...</option>
-                {categories.map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
+                {categories.map((c) => <option key={c.id} value={c.id}>
+                  {typeof c.name === 'object' ? (c.name?.vi || c.name?.en) : c.name}
+                </option>)}
               </select>
             </div>
           </div>

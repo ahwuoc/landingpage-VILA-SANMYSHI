@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
-import { NewsItem } from "../types";
+import { NewsItem } from "@/lib/data";
 import { useTranslations, useLocale } from "next-intl";
 
 interface NewsGridProps {
@@ -20,12 +20,11 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
     ? newsList
     : newsList.filter(n => {
         const cat = categories.find(c => c.slug === active);
-        return cat && n.category === (cat.name['vi'] || cat.name[Object.keys(cat.name)[0]]);
+        return cat && n.category_id === cat.id;
       });
 
   return (
     <section className="py-20 max-w-7xl mx-auto px-8">
-      {/* Header + Filter */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
         <div>
           <div className="flex items-center gap-3 mb-3">
@@ -37,11 +36,10 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setActive("all")}
-            className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${
-              active === "all"
+            className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${active === "all"
                 ? "bg-primary text-on-primary border-primary shadow-glow-primary"
                 : "border-on-surface/10 hover:bg-surface-container-high"
-            }`}
+              }`}
           >
             {t('filter_all')}
           </button>
@@ -49,11 +47,10 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
             <button
               key={cat.id}
               onClick={() => setActive(cat.slug)}
-              className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${
-                active === cat.slug
+              className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${active === cat.slug
                   ? "bg-primary text-on-primary border-primary shadow-glow-primary"
                   : "border-on-surface/10 hover:bg-surface-container-high"
-              }`}
+                }`}
             >
               {cat.name[locale] || cat.name['vi']}
             </button>
@@ -68,7 +65,12 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
         )}
         {filtered.map((item) => {
           const title = item.title[locale] || item.title['vi'];
-          const excerpt = item.excerpt[locale] || item.excerpt['vi'];
+          const content = item.content[locale] || item.content['vi'];
+          const excerpt = content
+            ?.replace(/<[^>]*>/g, "")
+            ?.split(".")
+            ?.slice(0, 2)
+            ?.join(".") + "." || "";
           return (
             <Link
               key={item.id}
@@ -91,7 +93,7 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/10">
-                      {item.category}
+                      {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
                     </span>
                     <span className="text-[10px] text-faint font-bold uppercase tracking-widest">
                       {item.date ? new Date(item.date).toLocaleDateString(locale === 'vi' ? "vi-VN" : locale === 'th' ? "th-TH" : "en-US") : ""}

@@ -34,7 +34,14 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
 
   const navLinks = [
     { name: t("home"), href: "/" },
-    { name: t("about"), href: "/about" },
+    {
+      name: t("about"),
+      href: "/about",
+      dropdown: [
+        { name: t("about_us"), href: "/about" },
+        { name: t("branches"), href: "/branches" },
+      ]
+    },
     { name: t("services"), href: "/services", dropdown: navServices },
     { name: t("news"), href: "/news" },
     { name: t("contact"), href: "/contact" },
@@ -159,10 +166,6 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                 loading="eager"
               />
             </div>
-            {/* <div className="flex flex-col">
-              <h2 className={`text-lg md:text-xl lg:text-2xl font-black tracking-tight text-primary leading-none mb-1`}>{BRAND_NAME.split(' ')[0]} <span className={`transition-colors duration-300 ${isOpen ? 'text-on-dark' : 'text-default'}`}>{BRAND_NAME.split(' ').slice(1).join(' ')}</span></h2>
-              <span className="text-label-sm text-faint opacity-80 uppercase">{t('brand_tag')}</span>
-            </div> */}
           </Link>
           <div className="hidden lg:flex items-center space-x-8 font-black text-base tracking-tight h-full">
             {navLinks.map((link) => {
@@ -193,33 +196,53 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                   {/* Dropdown Menu */}
                   {hasDropdown && isDropdownActive && (
                     <div className="absolute top-full left-0 w-72 bg-card shadow-2xl rounded-2xl p-4 border border-on-surface/5 animate-fade-in origin-top">
-                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-on-surface-variant/40 px-3 mb-3">{t('category_title')}</p>
-                      <div className="grid grid-cols-1 gap-1">
-                        {Object.entries(servicesByCategory)
-                          .filter(([cat]) => cat !== t('other_services'))
-                          .sort(([a], [b]) => a.localeCompare(b))
-                          .map(([cat, { slug, items }]) => (
+                      {link.name === t("services") ? (
+                        <>
+                          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-on-surface-variant/40 px-3 mb-3">{t('category_title')}</p>
+                          <div className="grid grid-cols-1 gap-1">
+                            {Object.entries(servicesByCategory)
+                              .filter(([cat]) => cat !== t('other_services'))
+                              .sort(([a], [b]) => a.localeCompare(b))
+                              .map(([cat, { slug, items }]) => (
+                                <Link
+                                  key={cat}
+                                  href={`/services/${slug}`}
+                                  className="p-3 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
+                                >
+                                  <span className="flex items-center gap-3">
+                                    <span className="w-2 h-2 rounded-full bg-primary/40 group-hover/sub:bg-primary transition-colors" />
+                                    {cat}
+                                  </span>
+                                  {items.filter(i => i.name).length > 0
+                                    ? <span className="text-[10px] text-on-surface-variant/40 font-bold">{items.filter(i => i.name).length} {t('services_count')}</span>
+                                    : <span className="text-[10px] text-amber-500 font-bold italic">{t('coming_soon')}</span>
+                                  }
+                                </Link>
+                              ))}
+                          </div>
+                          <div className="mt-2 pt-2 border-t border-on-surface/5">
+                            <Link href="/services" className="flex items-center justify-center gap-2 py-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline">
+                              {t('all_services')} <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                            </Link>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="grid grid-cols-1 gap-1">
+                          {Array.isArray(link.dropdown) && link.dropdown.map((item: any) => (
                             <Link
-                              key={cat}
-                              href={`/services/${slug}`}
+                              key={item.href}
+                              href={item.href}
                               className="p-3 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
                             >
                               <span className="flex items-center gap-3">
                                 <span className="w-2 h-2 rounded-full bg-primary/40 group-hover/sub:bg-primary transition-colors" />
-                                {cat}
+                                {item.name}
                               </span>
-                              {items.filter(i => i.name).length > 0
-                                ? <span className="text-[10px] text-on-surface-variant/40 font-bold">{items.filter(i => i.name).length} {t('services_count')}</span>
-                                : <span className="text-[10px] text-amber-500 font-bold italic">{t('coming_soon')}</span>
-                              }
+                              <span className="material-symbols-outlined text-base text-on-surface-variant/20 group-hover/sub:text-primary transition-all">chevron_right</span>
                             </Link>
                           ))}
-                      </div>
-                      <div className="mt-2 pt-2 border-t border-on-surface/5">
-                        <Link href="/services" className="flex items-center justify-center gap-2 py-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline">
-                          {t('all_services')} <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                        </Link>
-                      </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -283,23 +306,39 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                 {/* Mobile Submenu */}
                 {hasDropdown && isSubOpen && (
                   <div className="flex flex-col gap-6 mt-6 ml-4 border-l-2 border-primary/20 pl-6 animate-fade-in">
-                    {Object.entries(servicesByCategory)
-                      .filter(([cat]) => cat !== t('other_services'))
-                      .map(([cat, { slug }]) => (
+                    {link.name === t("services") ? (
+                      <>
+                        {Object.entries(servicesByCategory)
+                          .filter(([cat]) => cat !== t('other_services'))
+                          .map(([cat, { slug }]) => (
+                            <Link
+                              key={cat}
+                              href={`/services/${slug}`}
+                              className="text-xl md:text-2xl font-black text-on-dark-muted hover:text-primary transition-colors flex items-center justify-between group/sub"
+                            >
+                              {cat}
+                            </Link>
+                          ))}
                         <Link
-                          key={cat}
-                          href={`/services/${slug}`}
-                          className="text-xl md:text-2xl font-black text-on-dark-muted hover:text-primary transition-colors flex items-center justify-between group/sub"
+                          href="/services"
+                          className="text-lg font-black text-primary uppercase tracking-[0.2em] mt-2 flex items-center gap-2"
                         >
-                          {cat}
+                          {t('all_services')} <span className="material-symbols-outlined text-sm">arrow_forward</span>
                         </Link>
-                      ))}
-                    <Link
-                      href="/services"
-                      className="text-lg font-black text-primary uppercase tracking-[0.2em] mt-2 flex items-center gap-2"
-                    >
-                      {t('all_services')} <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                    </Link>
+                      </>
+                    ) : (
+                      <>
+                        {Array.isArray(link.dropdown) && link.dropdown.map((item: any) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className="text-xl md:text-2xl font-black text-on-dark-muted hover:text-primary transition-colors flex items-center justify-between group/sub"
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </>
+                    )}
                   </div>
                 )}
               </div>

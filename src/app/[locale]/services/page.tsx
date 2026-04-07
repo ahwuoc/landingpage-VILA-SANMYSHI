@@ -3,6 +3,9 @@ import { getServicesList } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from "next";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
+export function generateStaticParams() {
+  return [{ locale: 'vi' }, { locale: 'en' }, { locale: 'th' }];
+}
 
 export async function generateMetadata({
   params
@@ -11,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata.services" });
-  
+
   return {
     title: t("title"),
     description: t("description"),

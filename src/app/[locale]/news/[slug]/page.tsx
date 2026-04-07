@@ -7,7 +7,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 
 export async function generateStaticParams() {
   const newsList = await getNewsList();
-  const locales = ['vi', 'en'];
+  const locales = ['vi', 'en', 'th'];
   const params: { locale: string; slug: string }[] = [];
 
   for (const locale of locales) {
@@ -29,8 +29,8 @@ export async function generateMetadata({
   const { data: newsItem } = await supabase.from("news").select("*").eq("slug", slug).single();
   if (!newsItem) return { title: t("not_found") };
   
-  const title = locale === 'en' && newsItem.title_en ? newsItem.title_en : newsItem.title;
-  const excerpt = locale === 'en' && newsItem.excerpt_en ? newsItem.excerpt_en : newsItem.excerpt;
+  const title = newsItem.title[locale] || newsItem.title['vi'];
+  const excerpt = newsItem.excerpt ? (newsItem.excerpt[locale] || newsItem.excerpt['vi']) : "";
 
   return {
     title,
@@ -58,8 +58,8 @@ export default async function NewsDetailPage({
   const { data: newsItem } = await supabase.from("news").select("*").eq("slug", slug).single();
   if (!newsItem) notFound();
 
-  const title = locale === 'en' && newsItem.title_en ? newsItem.title_en : newsItem.title;
-  const excerpt = locale === 'en' && newsItem.excerpt_en ? newsItem.excerpt_en : newsItem.excerpt;
+  const title = newsItem.title[locale] || newsItem.title['vi'];
+  const excerpt = newsItem.excerpt ? (newsItem.excerpt[locale] || newsItem.excerpt['vi']) : "";
 
   const articleSchema = {
     "@context": "https://schema.org",

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useLocale, useTranslations } from "next-intl";
-import { NewsItem } from "../types";
+import { NewsItem } from "@/lib/data";
 
 interface NewsCardProps {
   item: NewsItem;
@@ -12,7 +12,13 @@ export default function NewsCard({ item }: NewsCardProps) {
   const t = useTranslations("News");
 
   const title = item.title[locale] || item.title['vi'];
-  const excerpt = item.excerpt[locale] || item.excerpt['vi'];
+  const content = item.content[locale] || item.content['vi'];
+
+  const excerpt = content
+    ?.replace(/<[^>]*>/g, "")
+    ?.split(".")
+    ?.slice(0, 2)
+    ?.join(".") + "." || "";
 
   return (
     <Link href={`/news/${item.slug || item.id}`} className="group cursor-pointer">
@@ -25,7 +31,7 @@ export default function NewsCard({ item }: NewsCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.1em] text-on-surface shadow-sm">
-          {item.category}
+          {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
         </div>
       </div>
       <div className="px-4">

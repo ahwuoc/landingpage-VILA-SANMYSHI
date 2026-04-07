@@ -35,7 +35,9 @@
   },
   "Navbar": {
     "home": "Home",
-    "about": "About Us",
+    "about": "Introduction",
+    "about_us": "About Us",
+    "branches": "Branch Network",
     "services": "Services",
     "news": "News",
     "contact": "Contact",
@@ -57,7 +59,12 @@
     "copyright": "© 2018 - {year} {company}. SPECIALIST IN CUSTOMS & LOGISTICS.",
     "privacy": "Privacy Policy",
     "back_to_top": "Back to top",
-    "solution": "B2B Logistics Solutions"
+    "solution": "B2B Logistics Solutions",
+    "partner_tax": "Quang Tri Tax Dept",
+    "partner_border": "Lao Bao Border",
+    "partner_vila": "VILA Group",
+    "partner_msc": "MSC",
+    "partner_cma": "CMA CGM"
   },
   "FloatingContact": {
     "zalo": "Chat Zalo now",
@@ -95,10 +102,22 @@
       "support": "Ready to Support",
       "goods": "Product Categories",
       "items": [
-        { "label": "Experience", "desc": "Years of international operation" },
-        { "label": "Partners", "desc": "Across all fields" },
-        { "label": "Shipments", "desc": "Safe delivery" },
-        { "label": "Customers", "desc": "100% Satisfied" }
+        {
+          "label": "Experience",
+          "desc": "Years of international operation"
+        },
+        {
+          "label": "Partners",
+          "desc": "Across all fields"
+        },
+        {
+          "label": "Shipments",
+          "desc": "Safe delivery"
+        },
+        {
+          "label": "Customers",
+          "desc": "100% Satisfied"
+        }
       ]
     },
     "core_values": {
@@ -168,7 +187,10 @@
     "category_desc_template": "Professional {name} services at Lao Bao Border Gate.",
     "results_label": "results",
     "search_placeholder": "Search services...",
-    "view_detail": "View Details"
+    "view_detail": "View Details",
+    "category_title": "Service Categories",
+    "sidebar_cta_check1": "Free 24/7 consultation",
+    "sidebar_cta_check2": "Cost-optimal solutions"
   },
   "About": {
     "page_title": "About Us",
@@ -191,9 +213,21 @@
       "email": "Email"
     },
     "history": [
-      { "year": "2018", "label": "Establishment", "desc": "VILA SANMYSHI TMDV XNK CO., LTD officially came into operation in Quang Tri." },
-      { "year": "2020", "label": "Market Expansion", "desc": "Developed a network of domestic and international partners, focusing on general wholesale." },
-      { "year": "Present", "highlight": "Sustainable Development", "desc": "Continuing to confirm its position as a prestigious and professional import-export unit in the Central region." }
+      {
+        "year": "2018",
+        "label": "Establishment",
+        "desc": "VILA SANMYSHI TMDV XNK CO., LTD officially came into operation in Quang Tri."
+      },
+      {
+        "year": "2020",
+        "label": "Market Expansion",
+        "desc": "Developed a network of domestic and international partners, focusing on general wholesale."
+      },
+      {
+        "year": "Present",
+        "highlight": "Sustainable Development",
+        "desc": "Continuing to confirm its position as a prestigious and professional import-export unit in the Central region."
+      }
     ],
     "cta": {
       "title": "Partner with your prosperity",
@@ -201,10 +235,26 @@
       "btn": "Partner Now"
     },
     "capacity": [
-      { "label": "Experience", "value": "6+", "desc": "Years of operation in the trade and import-export industry." },
-      { "label": "Certification", "value": "Prestige", "desc": "Managed by Quang Tri Tax Department with stable operation status." },
-      { "label": "Fields", "value": "Diverse", "desc": "Multidisciplinary business with a focus on general wholesale." },
-      { "label": "Service", "value": "Dedicated", "desc": "Maximum customer support in all commercial transactions." }
+      {
+        "label": "Experience",
+        "value": "6+",
+        "desc": "Years of operation in the trade and import-export industry."
+      },
+      {
+        "label": "Certification",
+        "value": "Prestige",
+        "desc": "Managed by Quang Tri Tax Department with stable operation status."
+      },
+      {
+        "label": "Fields",
+        "value": "Diverse",
+        "desc": "Multidisciplinary business with a focus on general wholesale."
+      },
+      {
+        "label": "Service",
+        "value": "Dedicated",
+        "desc": "Maximum customer support in all commercial transactions."
+      }
     ],
     "vision": {
       "title": "Vision",
@@ -215,10 +265,22 @@
       "content": "To provide high-quality products and services, optimizing trade processes to bring the best benefits to customers, while contributing to local economic development."
     },
     "values": [
-      { "title": "Prestige", "desc": "Always keep commitments with customers and partners." },
-      { "title": "Quality", "desc": "Ensuring the highest standards for all business items." },
-      { "title": "Transparency", "desc": "Clear in all legal and financial transactions." },
-      { "title": "Cooperation", "desc": "Building sustainable win-win relationships." }
+      {
+        "title": "Prestige",
+        "desc": "Always keep commitments with customers and partners."
+      },
+      {
+        "title": "Quality",
+        "desc": "Ensuring the highest standards for all business items."
+      },
+      {
+        "title": "Transparency",
+        "desc": "Clear in all legal and financial transactions."
+      },
+      {
+        "title": "Cooperation",
+        "desc": "Building sustainable win-win relationships."
+      }
     ],
     "business_fields_title": "Business Fields",
     "business_fields": [
@@ -237,14 +299,46 @@
     ],
     "timeline_title": "Development Journey",
     "timeline": [
-      { "year": "2018", "highlight": "Establishment", "desc": "The company was officially established in Quang Tri, laying the foundation for activities in the field of trade and import-export." },
-      { "year": "2019", "highlight": "Foundation Building", "desc": "Step by step improving operation processes, training personnel and building a sustainable development foundation." },
-      { "year": "2020", "highlight": "Market Expansion", "desc": "Strengthening cooperation with domestic and foreign partners, expanding the scope of activities in the field of import-export." },
-      { "year": "2021", "highlight": "Operation Optimization", "desc": "Applying technology to management and document processing, improving work efficiency and minimizing errors in the process." },
-      { "year": "2022", "highlight": "Strong Growth", "desc": "Recorded clear growth in the number of customers and projects, while improving transport and service processing capacity." },
-      { "year": "2023", "highlight": "Diverse Services", "desc": "Expanding related services such as warehousing, multimodal transport and import-export entrustment for businesses." },
-      { "year": "2024", "highlight": "Quality Enhancement", "desc": "Focusing on standardizing processes, improving service quality and comprehensively improving customer experience." },
-      { "year": "Present", "highlight": "Sustainable Development", "desc": "Continuing to affirm position as a prestigious unit in the field of import-export, aiming for long-term and sustainable development." }
+      {
+        "year": "2018",
+        "highlight": "Establishment",
+        "desc": "The company was officially established in Quang Tri, laying the foundation for activities in the field of trade and import-export."
+      },
+      {
+        "year": "2019",
+        "highlight": "Foundation Building",
+        "desc": "Step by step improving operation processes, training personnel and building a sustainable development foundation."
+      },
+      {
+        "year": "2020",
+        "highlight": "Market Expansion",
+        "desc": "Strengthening cooperation with domestic and foreign partners, expanding the scope of activities in the field of import-export."
+      },
+      {
+        "year": "2021",
+        "highlight": "Operation Optimization",
+        "desc": "Applying technology to management and document processing, improving work efficiency and minimizing errors in the process."
+      },
+      {
+        "year": "2022",
+        "highlight": "Strong Growth",
+        "desc": "Recorded clear growth in the number of customers and projects, while improving transport and service processing capacity."
+      },
+      {
+        "year": "2023",
+        "highlight": "Diverse Services",
+        "desc": "Expanding related services such as warehousing, multimodal transport and import-export entrustment for businesses."
+      },
+      {
+        "year": "2024",
+        "highlight": "Quality Enhancement",
+        "desc": "Focusing on standardizing processes, improving service quality and comprehensively improving customer experience."
+      },
+      {
+        "year": "Present",
+        "highlight": "Sustainable Development",
+        "desc": "Continuing to affirm position as a prestigious unit in the field of import-export, aiming for long-term and sustainable development."
+      }
     ]
   },
   "Contact": {
@@ -313,5 +407,39 @@
     "share_email": "Send via Email",
     "share_copy": "Copy Link",
     "copied": "Copied!"
+  },
+  "Maintenance": {
+    "metadata_title": "Maintenance | VILA SANMYSHI",
+    "status_badge": "Operational Status: Optimizing",
+    "title_part1": "System is being",
+    "title_highlight": "Optimized",
+    "description": "We are performing routine maintenance to ensure stability and the fastest cargo processing speed at the border.",
+    "load_label": "Efficiency Load",
+    "loading_text": "Loading new database...",
+    "channels_label": "Support Channels",
+    "hotline_label": "Hotline 24/7",
+    "email_label": "Email Support",
+    "access_portal": "Access Portal",
+    "est_year": "Est. 2026"
+  },
+  "Branches": {
+    "metadata_title": "Branch Network | VILA SANMYSHI",
+    "hero_tag": "GLOBAL CONNECTION",
+    "hero_title": "Branch <highlight>Network</highlight>",
+    "hero_desc": "VILA SANMYSHI expanded presence at economic hubs and key border gates, ensuring continuous goods flow.",
+    "card_hotline": "Hotline",
+    "card_email": "Email",
+    "card_address": "Address",
+    "btn_map": "View on Map",
+    "hq_label": "Headquarters",
+    "rep_label": "Representative Office",
+    "branch_label": "Branch",
+    "cta_title": "Trusted Partner for Every Journey",
+    "cta_desc": "Contact our nearest branch today for expert logistics consultation and optimized solutions for your business.",
+    "map_tag": "Physical Network",
+    "map_title": "Regional <highlight>Coverage</highlight> Strategy",
+    "map_desc": "Our offices and branches are strategically located at major border gates, seaports, and economic hubs, ensuring rapid response to customer needs throughout Southeast Asia.",
+    "stat_offices": "Offices & Branches",
+    "stat_countries": "Operational Countries"
   }
 }

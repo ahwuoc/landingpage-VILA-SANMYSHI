@@ -39,15 +39,26 @@ export default async function ServiceCategoryPage({
   const { locale, category } = await params;
   setRequestLocale(locale);
 
+  if (category === "all") {
+    const services = await getServicesList();
+    const t = await getTranslations({ locale, namespace: "Services" });
+    return (
+      <ServiceCategoryView 
+        services={services} 
+        categorySlug="all" 
+        categoryName={t('all_services')} 
+      />
+    );
+  }
+
   const { data: cat } = await supabase.from("service_categories").select("*").eq("slug", category).single();
   if (!cat) notFound();
 
   const nameObj = cat.name as Record<string, string>;
-  const catShortName = nameObj['vi'] || nameObj[Object.keys(nameObj)[0]];
   const catLocalizedName = nameObj[locale] || nameObj['vi'];
 
   const services = await getServicesList();
-  const filtered = services.filter(s => s.category === catShortName);
+  const filtered = services.filter(s => s.category_id === cat.id);
 
   return (
     <ServiceCategoryView 
