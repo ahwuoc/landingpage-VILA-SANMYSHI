@@ -16,7 +16,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("Navbar");
-  const { isDesktop } = useResponsive();
+  const { isDesktop, mounted } = useResponsive();
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -91,72 +91,76 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  if (!mounted) return (
+    <nav className="absolute top-0 w-full h-24 bg-white/70 backdrop-blur-xl border-b border-slate-100" />
+  );
+
   return (
     <>
       <ConsultationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <nav className={`fixed top-0 w-full z-[120] transition-all duration-500 ${isOpen ? 'bg-transparent shadow-none border-none' : (isScrolled ? 'bg-white/95 backdrop-blur-2xl shadow-md border-b border-slate-100/50' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-slate-100/50')}`}>
-        {/* Top Bar - Hides on scroll for a focused experience */}
-        <div className={`hidden sm:block bg-primary text-white border-b border-primary-variant/20 transition-all duration-500 ease-in-out ${isScrolled ? 'h-0 opacity-0 overflow-hidden border-none' : 'h-10 opacity-100'}`}>
-          <div className="max-w-7xl mx-auto px-6 h-10 flex justify-between items-center text-[10px] lg:text-xs font-black tracking-widest uppercase">
-            <div className={`flex items-center gap-6 transition-transform duration-500 ${isScrolled ? '-translate-y-full' : 'translate-y-0'}`}>
-              <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
-                <span className="material-symbols-outlined text-sm">call</span>
-                {t('hotline')}: {COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3')}
-              </a>
-              <a href={`mailto:${COMPANY_INFO.email}`} className="hidden md:flex items-center gap-1.5 hover:text-white/80 transition-colors">
-                <span className="material-symbols-outlined text-sm">mail</span>
-                {COMPANY_INFO.email}
-              </a>
-            </div>
-            <div className={`flex items-center gap-6 transition-transform duration-500 ${isScrolled ? '-translate-y-full' : 'translate-y-0'}`}>
-              <span className="hidden xl:flex items-center gap-1.5 italic opacity-90">
-                <span className="material-symbols-outlined text-sm animate-pulse">verified_user</span>
-                {t('topbar_slogan')}
-              </span>
+      <nav className={`absolute top-0 w-full z-[120] transition-all duration-500 ${isOpen ? 'bg-transparent shadow-none border-none pointer-events-none' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-slate-100/50'}`}>
+        <div className={`transition-all duration-500 ${isOpen ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
+          <div className={`hidden lg:block bg-primary text-white border-b border-primary-variant/20 transition-all duration-500 ease-in-out h-10`}>
+            <div className="max-w-7xl mx-auto px-6 h-10 flex justify-between items-center text-[10px] lg:text-xs font-black tracking-widest uppercase">
+              <div className="flex items-center gap-6">
+                <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+                  <span className="material-symbols-outlined text-sm">call</span>
+                  {t('hotline')}: {COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3')}
+                </a>
+                <a href={`mailto:${COMPANY_INFO.email}`} className="hidden md:flex items-center gap-1.5 hover:text-white/80 transition-colors">
+                  <span className="material-symbols-outlined text-sm">mail</span>
+                  {COMPANY_INFO.email}
+                </a>
+              </div>
+              <div className="flex items-center gap-6">
+                <span className="hidden xl:flex items-center gap-1.5 italic opacity-90">
+                  <span className="material-symbols-outlined text-sm animate-pulse">verified_user</span>
+                  {t('topbar_slogan')}
+                </span>
 
-              <div className="h-4 w-[1px] bg-white/20 hidden sm:block" />
+                <div className="h-4 w-[1px] bg-white/20 hidden sm:block" />
 
-              {/* Language Switcher Dropdown (Moved to Top Bar) */}
-              <div className="relative" ref={langRef}>
-                <button
-                  onClick={() => setIsLangOpen(!isLangOpen)}
-                  className="flex items-center gap-2 px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all font-black text-[10px] tracking-widest uppercase"
-                >
-                  <span className="text-sm leading-none">{LANGUAGES.find(l => l.id === locale)?.icon}</span>
-                  <span className="leading-none">{locale.toUpperCase()}</span>
-                  <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`}>expand_more</span>
-                </button>
+                <div className="relative" ref={langRef}>
+                  <button
+                    onClick={() => setIsLangOpen(!isLangOpen)}
+                    className="flex items-center gap-2 px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all font-black text-[10px] tracking-widest uppercase"
+                  >
+                    <span className="text-sm leading-none">{LANGUAGES.find(l => l.id === locale)?.icon}</span>
+                    <span className="leading-none">{locale.toUpperCase()}</span>
+                    <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                  </button>
 
-                {isLangOpen && (
-                  <div className="absolute top-[calc(100%+8px)] right-0 w-44 bg-card shadow-2xl rounded-2xl p-2 border border-on-surface/5 animate-fade-in origin-top-right z-[150]">
-                    <div className="flex flex-col gap-1">
-                      {LANGUAGES.map((lang) => (
-                        <button
-                          key={lang.id}
-                          onClick={() => changeLanguage(lang.id)}
-                          className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group ${locale === lang.id ? 'bg-primary/5 text-primary' : 'hover:bg-section text-on-surface-variant'}`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-base grayscale-[0.2] group-hover:grayscale-0 font-normal">{lang.icon}</span>
-                            <span className="text-[11px] font-black tracking-tight uppercase">{lang.label}</span>
-                          </div>
-                          {locale === lang.id && (
-                            <span className="material-symbols-outlined text-base">check</span>
-                          )}
-                        </button>
-                      ))}
+                  {isLangOpen && (
+                    <div className="absolute top-[calc(100%+8px)] right-0 w-44 bg-card shadow-2xl rounded-2xl p-2 border border-on-surface/5 animate-fade-in origin-top-right z-[150]">
+                      <div className="flex flex-col gap-1">
+                        {LANGUAGES.map((lang) => (
+                          <button
+                            key={lang.id}
+                            onClick={() => changeLanguage(lang.id)}
+                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group ${locale === lang.id ? 'bg-primary/5 text-primary' : 'hover:bg-section text-on-surface-variant'}`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="text-base grayscale-[0.2] group-hover:grayscale-0 font-normal">{lang.icon}</span>
+                              <span className="text-[11px] font-black tracking-tight uppercase">{lang.label}</span>
+                            </div>
+                            {locale === lang.id && (
+                              <span className="material-symbols-outlined text-base">check</span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className={`flex justify-between items-center max-w-7xl mx-auto px-6 transition-all duration-500 ${isScrolled ? 'h-20 lg:h-24' : 'h-24 md:h-28 lg:h-32'}`}>
+        <div className={`flex justify-between items-center max-w-7xl mx-auto px-6 transition-all duration-500 h-24 md:h-28 lg:h-32 landscape:h-14 md:landscape:h-16`}>
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 md:gap-4 lg:gap-6 group shrink-0 relative z-[110]">
-            <div className={`relative transition-all duration-500 drop-shadow-md ${isScrolled ? 'w-20 h-20 lg:w-24 lg:h-24' : 'w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40'}`}>
+          <Link href="/" className={`flex items-center gap-3 md:gap-4 lg:gap-6 group shrink-0 relative ${isOpen ? 'z-[150]' : 'z-[110]'}`}>
+            <div className={`relative transition-all duration-500 drop-shadow-md w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 landscape:w-14 landscape:h-14 md:landscape:w-16 md:landscape:h-16`}>
               <Image
                 src="/images/logo.jpg"
                 alt="Logo VILA SANMYSHI"
@@ -260,7 +264,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[110] relative focus:outline-none"
+              className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[140] relative focus:outline-none"
               aria-label="Toggle menu"
             >
               <span className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[8px] bg-white' : 'bg-slate-800'}`} />
@@ -271,11 +275,29 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 w-full h-full bg-inverse-surface/90 backdrop-blur-2xl z-[110] lg:hidden transition-all duration-500 ease-in-out px-8 pt-32 pb-12 overflow-y-auto flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed inset-0 w-full h-full bg-inverse-surface/90 backdrop-blur-2xl z-[130] lg:hidden transition-all duration-500 ease-in-out px-8 py-12 overflow-y-auto flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
-        <div className="flex flex-col gap-6 mt-8">
+        {/* Mobile Menu Header (Inside Scroll) */}
+        <div className="flex justify-between items-center mb-8 shrink-0">
+          <div className="w-24 h-24 relative drop-shadow-md">
+            <Image
+              src="/images/logo.jpg"
+              alt="Logo VILA SANMYSHI"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+            aria-label="Close menu"
+          >
+            <span className="material-symbols-outlined text-4xl">close</span>
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-6 landscape:gap-3">
           {navLinks.map((link, i) => {
             const isActive = pathname === link.href;
             const hasDropdown = !!link.dropdown;
@@ -287,7 +309,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                   <Link
                     href={link.href}
                     style={{ transitionDelay: isOpen ? `${i * 100}ms` : '0ms' }}
-                    className={`text-3xl md:text-5xl font-black tracking-tight uppercase transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                    className={`text-3xl landscape:text-xl md:text-5xl font-black tracking-tight uppercase transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                       } ${isActive ? "text-primary placeholder-pulse" : "text-white hover:text-primary"
                       }`}
                   >
@@ -296,9 +318,9 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                   {hasDropdown && (
                     <button
                       onClick={() => setActiveDropdown(isSubOpen ? null : link.name)}
-                      className="w-12 h-12 flex items-center justify-center text-white/50"
+                      className="w-10 h-10 landscape:w-8 landscape:h-8 flex items-center justify-center text-white/50"
                     >
-                      <span className={`material-symbols-outlined text-3xl transition-transform ${isSubOpen ? 'rotate-180 text-primary' : ''}`}>expand_more</span>
+                      <span className={`material-symbols-outlined text-3xl landscape:text-xl transition-transform ${isSubOpen ? 'rotate-180 text-primary' : ''}`}>expand_more</span>
                     </button>
                   )}
                 </div>
@@ -346,7 +368,7 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
           })}
         </div>
 
-        <div className={`mt-auto pt-10 border-t border-white/10 space-y-8 transition-all duration-700 delay-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+        <div className={`mt-auto pt-10 landscape:pt-6 border-t border-white/10 space-y-8 landscape:space-y-4 transition-all duration-700 delay-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}>
           <div className="flex flex-col gap-4">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 italic">Language</span>
@@ -363,8 +385,8 @@ export default function Navbar({ navServices = [] }: { navServices?: NavService[
                     : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
                     }`}
                 >
-                  <span className="text-lg">{lang.icon}</span>
-                  <span className="text-xs font-black uppercase tracking-widest">{lang.label}</span>
+                  <span className="text-lg landscape:text-base">{lang.icon}</span>
+                  <span className="text-xs landscape:text-[10px] font-black uppercase tracking-widest">{lang.label}</span>
                 </button>
               ))}
             </div>

@@ -4,6 +4,13 @@ import { createContext, useContext, useState, memo } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { getHierarchicalIndexes, TableOfContents as TocExtension } from "@tiptap/extension-table-of-contents";
+import { Table } from "@tiptap/extension-table";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import TableCell from "@tiptap/extension-table-cell";
+import ImageExtension from "@tiptap/extension-image";
+import { Link as LinkExtension } from "@tiptap/extension-link";
+import Typography from "@tiptap/extension-typography";
 import { TextSelection } from "@tiptap/pm/state";
 import type { Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
@@ -35,6 +42,24 @@ export function ArticleProvider({ content, children }: { content: string; childr
           setItems(anchors as TocItem[]);
         },
       }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      ImageExtension.configure({
+        HTMLAttributes: {
+          class: 'rounded-[2rem] shadow-xl my-12',
+        },
+      }),
+      LinkExtension.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary hover:underline font-bold',
+        },
+      }),
+      Typography,
     ],
     content,
     editable: false,
@@ -48,7 +73,10 @@ export function ArticleProvider({ content, children }: { content: string; childr
           "prose-p:mb-8 prose-ul:mb-12 prose-li:mb-2 " +
           "prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-surface-container-low " +
           "prose-blockquote:p-8 prose-blockquote:rounded-r-3xl prose-blockquote:italic " +
-          "prose-blockquote:font-black prose-blockquote:text-on-surface",
+          "prose-blockquote:font-black prose-blockquote:text-on-surface " +
+          "prose-table:border-collapse prose-table:my-8 " +
+          "prose-th:bg-slate-50 prose-th:p-4 prose-th:text-xs prose-th:uppercase prose-th:tracking-wider prose-th:border prose-th:border-slate-100 " +
+          "prose-td:p-4 prose-td:border prose-td:border-slate-100 prose-td:text-sm",
       },
     },
   });
@@ -59,7 +87,24 @@ export function ArticleProvider({ content, children }: { content: string; childr
 // Render nội dung bài viết
 export function ArticleBody() {
   const { editor } = useContext(ArticleCtx);
-  return <EditorContent editor={editor} />;
+  return (
+    <div className="tiptap-content">
+      <style jsx global>{`
+        .tiptap-content .overflow-x-auto {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        .tiptap-content table {
+          min-width: 700px;
+          width: 100%;
+        }
+      `}</style>
+      <div className="overflow-x-auto">
+        <EditorContent editor={editor} />
+      </div>
+    </div>
+  );
 }
 
 // Render TOC sidebar
@@ -99,13 +144,12 @@ export const ArticleToc = memo(function ArticleToc() {
               href={`#${item.id}`}
               onClick={(e) => onItemClick(e, item.id)}
               style={{ paddingLeft: `${(item.level - 2) * 14}px` }}
-              className={`flex items-start gap-2 py-1 text-sm leading-snug transition-colors ${
-                item.isActive && !item.isScrolledOver
-                  ? "text-primary font-black uppercase tracking-tight"
-                  : item.isScrolledOver
+              className={`flex items-start gap-2 py-1 text-sm leading-snug transition-colors ${item.isActive && !item.isScrolledOver
+                ? "text-primary font-black uppercase tracking-tight"
+                : item.isScrolledOver
                   ? "text-slate-300"
                   : "text-slate-500 hover:text-primary font-bold"
-              }`}
+                }`}
             >
               <span className={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 ${item.isActive && !item.isScrolledOver ? 'bg-primary' : 'bg-slate-200'}`} />
               {item.textContent}

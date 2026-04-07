@@ -118,13 +118,13 @@ export default function AboutView() {
           <h2 className="text-heading-lg mb-6 md:mb-12 border-l-4 border-primary pl-4 md:pl-6 uppercase">
             {t('business_fields_title')}:
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 lg:gap-x-12 lg:gap-y-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-10">
             {businessFields.map((field, i) => (
-              <div key={i} className="flex items-center gap-4 py-4 px-5 bg-surface-container-low rounded-2xl border border-outline-variant hover:bg-surface-container hover:border-primary/30 transition-all group active:scale-[0.98]">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                  <span className="material-symbols-outlined text-lg">arrow_right_alt</span>
+              <div key={i} className="flex items-center gap-3 md:gap-6 py-4 md:py-8 px-4 md:px-10 bg-surface-container-low rounded-xl md:rounded-[2.5rem] border border-outline-variant hover:bg-surface-container hover:border-primary/30 transition-all group active:scale-[0.98] shadow-sm hover:shadow-xl">
+                <div className="w-8 h-8 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                  <span className="material-symbols-outlined text-base md:text-3xl">arrow_right_alt</span>
                 </div>
-                <span className="text-body-md font-bold text-on-surface leading-tight">{field}</span>
+                <span className="text-[11px] sm:text-xs md:text-2xl lg:text-3xl font-black text-on-surface leading-tight tracking-tight uppercase">{field}</span>
               </div>
             ))}
           </div>

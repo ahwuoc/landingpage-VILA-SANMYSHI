@@ -11,6 +11,7 @@ export function useResponsive() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export function useResponsive() {
       setIsMobile(width < 768);
       setIsTablet(width >= 768 && width < 1024);
       setIsDesktop(width >= 1024);
+      setIsLandscape(width > height && width < 1024);
     }
 
     handleResize();
@@ -36,6 +38,7 @@ export function useResponsive() {
     isMobile,
     isTablet,
     isDesktop,
+    isLandscape,
     mounted,
   };
 }

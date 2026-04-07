@@ -19,9 +19,9 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
   const filtered = active === "all"
     ? newsList
     : newsList.filter(n => {
-        const cat = categories.find(c => c.slug === active);
-        return cat && n.category_id === cat.id;
-      });
+      const cat = categories.find(c => c.slug === active);
+      return cat && n.category_id === cat.id;
+    });
 
   return (
     <section className="py-20 max-w-7xl mx-auto px-8">
@@ -33,12 +33,12 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
           </div>
           <h2 className="text-heading-lg uppercase" dangerouslySetInnerHTML={{ __html: t.raw('grid_title') }} />
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 text-on-surface">
           <button
             onClick={() => setActive("all")}
             className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${active === "all"
-                ? "bg-primary text-on-primary border-primary shadow-glow-primary"
-                : "border-on-surface/10 hover:bg-surface-container-high"
+              ? "bg-primary text-on-primary border-primary shadow-glow-primary"
+              : "border-on-surface/10 hover:bg-surface-container-high"
               }`}
           >
             {t('filter_all')}
@@ -48,8 +48,8 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
               key={cat.id}
               onClick={() => setActive(cat.slug)}
               className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${active === cat.slug
-                  ? "bg-primary text-on-primary border-primary shadow-glow-primary"
-                  : "border-on-surface/10 hover:bg-surface-container-high"
+                ? "bg-primary text-on-primary border-primary shadow-glow-primary"
+                : "border-on-surface/10 hover:bg-surface-container-high"
                 }`}
             >
               {cat.name[locale] || cat.name['vi']}
@@ -75,7 +75,7 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
             <Link
               key={item.id}
               href={`/news/${item.slug || item.id}`}
-              className="group flex gap-6 py-6 hover:bg-surface-container-low rounded-2xl px-4 -mx-4 transition-all"
+              className="group flex items-center gap-6 py-6 hover:bg-surface-container-low rounded-2xl px-4 -mx-4 transition-all"
             >
               {/* Thumbnail */}
               <div className="relative w-32 h-24 lg:w-48 lg:h-32 rounded-2xl overflow-hidden flex-shrink-0">
@@ -91,26 +91,29 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
               {/* Content */}
               <div className="flex-1 min-w-0 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/10">
+                  <div className="mb-2">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/10 whitespace-nowrap inline-flex items-center">
                       {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
                     </span>
-                    <span className="text-[10px] text-faint font-bold uppercase tracking-widest">
-                      {item.date ? new Date(item.date).toLocaleDateString(locale === 'vi' ? "vi-VN" : locale === 'th' ? "th-TH" : "en-US") : ""}
-                    </span>
                   </div>
-                  <h3 className="text-base lg:text-lg font-black tracking-tight leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2 uppercase">
+                  <h3 className="text-sm lg:text-lg font-black tracking-tight leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2 uppercase">
                     {title}
                   </h3>
                   <p className="text-body-sm text-slate-500 font-medium line-clamp-2 hidden sm:block">
                     {excerpt}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 mt-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  <span className="material-symbols-outlined text-sm">person</span>
-                  <span>{item.author}</span>
-                  <span className="ml-auto flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
-                    <span>{t('read_more')}</span>
+                <div className="flex items-center gap-4 mt-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="material-symbols-outlined text-sm flex-shrink-0">person</span>
+                    <span className="truncate">{item.author}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-shrink-0 opacity-60">
+                    <span className="material-symbols-outlined text-sm">calendar_month</span>
+                    <span>{item.date ? new Date(item.date).toLocaleDateString(locale === 'vi' ? "vi-VN" : "en-US", { day: '2-digit', month: '2-digit' }) : ""}</span>
+                  </div>
+                  <span className="ml-auto flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 whitespace-nowrap">
+                    <span className="hidden xs:inline">{t('read_more')}</span>
                     <span className="material-symbols-outlined text-sm">arrow_forward</span>
                   </span>
                 </div>

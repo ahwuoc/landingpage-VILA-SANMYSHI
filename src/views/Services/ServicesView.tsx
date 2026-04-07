@@ -8,6 +8,15 @@ import { ServiceItem } from "@/lib/data";
 import ConsultationModal from "@/components/ConsultationModal";
 import PageHero from "@/components/PageHero";
 import { useTranslations, useLocale } from "next-intl";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { Table } from "@tiptap/extension-table";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import TableCell from "@tiptap/extension-table-cell";
+import ImageExtension from "@tiptap/extension-image";
+import { Link as LinkExtension } from "@tiptap/extension-link";
+import Typography from "@tiptap/extension-typography";
 
 function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMap }: {
   services: ServiceItem[];
@@ -75,13 +84,11 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
       />
 
       {!isSingle && categories.length > 0 && (
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 relative">
-          <div className="lg:hidden absolute left-6 top-16 bottom-0 w-8 bg-gradient-to-r from-surface to-transparent z-10 pointer-events-none" />
-          <div className="lg:hidden absolute right-6 top-16 bottom-0 w-8 bg-gradient-to-l from-surface to-transparent z-10 pointer-events-none" />
-          <div className="flex flex-nowrap lg:flex-wrap gap-3 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 no-scrollbar select-none scroll-smooth">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16">
+          <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setActiveCategory("all")}
-              className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === "all" ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
+              className={`px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${activeCategory === "all" ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
             >
               {t('filter_all')}
             </button>
@@ -89,7 +96,7 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
               <button
                 key={cat.slug}
                 onClick={() => setActiveCategory(cat.slug)}
-                className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeCategory === cat.slug ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
+                className={`px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${activeCategory === cat.slug ? "bg-primary text-white shadow-glow-primary border-primary" : "bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-transparent"} border`}
               >
                 {cat.name}
               </button>
@@ -110,7 +117,7 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
                   <h1 className="text-4xl lg:text-6xl font-black text-slate-900 mb-8 leading-tight uppercase">
                     {singleService.title[locale] || singleService.title['vi']}
                   </h1>
-                  
+
                   <div className="relative aspect-[21/9] rounded-[2rem] overflow-hidden mb-12 shadow-2xl">
                     <Image
                       src={singleService.image}
@@ -121,17 +128,7 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
                     />
                   </div>
 
-                  <div 
-                    className="prose prose-lg prose-slate max-w-none 
-                      prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight
-                      prose-h2:text-3xl prose-h3:text-2xl
-                      prose-p:text-slate-600 prose-p:leading-relaxed
-                      prose-strong:text-slate-900 prose-strong:font-black
-                      prose-li:text-slate-600
-                      prose-img:rounded-[2rem] prose-img:shadow-xl
-                      prose-table:border-collapse prose-th:bg-slate-50 prose-th:p-4 prose-td:p-4 prose-td:border prose-td:border-slate-100"
-                    dangerouslySetInnerHTML={{ __html: singleService.content[locale] || singleService.content['vi'] || "" }}
-                  />
+                  <ServiceContent content={singleService.content[locale] || singleService.content['vi'] || ""} />
                 </div>
               </div>
 
@@ -150,7 +147,7 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
                     >
                       {t('cta_expert')}
                     </button>
-                    
+
                     <div className="mt-8 pt-8 border-t border-white/10 space-y-4 relative z-10">
                       <div className="flex items-center gap-4 text-sm text-slate-300">
                         <span className="material-symbols-outlined text-primary">check_circle</span>
@@ -287,6 +284,67 @@ function ServicesViewInner({ services, id, categorySlug, categoryName, catSlugMa
         onClose={() => setModalOpen(false)}
         serviceName={selectedService}
       />
+    </div>
+  );
+}
+
+function ServiceContent({ content }: { content: string }) {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      ImageExtension.configure({
+        HTMLAttributes: {
+          class: 'rounded-[2rem] shadow-xl my-12',
+        },
+      }),
+      LinkExtension.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary hover:underline font-bold',
+        },
+      }),
+      Typography,
+    ],
+    content,
+    editable: false,
+    immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        class: "prose prose-lg prose-slate max-w-none " +
+          "prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight " +
+          "prose-h2:text-3xl prose-h3:text-2xl " +
+          "prose-p:text-slate-600 prose-p:leading-relaxed " +
+          "prose-strong:text-slate-900 prose-strong:font-black " +
+          "prose-li:text-slate-600 " +
+          "prose-table:border-collapse prose-table:my-8 " +
+          "prose-th:bg-slate-50 prose-th:p-4 prose-th:text-xs prose-th:uppercase prose-th:tracking-wider prose-th:border prose-th:border-slate-100 " +
+          "prose-td:p-4 prose-td:border prose-td:border-slate-100 prose-td:text-sm",
+      },
+    },
+  });
+
+  return (
+    <div className="tiptap-content">
+      <style jsx global>{`
+        .tiptap-content .overflow-x-auto {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        .tiptap-content table {
+          min-width: 700px;
+          width: 100%;
+        }
+      `}</style>
+      <div className="overflow-x-auto">
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
 }

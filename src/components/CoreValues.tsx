@@ -47,7 +47,6 @@ export default function CoreValues() {
     }
   ];
 
-  // Map benefits with explicit indices to be safer
   const benefits = BENEFITS_ICONS.map((item, index) => ({
     ...item,
     title: t(`benefits.${index}.title`),

@@ -73,6 +73,10 @@ export default async function NewsDetailView({ id }: { id: string }) {
                 sizes="(max-width: 1024px) 100vw, 66vw"
               />
             </div>
+            {/* Mobile TOC */}
+            <div className="lg:hidden mb-12">
+              <ArticleToc />
+            </div>
             <ArticleBody />
             <ShareButtons title={title} />
           </div>
@@ -80,7 +84,9 @@ export default async function NewsDetailView({ id }: { id: string }) {
           {/* Sidebar */}
           <aside className="lg:w-1/3">
             <div className="sticky top-40 space-y-12">
-              <ArticleToc />
+              <div className="hidden lg:block">
+                <ArticleToc />
+              </div>
               <div className="p-10 bg-card rounded-[3rem] shadow-xl border border-on-surface/5">
                 <h4 className="text-xl font-black tracking-tight uppercase mb-8 pb-4 border-b border-on-surface/5">{t('other_news')}</h4>
                 <div className="space-y-10">
