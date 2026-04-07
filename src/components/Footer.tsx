@@ -24,9 +24,9 @@ export default function Footer() {
           src="/images/footer_bg.jpg"
           alt="VILA SANMYSHI Logistics Background"
           fill
-          className="object-cover opacity-60 brightness-[0.4] contrast-125"
+          className="object-cover opacity-80 brightness-75 contrast-125"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
