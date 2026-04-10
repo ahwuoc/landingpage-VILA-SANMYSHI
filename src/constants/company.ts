@@ -11,7 +11,7 @@ export const COMPANY_INFO = {
   hotline: "0913497246",
   email: "admin@vilasanmyshi.com",
   representative: "NGUYỄN THỊ HẰNG LY",
-  website: "www.vilasanmyshi.com.vn",
+  website: "www.vilasanmyshi.com",
   founded: "2018-05-02",
   managedBy: "Thuế tỉnh Quảng Trị",
   type: "Công ty trách nhiệm hữu hạn 2 thành viên trở lên ngoài NN",
@@ -31,6 +31,6 @@ export const COMPANY_INFO = {
 export const SOCIAL_LINKS = [
   { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61580846237727", icon: "facebook_svg" },
   { name: "Zalo", href: "https://zalo.me/0913497246", icon: "zalo_svg" },
-  { name: "Website", href: "https://www.vilasanmyshi.com.vn", icon: "language" },
+  { name: "Website", href: "https://www.vilasanmyshi.com", icon: "language" },
   { name: "Email", href: `mailto:${COMPANY_INFO.email}`, icon: "mail" }
 ];

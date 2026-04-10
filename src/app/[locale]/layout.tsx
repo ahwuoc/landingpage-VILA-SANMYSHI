@@ -16,21 +16,13 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
-    metadataBase: new URL("https://vila-sanmyshi.com"),
+    metadataBase: new URL("https://vilasanmyshi.com"),
     title: {
       default: t("title"),
       template: "%s | VILA SANMYSHI",
     },
     description: t("description"),
-    keywords: [
-      "khai báo hải quan quảng trị",
-      "logistics lao bảo",
-      "vận tải quốc tế quảng trị",
-      "xuất nhập khẩu lao bảo",
-      "thông quan hàng hóa quảng trị",
-      "vận chuyển hàng đi lào",
-      "vila sanmyshi",
-    ],
+    keywords: t("keywords"),
     authors: [{ name: "VILA SANMYSHI" }],
     creator: "VILA SANMYSHI",
     publisher: "VILA SANMYSHI",
@@ -42,7 +34,7 @@ export async function generateMetadata({
     openGraph: {
       title: t("title"),
       description: t("description"),
-      url: "https://vila-sanmyshi.com",
+      url: "https://vilasanmyshi.com",
       siteName: "VILA SANMYSHI",
       images: [
         {
@@ -62,7 +54,12 @@ export async function generateMetadata({
       images: ['/images/logo.jpg'],
     },
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `https://vilasanmyshi.com/${locale}`,
+      languages: {
+        'vi-VN': `https://vilasanmyshi.vn/vi`,
+        'en-US': `https://vilasanmyshi.com/en`,
+        'th-TH': `https://vilasanmyshi.com/th`,
+      },
     },
   };
 }
@@ -120,8 +117,72 @@ export default async function LocaleLayout({
     }));
   const navServices = [...serviceNavItems, ...emptyCatItems];
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "VILA SANMYSHI",
+    "url": "https://vilasanmyshi.com",
+    "logo": "https://vilasanmyshi.com/images/logo.jpg",
+    "sameAs": [
+      "https://www.facebook.com/vilasanmyshi",
+      "https://zalo.me/your-zalo-id"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+84-xxx-xxx-xxx",
+      "contactType": "customer service",
+      "areaServed": ["VN", "LA", "TH"],
+      "availableLanguage": ["Vietnamese", "English", "Thai"]
+    }
+  };
+
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LogisticsCenter",
+    "name": "VILA SANMYSHI Logistics",
+    "image": "https://vilasanmyshi.com/images/logo.jpg",
+    "@id": "https://vilasanmyshi.com",
+    "url": "https://vilasanmyshi.com",
+    "telephone": "+84-xxx-xxx-xxx",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Cửa khẩu Quốc tế Lao Bảo",
+      "addressLocality": "Hướng Hóa",
+      "addressRegion": "Quảng Trị",
+      "postalCode": "520000",
+      "addressCountry": "VN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 16.6167,
+      "longitude": 106.5667
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    }
+  };
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
       <ClientLayout navServices={navServices}>
         {children}
       </ClientLayout>

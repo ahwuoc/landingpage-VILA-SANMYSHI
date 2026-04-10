@@ -72,18 +72,18 @@ export default async function NewsDetailPage({
     "publisher": {
       "@type": "Organization",
       "name": "VILA SANMYSHI",
-      "logo": { "@type": "ImageObject", "url": "https://vila-sanmyshi.com/images/logo.jpg" }
+      "logo": { "@type": "ImageObject", "url": "https://vilasanmyshi.com/images/logo.jpg" }
     },
-    "url": `https://vila-sanmyshi.com/${locale}/news/${slug}`,
+    "url": `https://vilasanmyshi.com/${locale}/news/${slug}`,
   };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": t("home"), "item": `https://vila-sanmyshi.com/${locale}` },
-      { "@type": "ListItem", "position": 2, "name": t("news_label"), "item": `https://vila-sanmyshi.com/${locale}/news` },
-      { "@type": "ListItem", "position": 3, "name": title, "item": `https://vila-sanmyshi.com/${locale}/news/${slug}` },
+      { "@type": "ListItem", "position": 1, "name": t("home"), "item": `https://vilasanmyshi.com/${locale}` },
+      { "@type": "ListItem", "position": 2, "name": t("news_label"), "item": `https://vilasanmyshi.com/${locale}/news` },
+      { "@type": "ListItem", "position": 3, "name": title, "item": `https://vilasanmyshi.com/${locale}/news/${slug}` },
     ]
   };
 

@@ -55,7 +55,6 @@ export default function CoreValues() {
 
   return (
     <section className="py-24 lg:py-40 bg-white relative overflow-hidden">
-      {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[30vw] h-[30vw] bg-emerald-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
 

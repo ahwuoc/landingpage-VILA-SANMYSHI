@@ -76,10 +76,10 @@ export default async function ServiceDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": t("home"), "item": `https://vila-sanmyshi.com/${locale}` },
-      { "@type": "ListItem", "position": 2, "name": t("services_label"), "item": `https://vila-sanmyshi.com/${locale}/services` },
-      { "@type": "ListItem", "position": 3, "name": catName, "item": `https://vila-sanmyshi.com/${locale}/services/${category}` },
-      { "@type": "ListItem", "position": 4, "name": title, "item": `https://vila-sanmyshi.com/${locale}/services/${category}/${id}` },
+      { "@type": "ListItem", "position": 1, "name": t("home"), "item": `https://vilasanmyshi.com/${locale}` },
+      { "@type": "ListItem", "position": 2, "name": t("services_label"), "item": `https://vilasanmyshi.com/${locale}/services` },
+      { "@type": "ListItem", "position": 3, "name": catName, "item": `https://vilasanmyshi.com/${locale}/services/${category}` },
+      { "@type": "ListItem", "position": 4, "name": title, "item": `https://vilasanmyshi.com/${locale}/services/${category}/${id}` },
     ]
   };
 
@@ -87,8 +87,8 @@ export default async function ServiceDetailPage({
     "@context": "https://schema.org",
     "@type": "Service",
     "name": title,
-    "url": `https://vila-sanmyshi.com/${locale}/services/${category}/${id}`,
-    "provider": { "@type": "LocalBusiness", "name": "VILA SANMYSHI", "url": `https://vila-sanmyshi.com/${locale}` },
+    "url": `https://vilasanmyshi.com/${locale}/services/${category}/${id}`,
+    "provider": { "@type": "LocalBusiness", "name": "VILA SANMYSHI", "url": `https://vilasanmyshi.com/${locale}` },
   };
 
   return (

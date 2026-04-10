@@ -86,10 +86,17 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 <span className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse-glow" />
                 {tag}
               </span>
-              <h1
-                className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase [filter:drop-shadow(0_4px_16px_rgba(0,0,0,0.6))]"
-                dangerouslySetInnerHTML={{ __html: title }}
-              />
+              {index === 0 ? (
+                <h1
+                  className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase [filter:drop-shadow(0_4px_16px_rgba(0,0,0,0.6))]"
+                  dangerouslySetInnerHTML={{ __html: title }}
+                />
+              ) : (
+                <div
+                  className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase [filter:drop-shadow(0_4px_16px_rgba(0,0,0,0.6))]"
+                  dangerouslySetInnerHTML={{ __html: title }}
+                />
+              )}
               <p className="text-base md:text-2xl lg:text-4xl landscape:text-sm md:landscape:text-base text-on-dark leading-relaxed mb-8 md:mb-16 landscape:mb-4 max-w-4xl font-medium [text-shadow:0_2px_20px_rgba(0,0,0,0.9),0_4px_40px_rgba(0,0,0,0.7)] opacity-100">
                 {subtitle}
               </p>

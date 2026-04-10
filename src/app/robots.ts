@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/'],
       },
     ],
-    sitemap: 'https://vila-sanmyshi.com/sitemap.xml',
+    sitemap: 'https://vilasanmyshi.com/sitemap.xml',
   };
 }
