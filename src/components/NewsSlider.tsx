@@ -13,22 +13,15 @@ import { NewsItem } from "@/lib/data";
 import "swiper/css";
 import "swiper/css/navigation";
 
-export default function NewsSlider() {
+export default function NewsSlider({ 
+  newsList = [] 
+}: { 
+  newsList?: NewsItem[] 
+}) {
   const t = useTranslations("Home.news");
   const locale = useLocale();
-  const [newsList, setNewsList] = useState<NewsItem[]>([]);
   const [swiper, setSwiper] = useState<any>(null);
   const { isLandscape, isMobile } = useResponsive();
-
-  useEffect(() => {
-    supabase
-      .from("news")
-      .select("id, title, date, category_id, news_categories(name), image, author, slug")
-      .eq("status", "Published")
-      .order("created_at", { ascending: false })
-      .limit(8)
-      .then(({ data }) => setNewsList(data as any || []));
-  }, []);
 
   const formatDate = (dateStr: string) => {
     try {

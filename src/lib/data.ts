@@ -41,8 +41,10 @@ export interface HeroSlide {
   is_visible: boolean;
 }
 
-export async function getNewsList(): Promise<NewsItem[]> {
-  const { data, error } = await supabase.from("news").select("*, news_categories(name, slug)").order("created_at", { ascending: false });
+export async function getNewsList(limit?: number): Promise<NewsItem[]> {
+  let query = supabase.from("news").select("*, news_categories(name, slug)").eq("status", "Published").order("created_at", { ascending: false });
+  if (limit) query = query.limit(limit);
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return data as any || [];
 }
@@ -58,8 +60,10 @@ export async function getNewsCategories(): Promise<{ id: number; name: Record<st
   return data || [];
 }
 
-export async function getServicesList(): Promise<ServiceItem[]> {
-  const { data, error } = await supabase.from("services").select("*, service_categories(name, slug)").order("created_at", { ascending: false });
+export async function getServicesList(limit?: number): Promise<ServiceItem[]> {
+  let query = supabase.from("services").select("*, service_categories(name, slug)").order("created_at", { ascending: false });
+  if (limit) query = query.limit(limit);
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return data as any || [];
 }

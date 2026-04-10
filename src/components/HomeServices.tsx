@@ -12,34 +12,22 @@ import { useResponsive } from "@/hooks/useResponsive";
 import "swiper/css";
 import "swiper/css/navigation";
 
-export default function HomeServices() {
+interface Service {
+  id: string;
+  title: Record<string, string>;
+  image: string;
+  service_categories?: { name: Record<string, string>; slug: string };
+}
+
+export default function HomeServices({ 
+  services = [] 
+}: { 
+  services?: Service[];
+}) {
   const t = useTranslations("Home.services");
   const locale = useLocale();
-  const [services, setServices] = useState<{ id: string; title: Record<string, string>; image: string; service_categories?: { name: Record<string, string>; slug: string } }[]>([]);
-  const [catSlugMap, setCatSlugMap] = useState<Record<string, string>>({});
   const [swiper, setSwiper] = useState<any>(null);
   const { isLandscape, isMobile } = useResponsive();
-
-  useEffect(() => {
-    supabase
-      .from("service_categories")
-      .select("name, slug")
-      .then(({ data }) => {
-        if (data) {
-          const map: Record<string, string> = {};
-          data.forEach(c => {
-            const name = typeof c.name === 'object' ? (c.name[locale] || c.name['vi']) : c.name;
-            map[name] = c.slug;
-          });
-          setCatSlugMap(map);
-        }
-      });
-    supabase
-      .from("services")
-      .select("id, title, image, service_categories(name, slug)")
-      .order("created_at", { ascending: true })
-      .then(({ data }) => setServices(data as any || []));
-  }, [locale]);
 
   return (
     <section className="py-20 lg:py-32 landscape:py-10 bg-white overflow-hidden">

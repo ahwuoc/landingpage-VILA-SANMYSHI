@@ -7,20 +7,27 @@ import NewsSlider from "@/components/NewsSlider";
 import HomeServices from "@/components/HomeServices";
 import HomeStats from "@/components/HomeStats";
 import PartnerSection from "@/components/PartnerSection";
-import { HeroSlide } from "@/lib/data";
+import { HeroSlide, ServiceItem, NewsItem } from "@/lib/data";
 import {useTranslations} from 'next-intl';
 
-export default function HomeView({ slides }: { slides: HeroSlide[] }) {
+export default function HomeView({ 
+  slides, 
+  services, 
+  newsList 
+}: { 
+  slides: HeroSlide[];
+  services: ServiceItem[];
+  newsList: NewsItem[];
+}) {
   const t = useTranslations('Index');
 
   return (
     <div className="bg-surface selection:bg-primary-container/30">
       <HeroCarousel slides={slides} />
-
-      <HomeServices />
+      <HomeServices services={services} />
       <HomeStats />
       <CoreValues />
-      <NewsSlider />
+      <NewsSlider newsList={newsList} />
       <PartnerSection />
 
       {/* CTA Section */}

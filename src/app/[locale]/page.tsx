@@ -1,6 +1,6 @@
 import HomeView from "@/views/Home/view";
 import { Metadata } from "next";
-import { getHeroSlides } from "@/lib/data";
+import { getHeroSlides, getServicesList, getNewsList } from "@/lib/data";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({
@@ -46,5 +46,8 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
   const slides = await getHeroSlides();
-  return <HomeView slides={slides} />;
+  const services = await getServicesList(8);
+  const newsList = await getNewsList(8);
+
+  return <HomeView slides={slides} services={services} newsList={newsList} />;
 }

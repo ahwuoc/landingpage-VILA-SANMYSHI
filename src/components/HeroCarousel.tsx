@@ -61,6 +61,8 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             alt={slide.tag[locale] || slide.tag['vi']}
             fill
             priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
             className={`object-cover ${index === current ? 'scale-105' : 'scale-100'} transition-transform duration-[7s] ease-linear`}
             sizes="100vw"
           />
@@ -88,16 +90,16 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               </span>
               {index === 0 ? (
                 <h1
-                  className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase [filter:drop-shadow(0_4px_16px_rgba(0,0,0,0.6))]"
+                  className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase drop-shadow-2xl"
                   dangerouslySetInnerHTML={{ __html: title }}
                 />
               ) : (
                 <div
-                  className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase [filter:drop-shadow(0_4px_16px_rgba(0,0,0,0.6))]"
+                  className="text-[clamp(2rem,7vw,4rem)] md:text-[clamp(4.5rem,9vw,7rem)] lg:text-[clamp(6.5rem,11vw,10rem)] landscape:text-2xl md:landscape:text-3xl font-black tracking-tighter text-on-dark mb-6 md:mb-12 landscape:mb-3 leading-[0.95] text-balance uppercase drop-shadow-2xl"
                   dangerouslySetInnerHTML={{ __html: title }}
                 />
               )}
-              <p className="text-base md:text-2xl lg:text-4xl landscape:text-sm md:landscape:text-base text-on-dark leading-relaxed mb-8 md:mb-16 landscape:mb-4 max-w-4xl font-medium [text-shadow:0_2px_20px_rgba(0,0,0,0.9),0_4px_40px_rgba(0,0,0,0.7)] opacity-100">
+              <p className="text-base md:text-2xl lg:text-4xl landscape:text-sm md:landscape:text-base text-on-dark leading-relaxed mb-8 md:mb-16 landscape:mb-4 max-w-4xl font-medium drop-shadow-lg opacity-100">
                 {subtitle}
               </p>
               <div className="flex flex-wrap gap-4 md:gap-8">
