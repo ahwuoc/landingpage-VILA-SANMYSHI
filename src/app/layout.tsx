@@ -2,6 +2,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const roboto = Roboto({
   subsets: ["latin", "vietnamese"],
@@ -26,6 +27,7 @@ export default function RootLayout({
         {children}
         <Toaster position="top-right" richColors closeButton />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
