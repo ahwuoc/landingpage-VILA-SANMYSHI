@@ -1,6 +1,7 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 const roboto = Roboto({
   subsets: ["latin", "vietnamese"],
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container font-sans antialiased overflow-x-hidden">
         {children}
         <Toaster position="top-right" richColors closeButton />
+        <Analytics />
       </body>
     </html>
   );
