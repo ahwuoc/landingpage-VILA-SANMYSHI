@@ -60,8 +60,8 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             src={slide.image}
             alt={slide.tag[locale] || slide.tag['vi']}
             fill
-            priority={index === 0}
-            loading={index === 0 ? "eager" : "lazy"}
+            preload={index === 0}
+            loading={index === 0 ? undefined : "lazy"}
             decoding="async"
             className={`object-cover ${index === current ? 'scale-105' : 'scale-100'} transition-transform duration-[7s] ease-linear`}
             sizes="100vw"

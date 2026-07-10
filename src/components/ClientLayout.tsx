@@ -5,14 +5,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 
-interface NavService { name: string; href: string; }
-
 export default function ClientLayout({
   children,
-  navServices = [],
 }: {
   children: React.ReactNode;
-  navServices?: NavService[];
 }) {
   const pathname = usePathname();
   const segments = pathname?.split("/") || [];
@@ -26,7 +22,7 @@ export default function ClientLayout({
 
   return (
     <>
-      <Navbar navServices={navServices} />
+      <Navbar />
       <main>{children}</main>
       <Footer />
       <FloatingContact />

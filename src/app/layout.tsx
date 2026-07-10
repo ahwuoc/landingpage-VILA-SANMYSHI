@@ -1,13 +1,14 @@
-import { Roboto } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const roboto = Roboto({
+const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-roboto",
-  weight: ["400", "500", "700"],
+  variable: "--font-be-vietnam",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -16,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${roboto.variable} light scroll-smooth`} data-scroll-behavior="smooth">
+    <html lang="vi" className={`${beVietnamPro.variable} light scroll-smooth`} data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

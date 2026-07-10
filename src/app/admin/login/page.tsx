@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
       <div className="relative w-full max-w-md">
         <div className="flex flex-col items-center mb-10 gap-4">
           <div className="relative w-16 h-16 rounded-2xl overflow-hidden shadow-xl ring-2 ring-primary/30">
-            <Image src="/images/logo.jpg" alt="Logo VILA SANMYSHI" fill className="object-contain" priority />
+            <Image src="/images/logo.jpg" alt="Logo VILA SANMYSHI" fill className="object-contain" preload />
           </div>
           <div className="text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-1">Hệ thống quản trị</p>

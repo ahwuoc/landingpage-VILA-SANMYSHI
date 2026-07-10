@@ -73,9 +73,21 @@
   },
   "ConsultationModal": {
     "success_title": "Gửi thành công!",
-    "success_msg": "Chuyên viên của chúng tôi sẽ liên hệ lại với bạn trong vòng 15-30 phút tới. Trân trọng!",
-    "form_label": "Đăng ký tư vấn",
-    "form_title": "Yêu cầu nhận giải pháp tối ưu",
+    "success_msg": "Đội ngũ VILA SANMYSHI đã nhận được thông tin và sẽ chủ động liên hệ lại với bạn trong thời gian sớm nhất.",
+    "campaign_badge": "Rà soát hồ sơ hải quan",
+    "campaign_title": "Kiểm tra bộ chứng từ trước khi mở tờ khai.",
+    "campaign_desc": "Gửi thông tin lô hàng để đội ngũ hỗ trợ rà soát sơ bộ chứng từ, làm rõ những nội dung cần bổ sung và đề xuất hướng xử lý phù hợp.",
+    "campaign_service": "Rà soát hồ sơ hải quan",
+    "campaign_benefits": [
+      "Kiểm tra cấu trúc bộ hồ sơ và thông tin hàng hóa",
+      "Gợi ý chứng từ hoặc dữ liệu cần bổ sung",
+      "Trao đổi phương án khai báo và vận chuyển phù hợp"
+    ],
+    "campaign_note": "Bảo mật thông tin · Không ràng buộc sử dụng dịch vụ",
+    "close_label": "Đóng cửa sổ tư vấn",
+    "form_label": "Nhận tư vấn sơ bộ",
+    "form_title": "Để lại thông tin lô hàng",
+    "form_intro": "Chỉ cần tên, số điện thoại và mô tả ngắn. Đội ngũ sẽ liên hệ để trao đổi chi tiết hơn.",
     "service_label": "Dịch vụ",
     "name_label": "Họ và Tên*",
     "name_placeholder": "Nguyễn Văn A",
@@ -83,7 +95,7 @@
     "phone_placeholder": "090 000 0000",
     "message_label": "Nhu cầu cụ thể",
     "message_placeholder": "Ví dụ: Cần thông quan 2 container tại Lao Bảo...",
-    "btn_submit": "Gửi yêu cầu ngay",
+    "btn_submit": "Nhận tư vấn hồ sơ",
     "btn_loading": "Đang gửi...",
     "privacy_note": "Bằng việc gửi thông tin, bạn đồng ý với chính sách bảo mật của chúng tôi. Chúng tôi cam kết không spam.",
     "error_msg": "Gửi thất bại, vui lòng thử lại sau",
@@ -198,10 +210,26 @@
     "hero": {
       "title_small": "HỒ SƠ CÔNG TY",
       "title_highlight": "VILA SANMYSHI",
-      "subtitle": "Kể từ khi thành lập vào năm 2018, VILA SANMYSHI đã không ngừng nỗ lực phát triển và hoàn thiện năng lực trong lĩnh vực thương mại và dịch vụ xuất nhập khẩu. Với định hướng lấy khách hàng làm trung tâm, công ty từng bước xây dựng uy tín thông qua chất lượng dịch vụ, sự minh bạch và tinh thần trách nhiệm. Chúng tôi hướng đến việc trở thành đối tác tin cậy, đồng hành cùng doanh nghiệp trong mọi hoạt động logistics và xuất nhập khẩu, mang lại giá trị bền vững và lâu dài."
+      "subtitle": "Từ cửa khẩu Lao Bảo, VILA SANMYSHI đồng hành cùng doanh nghiệp trong khai báo hải quan, xuất nhập khẩu và vận tải xuyên biên giới. Chúng tôi theo đuổi cách làm rõ ràng, chủ động và có trách nhiệm để mỗi lô hàng được vận hành an tâm hơn.",
+      "established_label": "Thành lập doanh nghiệp",
+      "proofs": [
+        {
+          "label": "Đại lý hải quan",
+          "value": "1391/QĐ-TCHQ"
+        },
+        {
+          "label": "Tuyến EWEC",
+          "value": "VIỆT NAM · LÀO · THÁI"
+        },
+        {
+          "label": "Hoạt động",
+          "value": "TỪ NĂM 2018"
+        }
+      ]
     },
     "video_title": "Video Khai Trương Văn Phòng Trụ Sở Mới",
     "profile_title": "HỒ SƠ CÔNG TY",
+    "profile_tagline": "Xuất nhập khẩu · Hải quan · Logistics",
     "info": {
       "company_name": "Tên công ty",
       "main_office": "Văn Phòng Chính",
@@ -233,52 +261,64 @@
     "capacity": [
       {
         "label": "Kinh nghiệm",
-        "value": "6+",
-        "desc": "Năm hoạt động trong ngành thương mại và xuất nhập khẩu."
+        "value": "8+",
+        "desc": "Năm hoạt động trong lĩnh vực thương mại, xuất nhập khẩu và logistics."
       },
       {
-        "label": "Chứng nhận",
-        "value": "Uy tín",
-        "desc": "Được quản lý bởi Thuế tỉnh Quảng Trị với tình trạng hoạt động ổn định."
+        "label": "Tư cách nghiệp vụ",
+        "value": "1391",
+        "desc": "Quyết định công nhận đại lý làm thủ tục hải quan số 1391/QĐ-TCHQ."
       },
       {
-        "label": "Lĩnh vực",
-        "value": "Đa dạng",
-        "desc": "Kinh doanh đa ngành nghề với trọng tâm là bán buôn tổng hợp."
+        "label": "Phạm vi kết nối",
+        "value": "3 nước",
+        "desc": "Tập trung kết nối hàng hóa trên tuyến Việt Nam, Lào và Thái Lan."
       },
       {
-        "label": "Dịch vụ",
-        "value": "Tận tâm",
-        "desc": "Hỗ trợ khách hàng tối đa trong mọi giao dịch thương mại."
+        "label": "Mô hình hỗ trợ",
+        "value": "Một đầu mối",
+        "desc": "Phối hợp xuyên suốt từ rà soát chứng từ đến giao nhận hàng hóa."
       }
     ],
+    "capacity_title": "Nền tảng để khách hàng an tâm hợp tác",
+    "capacity_intro": "Những thông tin cốt lõi thể hiện định hướng vận hành thực tế của VILA SANMYSHI trên tuyến cửa khẩu và hành lang thương mại khu vực.",
     "vision": {
       "title": "Tầm nhìn",
-      "content": "Trở thành doanh nghiệp hàng đầu trong lĩnh vực thương mại và dịch vụ xuất nhập khẩu tại khu vực, kết nối thị trường Việt Nam với các đối tác quốc tế thông qua sự chuyên nghiệp và uy tín."
+      "content": "Trở thành đối tác logistics và thủ tục hải quan đáng tin cậy trên Hành lang Kinh tế Đông - Tây, kết nối doanh nghiệp Việt Nam với thị trường Lào, Thái Lan và khu vực bằng năng lực vận hành chuyên nghiệp."
     },
     "mission": {
       "title": "Sứ mệnh",
-      "content": "Cung cấp các sản phẩm và dịch vụ chất lượng cao, tối ưu hóa quy trình thương mại để mang lại lợi ích tốt nhất cho khách hàng, đồng thời đóng góp vào sự phát triển kinh tế địa phương."
+      "content": "Giảm bớt sự phức tạp trong hồ sơ, thủ tục và vận chuyển xuyên biên giới để doanh nghiệp tập trung vào kinh doanh. Mỗi giải pháp hướng đến sự đúng đắn, minh bạch và phù hợp với nhu cầu thực tế của từng lô hàng."
+    },
+    "purpose": {
+      "eyebrow": "Định hướng doanh nghiệp",
+      "title": "Gọn thủ tục. Rõ trách nhiệm. Vững hành trình.",
+      "intro": "VILA SANMYSHI xây dựng dịch vụ từ góc nhìn của người trực tiếp vận hành: hiểu hồ sơ, hiểu tuyến đường và chủ động phối hợp trước khi vấn đề trở thành điểm nghẽn.",
+      "promise_title": "Lời hứa thương hiệu",
+      "promise_content": "Tiếp nhận yêu cầu bằng sự lắng nghe, tư vấn bằng thông tin rõ ràng và theo sát công việc đến khi hoàn tất. Chúng tôi coi sự an tâm của khách hàng là thước đo cho chất lượng phục vụ.",
+      "values_title": "Nguyên tắc làm việc"
     },
     "values": [
       {
         "title": "Uy tín",
-        "desc": "Luôn giữ đúng cam kết với khách hàng và đối tác."
+        "desc": "Nói đúng phạm vi, làm đúng cam kết và chủ động báo cáo khi có thay đổi."
       },
       {
-        "title": "Chất lượng",
-        "desc": "Đảm bảo tiêu chuẩn cao nhất cho mọi mặt hàng kinh doanh."
+        "title": "Chính xác",
+        "desc": "Rà soát thông tin, chứng từ và yêu cầu nghiệp vụ trước khi triển khai."
       },
       {
         "title": "Minh bạch",
-        "desc": "Rõ ràng trong mọi giao dịch pháp lý và tài chính."
+        "desc": "Trao đổi rõ tiến độ, chi phí và những nội dung cần khách hàng phối hợp."
       },
       {
-        "title": "Hợp tác",
-        "desc": "Xây dựng mối quan hệ win-win bền vững."
+        "title": "Đồng hành",
+        "desc": "Làm việc như một đầu mối cùng khách hàng xử lý trọn vẹn từng lô hàng."
       }
     ],
+    "business_fields_eyebrow": "Phạm vi dịch vụ",
     "business_fields_title": "Lĩnh vực kinh doanh",
+    "business_fields_intro": "Từ thủ tục hải quan, vận tải đường bộ đến kho bãi và thương mại, các nhóm dịch vụ được kết nối để doanh nghiệp dễ lựa chọn một phương án phù hợp thay vì làm việc với nhiều đầu mối rời rạc.",
     "business_fields": [
       "Dịch vụ xuất nhập khẩu hàng hóa",
       "Bán buôn thực phẩm và đồ uống",
@@ -293,7 +333,42 @@
       "Phân phối hàng tiêu dùng",
       "Thương mại tổng hợp"
     ],
+    "process": {
+      "eyebrow": "Cách chúng tôi đồng hành",
+      "title": "Một đầu mối xuyên suốt từ hồ sơ đến giao nhận.",
+      "intro": "Quy trình được tổ chức thành bốn chặng rõ ràng để khách hàng biết công việc đang ở đâu, cần chuẩn bị gì và bước tiếp theo là gì.",
+      "image_alt": "Hoạt động vận tải đa phương thức kết nối đường bộ, đường sắt và đường biển",
+      "route_label": "Kết nối trọng điểm trên tuyến EWEC",
+      "commitment_title": "Cam kết trong từng hồ sơ",
+      "steps": [
+        {
+          "title": "Tiếp nhận & làm rõ",
+          "desc": "Ghi nhận loại hàng, tuyến đi, thời gian dự kiến và nhu cầu hỗ trợ thực tế."
+        },
+        {
+          "title": "Rà soát chứng từ",
+          "desc": "Kiểm tra bộ hồ sơ, nhận diện thông tin còn thiếu và thống nhất phương án xử lý."
+        },
+        {
+          "title": "Tổ chức thực hiện",
+          "desc": "Phối hợp khai báo, phương tiện, cửa khẩu và các bên liên quan theo kế hoạch."
+        },
+        {
+          "title": "Theo dõi & bàn giao",
+          "desc": "Cập nhật tiến độ, xử lý phát sinh và hoàn tất chứng từ sau khi giao nhận."
+        }
+      ],
+      "commitments": [
+        "Trao đổi rõ phạm vi công việc và chi phí",
+        "Rà soát hồ sơ trước khi triển khai",
+        "Cập nhật tiến độ theo từng chặng xử lý",
+        "Chủ động phối hợp khi phát sinh vướng mắc"
+      ]
+    },
     "timeline_title": "Hành trình phát triển",
+    "timeline_period": "2018 · Đến nay",
+    "timeline_prev": "Xem các cột mốc trước",
+    "timeline_next": "Xem các cột mốc tiếp theo",
     "timeline": [
       {
         "year": "2018",

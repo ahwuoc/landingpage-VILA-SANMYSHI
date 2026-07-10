@@ -45,18 +45,18 @@ export async function getNewsList(limit?: number): Promise<NewsItem[]> {
   let query = supabase.from("news").select("*, news_categories(name, slug)").eq("status", "Published").order("created_at", { ascending: false });
   if (limit) query = query.limit(limit);
   const { data, error } = await query;
-  if (error) throw new Error(error.message);
-  return data as any || [];
+  if (error) return [];
+  return (data as NewsItem[] | null) || [];
 }
 
 export async function getNewsById(id: string): Promise<NewsItem | null> {
   const { data } = await supabase.from("news").select("*, news_categories(name, slug)").eq("id", id).single();
-  return data as any || null;
+  return (data as NewsItem | null) || null;
 }
 
 export async function getNewsCategories(): Promise<{ id: number; name: Record<string, string>; slug: string }[]> {
   const { data, error } = await supabase.from("news_categories").select("*").order("name");
-  if (error) throw new Error(error.message);
+  if (error) return [];
   return data || [];
 }
 
@@ -64,13 +64,13 @@ export async function getServicesList(limit?: number): Promise<ServiceItem[]> {
   let query = supabase.from("services").select("*, service_categories(name, slug)").order("created_at", { ascending: false });
   if (limit) query = query.limit(limit);
   const { data, error } = await query;
-  if (error) throw new Error(error.message);
-  return data as any || [];
+  if (error) return [];
+  return (data as ServiceItem[] | null) || [];
 }
 
 export async function getServiceById(id: string): Promise<ServiceItem | null> {
   const { data } = await supabase.from("services").select("*, service_categories(name, slug)").eq("id", id).single();
-  return data as any || null;
+  return (data as ServiceItem | null) || null;
 }
 
 const HERO_SLIDES: HeroSlide[] = [

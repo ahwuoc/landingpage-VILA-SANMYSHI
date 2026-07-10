@@ -20,7 +20,7 @@ export default function FeaturedNewsCard({ news }: FeaturedNewsCardProps) {
     <section className="relative -mt-20 z-20 max-w-7xl mx-auto px-8">
       <div className="bg-card rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-on-surface/5">
         <div className="lg:w-3/5 relative min-h-[400px]">
-          <Image src={news.image} alt={title} fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 60vw" />
+          <Image src={news.image} alt={title} fill className="object-cover" preload sizes="(max-width: 768px) 100vw, 60vw" />
         </div>
         <div className="lg:w-2/5 p-12 md:p-20 flex flex-col justify-center">
           <span className="text-primary text-xs font-black uppercase tracking-widest mb-6 block">

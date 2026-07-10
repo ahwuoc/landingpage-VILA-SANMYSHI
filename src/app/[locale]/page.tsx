@@ -1,6 +1,6 @@
 import HomeView from "@/views/Home/view";
 import { Metadata } from "next";
-import { getHeroSlides, getServicesList, getNewsList } from "@/lib/data";
+import { getServicesList, getNewsList } from "@/lib/data";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 
 export async function generateMetadata({
@@ -45,9 +45,13 @@ export default async function Home({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const slides = await getHeroSlides();
-  const services = await getServicesList(8);
-  const newsList = await getNewsList(8);
+  const [servicesResult, newsResult] = await Promise.allSettled([
+    getServicesList(6),
+    getNewsList(6),
+  ]);
 
-  return <HomeView slides={slides} services={services} newsList={newsList} />;
+  const services = servicesResult.status === "fulfilled" ? servicesResult.value : [];
+  const newsList = newsResult.status === "fulfilled" ? newsResult.value : [];
+
+  return <HomeView services={services} newsList={newsList} />;
 }

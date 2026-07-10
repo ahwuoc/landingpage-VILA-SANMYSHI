@@ -73,9 +73,21 @@
   },
   "ConsultationModal": {
     "success_title": "Sent successfully!",
-    "success_msg": "Our specialist will contact you within 15-30 minutes. Thank you!",
-    "form_label": "Consultation Request",
-    "form_title": "Request optimal solutions",
+    "success_msg": "The VILA SANMYSHI team has received your information and will contact you as soon as possible.",
+    "campaign_badge": "Customs file review",
+    "campaign_title": "Review your documents before filing the declaration.",
+    "campaign_desc": "Share your shipment details so our team can perform an initial document review, identify missing information and discuss a suitable handling approach.",
+    "campaign_service": "Customs document review",
+    "campaign_benefits": [
+      "Review the document structure and cargo information",
+      "Identify documents or details that may be missing",
+      "Discuss a suitable customs and transport approach"
+    ],
+    "campaign_note": "Confidential information · No service commitment required",
+    "close_label": "Close consultation dialog",
+    "form_label": "Request an initial consultation",
+    "form_title": "Tell us about your shipment",
+    "form_intro": "Leave your name, phone number and a short description. Our team will contact you to discuss the details.",
     "service_label": "Service",
     "name_label": "Full Name*",
     "name_placeholder": "John Doe",
@@ -83,7 +95,7 @@
     "phone_placeholder": "090 000 0000",
     "message_label": "Specific Needs",
     "message_placeholder": "Example: Need clearance for 2 containers at Lao Bao...",
-    "btn_submit": "Send Request Now",
+    "btn_submit": "Request document advice",
     "btn_loading": "Sending...",
     "privacy_note": "By submitting information, you agree to our privacy policy. We are committed to no spam.",
     "error_msg": "Submission failed, please try again later",
@@ -198,10 +210,26 @@
     "hero": {
       "title_small": "COMPANY PROFILE",
       "title_highlight": "VILA SANMYSHI",
-      "subtitle": "Since its establishment in 2018, VILA SANMYSHI has continuously strived to develop and improve its orientation in the field of commerce and import-export services. With a customer-centric orientation, the company step by step builds prestige through service quality, transparency and spirit of responsibility. We aim to become a reliable partner, accompanying businesses in all logistics and import-export activities, bringing sustainable and long-term value."
+      "subtitle": "From Lao Bao Border Gate, VILA SANMYSHI supports businesses with customs procedures, import-export operations and cross-border transport. We work with clarity, initiative and accountability so every shipment can move with greater confidence.",
+      "established_label": "Company established",
+      "proofs": [
+        {
+          "label": "Customs agent",
+          "value": "1391/QĐ-TCHQ"
+        },
+        {
+          "label": "EWEC route",
+          "value": "VIETNAM · LAOS · THAILAND"
+        },
+        {
+          "label": "Operating",
+          "value": "SINCE 2018"
+        }
+      ]
     },
     "video_title": "Video Opening New Head Office",
     "profile_title": "COMPANY PROFILE",
+    "profile_tagline": "Import-export · Customs · Logistics",
     "info": {
       "company_name": "Company Name",
       "main_office": "Main Office",
@@ -238,52 +266,64 @@
     "capacity": [
       {
         "label": "Experience",
-        "value": "6+",
-        "desc": "Years of operation in the trade and import-export industry."
+        "value": "8+",
+        "desc": "Years of operation across trade, import-export and logistics."
       },
       {
-        "label": "Certification",
-        "value": "Prestige",
-        "desc": "Managed by Quang Tri Tax Department with stable operation status."
+        "label": "Professional status",
+        "value": "1391",
+        "desc": "Recognition as a customs procedures agent under Decision 1391/QĐ-TCHQ."
       },
       {
-        "label": "Fields",
-        "value": "Diverse",
-        "desc": "Multidisciplinary business with a focus on general wholesale."
+        "label": "Connected markets",
+        "value": "3 countries",
+        "desc": "Focused on goods movement across Vietnam, Laos and Thailand."
       },
       {
-        "label": "Service",
-        "value": "Dedicated",
-        "desc": "Maximum customer support in all commercial transactions."
+        "label": "Support model",
+        "value": "One contact",
+        "desc": "Coordinated support from document review through final delivery."
       }
     ],
+    "capacity_title": "A practical foundation for confident cooperation",
+    "capacity_intro": "The core facts behind VILA SANMYSHI's operating approach across border gates and regional trade corridors.",
     "vision": {
       "title": "Vision",
-      "content": "To become a leading enterprise in the field of trade and import-export services in the region, connecting the Vietnamese market with international partners through professionalism and prestige."
+      "content": "To become a trusted logistics and customs procedures partner along the East-West Economic Corridor, connecting Vietnamese businesses with Laos, Thailand and the wider region through professional operations."
     },
     "mission": {
       "title": "Mission",
-      "content": "To provide high-quality products and services, optimizing trade processes to bring the best benefits to customers, while contributing to local economic development."
+      "content": "To reduce the complexity of documents, procedures and cross-border transport so businesses can focus on growth. Every solution prioritizes correctness, transparency and the real requirements of each shipment."
+    },
+    "purpose": {
+      "eyebrow": "Our direction",
+      "title": "Simpler procedures. Clear ownership. Confident journeys.",
+      "intro": "VILA SANMYSHI builds its service from an operator's point of view: understand the documents, understand the route and coordinate early before an issue becomes a bottleneck.",
+      "promise_title": "Our brand promise",
+      "promise_content": "We listen carefully, advise with clear information and stay with the work through completion. Customer confidence is how we measure the quality of our service.",
+      "values_title": "How we work"
     },
     "values": [
       {
         "title": "Prestige",
-        "desc": "Always keep commitments with customers and partners."
+        "desc": "Set realistic expectations, honor commitments and report changes proactively."
       },
       {
-        "title": "Quality",
-        "desc": "Ensuring the highest standards for all business items."
+        "title": "Accuracy",
+        "desc": "Review information, documents and operational requirements before execution."
       },
       {
         "title": "Transparency",
-        "desc": "Clear in all legal and financial transactions."
+        "desc": "Communicate progress, costs and required customer actions clearly."
       },
       {
-        "title": "Cooperation",
-        "desc": "Building sustainable win-win relationships."
+        "title": "Partnership",
+        "desc": "Work as one coordinated contact with the customer throughout each shipment."
       }
     ],
+    "business_fields_eyebrow": "Service scope",
     "business_fields_title": "Business Fields",
+    "business_fields_intro": "Customs procedures, road transport, warehousing and trade services are connected so businesses can choose one coherent solution instead of managing multiple disconnected providers.",
     "business_fields": [
       "Goods import and export services",
       "Wholesale of food and beverages",
@@ -298,7 +338,42 @@
       "Distribution of consumer goods",
       "General trade"
     ],
+    "process": {
+      "eyebrow": "How we support you",
+      "title": "One accountable contact from documents to delivery.",
+      "intro": "The work is organized into four clear stages so customers always know the current status, what is required and what happens next.",
+      "image_alt": "Multimodal logistics connecting road, rail and sea transport",
+      "route_label": "Key connections along the EWEC route",
+      "commitment_title": "Commitments for every file",
+      "steps": [
+        {
+          "title": "Receive & clarify",
+          "desc": "Confirm the cargo, route, expected timing and the support actually required."
+        },
+        {
+          "title": "Review documents",
+          "desc": "Check the document set, identify missing details and agree on the handling plan."
+        },
+        {
+          "title": "Coordinate execution",
+          "desc": "Align declarations, vehicles, border gates and relevant parties to the plan."
+        },
+        {
+          "title": "Track & hand over",
+          "desc": "Update progress, manage issues and complete documents after delivery."
+        }
+      ],
+      "commitments": [
+        "Clear scope of work and costs",
+        "Document review before execution",
+        "Progress updates at each stage",
+        "Proactive coordination when issues arise"
+      ]
+    },
     "timeline_title": "Development Journey",
+    "timeline_period": "2018 · Present",
+    "timeline_prev": "View previous milestones",
+    "timeline_next": "View next milestones",
     "timeline": [
       {
         "year": "2018",

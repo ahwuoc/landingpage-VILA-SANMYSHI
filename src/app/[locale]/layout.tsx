@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import ClientLayout from "@/components/ClientLayout";
-import { getServicesList } from "@/lib/data";
-import { supabase } from "@/lib/supabase";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
@@ -77,45 +75,13 @@ export default async function LocaleLayout({
 }>) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     notFound();
   }
 
   setRequestLocale(locale);
 
   const messages = await getMessages();
-
-  const services = await getServicesList();
-  const { data: cats } = await supabase.from("service_categories").select("id, name, slug");
-
-  const getLocalizedName = (nameObj: any) => {
-    if (!nameObj) return "";
-    const obj = nameObj as Record<string, string>;
-    return obj[locale] || obj['vi'] || "";
-  };
-
-  const serviceNavItems = services.map(s => {
-    const categoryName = getLocalizedName(s.service_categories?.name);
-    const serviceTitle = s.title[locale] || s.title['vi'] || "";
-
-    return {
-      name: serviceTitle,
-      href: `/services/${s.service_categories?.slug || "all"}/${s.id}`,
-      category: categoryName || getLocalizedName({ vi: "Dịch vụ khác", en: "Other Services", th: "บริการอื่น" }),
-      categorySlug: s.service_categories?.slug || "all",
-    };
-  });
-
-  const existingCatIds = new Set(services.filter(s => s.category_id).map(s => s.category_id));
-  const emptyCatItems = (cats || [])
-    .filter(c => !existingCatIds.has(c.id))
-    .map(c => ({
-      name: "",
-      href: `/services/${c.slug}`,
-      category: getLocalizedName(c.name),
-      categorySlug: c.slug
-    }));
-  const navServices = [...serviceNavItems, ...emptyCatItems];
 
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -183,7 +149,7 @@ export default async function LocaleLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
-      <ClientLayout navServices={navServices}>
+      <ClientLayout>
         {children}
       </ClientLayout>
     </NextIntlClientProvider>

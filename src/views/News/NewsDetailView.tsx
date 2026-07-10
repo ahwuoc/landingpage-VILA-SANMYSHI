@@ -28,7 +28,7 @@ export default async function NewsDetailView({ id }: { id: string }) {
       {/* Article Header */}
       <header className="relative pt-48 pb-20 overflow-hidden bg-page-dark">
         <div className="absolute inset-0 opacity-20">
-          <Image src={newsItem.image} alt={title} fill className="object-cover" priority sizes="100vw" />
+          <Image src={newsItem.image} alt={title} fill className="object-cover" preload sizes="100vw" />
           <div className="absolute inset-0 bg-black/25" />
         </div>
         <div className="relative z-10 max-w-5xl mx-auto px-8">

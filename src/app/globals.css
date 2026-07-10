@@ -1,4 +1,4 @@
-@import "tailwindcss";
+    @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 /* ============================================
@@ -33,27 +33,39 @@
 
 /* ---------- Base CSS Variables ---------- */
 :root {
-  /* === Material Design 3 — Core Palette === */
-  --md-primary: #006d36;
+  /* === Brand palette: green + calm neutrals === */
+  --brand-50: #f2f8f4;
+  --brand-100: #e3f1e8;
+  --brand-200: #c7e2d0;
+  --brand-300: #9dccae;
+  --brand-400: #67ad82;
+  --brand-500: #3b8f61;
+  --brand-600: #25754c;
+  --brand-700: #1c5d3d;
+  --brand-800: #174a32;
+  --brand-900: #123d2b;
+  --brand-950: #08281c;
+
+  --md-primary: var(--brand-600);
   --md-on-primary: #ffffff;
-  --md-primary-container: #24e87d;
-  --md-on-primary-container: #006330;
-  --md-primary-fixed: #61ff98;
-  --md-primary-fixed-dim: #18e379;
+  --md-primary-container: var(--brand-100);
+  --md-on-primary-container: var(--brand-900);
+  --md-primary-fixed: var(--brand-100);
+  --md-primary-fixed-dim: var(--brand-200);
 
-  --md-secondary: #206c3b;
+  --md-secondary: #4d6b5c;
   --md-on-secondary: #ffffff;
-  --md-secondary-container: #a4f1b4;
-  --md-on-secondary-container: #25703f;
-  --md-secondary-fixed: #a7f4b7;
-  --md-secondary-fixed-dim: #8cd79c;
+  --md-secondary-container: #e8f0eb;
+  --md-on-secondary-container: #203c2e;
+  --md-secondary-fixed: #e8f0eb;
+  --md-secondary-fixed-dim: #d2e0d7;
 
-  --md-tertiary: #845419;
+  --md-tertiary: #60776b;
   --md-on-tertiary: #ffffff;
-  --md-tertiary-container: #ffbe7a;
-  --md-on-tertiary-container: #794b10;
-  --md-tertiary-fixed: #ffdcbc;
-  --md-tertiary-fixed-dim: #faba76;
+  --md-tertiary-container: #e7efea;
+  --md-on-tertiary-container: #263d31;
+  --md-tertiary-fixed: #e7efea;
+  --md-tertiary-fixed-dim: #d0ddd5;
 
   --md-error: #ba1a1a;
   --md-on-error: #ffffff;
@@ -61,34 +73,34 @@
   --md-on-error-container: #93000a;
 
   /* === Surfaces === */
-  --md-background: #f7f9fc;
-  --md-on-background: #191c1e;
-  --md-surface: #f7f9fc;
-  --md-on-surface: #191c1e;
-  --md-surface-variant: #e0e3e6;
-  --md-on-surface-variant: #3c4a3d;
-  --md-surface-tint: #006d36;
+  --md-background: #f8fbf9;
+  --md-on-background: #17352a;
+  --md-surface: #f8fbf9;
+  --md-on-surface: #17352a;
+  --md-surface-variant: #e7f0ea;
+  --md-on-surface-variant: #566a60;
+  --md-surface-tint: var(--brand-600);
 
-  --md-surface-dim: #d8dadd;
-  --md-surface-bright: #f7f9fc;
+  --md-surface-dim: #dce6df;
+  --md-surface-bright: #ffffff;
   --md-surface-container-lowest: #ffffff;
-  --md-surface-container-low: #f2f4f7;
-  --md-surface-container: #eceef1;
-  --md-surface-container-high: #e6e8eb;
-  --md-surface-container-highest: #e0e3e6;
+  --md-surface-container-low: #f2f7f4;
+  --md-surface-container: #eaf2ed;
+  --md-surface-container-high: #e2ece6;
+  --md-surface-container-highest: #d9e5dd;
 
   /* === Outline === */
-  --md-outline: #6b7b6c;
-  --md-outline-variant: #bacbba;
+  --md-outline: #71837a;
+  --md-outline-variant: #d2dfd7;
 
   /* === Inverse === */
-  --md-inverse-surface: #2d3133;
-  --md-inverse-on-surface: #eff1f4;
-  --md-inverse-primary: #18e379;
+  --md-inverse-surface: var(--brand-950);
+  --md-inverse-on-surface: #f5fbf7;
+  --md-inverse-primary: var(--brand-300);
 
   /* === Fixed variants === */
-  --md-on-primary-fixed: #00210c;
-  --md-on-primary-fixed-variant: #005227;
+  --md-on-primary-fixed: #052515;
+  --md-on-primary-fixed-variant: var(--brand-800);
   --md-on-secondary-fixed: #00210c;
   --md-on-secondary-fixed-variant: #005227;
   --md-on-tertiary-fixed: #2c1600;
@@ -113,8 +125,8 @@
   --emerald-600: #059669;
 
   /* === Gradients === */
-  --gradient-hero-overlay: linear-gradient(to right, var(--md-background), rgba(247, 249, 252, 0.8), transparent);
-  --gradient-primary-section: linear-gradient(to bottom right, var(--md-primary), var(--md-on-primary-container));
+  --gradient-hero-overlay: linear-gradient(to right, var(--md-background), rgba(248, 251, 249, 0.82), transparent);
+  --gradient-primary-section: linear-gradient(to bottom right, var(--brand-700), var(--brand-900));
   --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
 
   /* === Shadows === */
@@ -122,7 +134,7 @@
   --shadow-card-hover: 0 20px 25px -5px rgba(25, 28, 30, 0.08), 0 8px 10px -6px rgba(25, 28, 30, 0.04);
   --shadow-nav: 0px 24px 48px rgba(25, 28, 30, 0.06);
   --shadow-elevated: 0 25px 50px -12px rgba(25, 28, 30, 0.15);
-  --shadow-glow-primary: 0 0 20px rgba(36, 232, 125, 0.4);
+  --shadow-glow-primary: 0 12px 32px rgba(37, 117, 76, 0.18);
 
   /* === Blur === */
   --blur-glass: 12px;
@@ -144,11 +156,24 @@
    ============================================ */
 @theme inline {
   /* Font families */
-  --font-sans: var(--font-roboto), system-ui, -apple-system, sans-serif;
-  --font-headline: var(--font-roboto), system-ui, sans-serif;
-  --font-body: var(--font-roboto), system-ui, sans-serif;
-  --font-label: var(--font-roboto), system-ui, sans-serif;
+  --font-sans: var(--font-be-vietnam), sans-serif;
+  --font-headline: var(--font-be-vietnam), sans-serif;
+  --font-body: var(--font-be-vietnam), sans-serif;
+  --font-label: var(--font-be-vietnam), sans-serif;
   --font-mono: var(--font-geist-mono), "Fira Code", monospace;
+
+  /* Small Tailwind brand palette used across public pages */
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
 
   /* === Material Design 3 Colors === */
 
@@ -341,11 +366,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(36, 232, 125, 0.2);
+    box-shadow: 0 0 20px rgba(37, 117, 76, 0.16);
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(36, 232, 125, 0.4), 0 0 80px rgba(36, 232, 125, 0.1);
+    box-shadow: 0 0 40px rgba(37, 117, 76, 0.28), 0 0 80px rgba(37, 117, 76, 0.08);
   }
 }
 
@@ -386,7 +411,7 @@ body {
 body {
   background: var(--md-surface);
   color: var(--md-on-surface);
-  font-family: var(--font-roboto), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-be-vietnam), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
@@ -411,84 +436,77 @@ body {
 
 /* Display — Hero headings lớn nhất */
 .text-display-xl {
-  font-size: clamp(3.5rem, 10vw, 9rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
 }
 
 .text-display-lg {
-  font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
 }
 
 .text-display-md {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 /* Heading — Section titles */
 .text-heading-xl {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 900;
-  line-height: 1.05;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.16;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
 }
 
 .text-heading-lg {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 900;
-  line-height: 1.1;
+  font-size: clamp(1.65rem, 3vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1.2;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
 }
 
 .text-heading-md {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
-  font-weight: 900;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.3;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
 }
 
 .text-heading-sm {
   font-size: 1.125rem;
-  font-weight: 900;
-  line-height: 1.3;
+  font-weight: 700;
+  line-height: 1.4;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
 }
 
 /* Label — Eyebrow / badge text */
 .text-label-lg {
   font-size: 0.75rem;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.2em;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .text-label-md {
   font-size: 0.625rem;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.3em;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .text-label-sm {
   font-size: 0.5rem;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.4em;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -605,11 +623,11 @@ body {
 }
 
 .mesh-gradient {
-  background: radial-gradient(at 0% 0%, rgba(0, 109, 54, 0.15) 0px, transparent 50%),
-    radial-gradient(at 50% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(0, 109, 54, 0.15) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(36, 232, 125, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(0, 109, 54, 0.1) 0px, transparent 50%);
+  background: radial-gradient(at 0% 0%, rgba(37, 117, 76, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, rgba(103, 173, 130, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(28, 93, 61, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(199, 226, 208, 0.18) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(18, 61, 43, 0.08) 0px, transparent 50%);
 }
 
 /* Scrollbar styling */
@@ -681,7 +699,7 @@ body {
 }
 
 .tiptap .selectedCell:after {
-  background: rgba(36, 232, 125, 0.1);
+  background: rgba(37, 117, 76, 0.1);
   content: "";
   left: 0;
   right: 0;
@@ -723,7 +741,7 @@ body {
 }
 
 .tiptap blockquote {
-  border-left: 4px solid #24e87d;
+  border-left: 4px solid #25754c;
   padding-left: 1.5rem;
   margin: 1.5rem 0;
   font-style: italic;
@@ -742,6 +760,6 @@ body {
 }
 
 .tiptap-editor-container:focus-within {
-  border-color: #24e87d !important;
-  box-shadow: 0 0 0 4px rgba(36, 232, 125, 0.1);
+  border-color: #25754c !important;
+  box-shadow: 0 0 0 4px rgba(37, 117, 76, 0.1);
 }

@@ -1,412 +1,220 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useResponsive } from "@/hooks/useResponsive";
-import { BRAND_NAME, COMPANY_INFO } from "@/constants/company";
-import ConsultationModal from "./ConsultationModal";
+import { ArrowUpRight, Mail, Menu, Phone, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { COMPANY_INFO } from "@/constants/company";
 import { ADMIN_LANGS as LANGUAGES } from "@/constants/languages";
+import ConsultationModal from "./ConsultationModal";
 
-interface NavService { name: string; href: string; category?: string; categorySlug?: string; }
+const consultationOfferKey = "vila-consultation-offer-seen";
 
-export default function Navbar({ navServices = [] }: { navServices?: NavService[] }) {
+export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("Navbar");
-  const { isDesktop, mounted } = useResponsive();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const langRef = useRef<HTMLDivElement>(null);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const servicesByCategory = navServices.reduce((acc, svc) => {
-    const cat = svc.category || t('other_services');
-    if (!acc[cat]) acc[cat] = { slug: svc.categorySlug || "", items: [] };
-    acc[cat].items.push(svc);
-    return acc;
-  }, {} as Record<string, { slug: string; items: NavService[] }>);
 
   const navLinks = [
     { name: t("home"), href: "/" },
-    {
-      name: t("about"),
-      href: "/about",
-      dropdown: [
-        { name: t("about_us"), href: "/about" },
-        { name: t("branches"), href: "/branches" },
-      ]
-    },
-    { name: t("services"), href: "/services", dropdown: navServices },
+    { name: t("about"), href: "/about" },
+    { name: t("services"), href: "/services" },
+    { name: t("branches"), href: "/branches" },
     { name: t("news"), href: "/news" },
     { name: t("contact"), href: "/contact" },
   ];
 
-  const changeLanguage = (newLocale: string) => {
-    router.replace(pathname, { locale: newLocale as any });
-    setIsLangOpen(false);
-  };
-
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.classList.add("menu-open");
-    } else {
-      document.body.style.overflow = "unset";
-      document.body.classList.remove("menu-open");
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    document.body.classList.toggle("menu-open", isOpen);
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.body.classList.remove("menu-open");
     };
   }, [isOpen]);
 
   useEffect(() => {
-    setIsOpen(false);
-    setActiveDropdown(null);
-  }, [pathname, isDesktop]);
+    if (pathname !== "/" || isOpen || isModalOpen || sessionStorage.getItem(consultationOfferKey)) return;
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setActiveDropdown(null);
-      }
-      if (langRef.current && !langRef.current.contains(event.target as Node)) {
-        setIsLangOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    const timer = window.setTimeout(() => setIsModalOpen(true), 3800);
+    return () => window.clearTimeout(timer);
+  }, [isModalOpen, isOpen, pathname]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const closeConsultationModal = () => {
+    sessionStorage.setItem(consultationOfferKey, "1");
+    setIsModalOpen(false);
+  };
 
-  if (!mounted) return (
-    <nav className="absolute top-0 w-full h-24 bg-white/70 backdrop-blur-xl border-b border-slate-100" />
-  );
+  const changeLanguage = (nextLocale: string) => {
+    router.replace(pathname, { locale: nextLocale as "vi" | "en" | "th" });
+  };
 
   return (
     <>
-      <ConsultationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <nav className={`absolute top-0 w-full z-[120] transition-all duration-500 ${isOpen ? 'bg-transparent shadow-none border-none pointer-events-none' : 'bg-white/70 backdrop-blur-xl shadow-sm border-b border-slate-100/50'}`}>
-        <div className={`transition-all duration-500 ${isOpen ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
-          <div className={`hidden lg:block bg-primary text-white border-b border-primary-variant/20 transition-all duration-500 ease-in-out h-10`}>
-            <div className="max-w-7xl mx-auto px-6 h-10 flex justify-between items-center text-[10px] lg:text-xs font-black tracking-widest uppercase">
-              <div className="flex items-center gap-6">
-                <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
-                  <span className="material-symbols-outlined text-sm">call</span>
-                  {t('hotline')}: {COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3')}
-                </a>
-                <a href={`mailto:${COMPANY_INFO.email}`} className="hidden md:flex items-center gap-1.5 hover:text-white/80 transition-colors">
-                  <span className="material-symbols-outlined text-sm">mail</span>
-                  {COMPANY_INFO.email}
-                </a>
-              </div>
-              <div className="flex items-center gap-6">
-                <span className="hidden xl:flex items-center gap-1.5 italic opacity-90">
-                  <span className="material-symbols-outlined text-sm animate-pulse">verified_user</span>
-                  {t('topbar_slogan')}
-                </span>
+      <ConsultationModal isOpen={isModalOpen} onClose={closeConsultationModal} />
 
-                <div className="h-4 w-[1px] bg-white/20 hidden sm:block" />
-
-                <div className="relative" ref={langRef}>
-                  <button
-                    onClick={() => setIsLangOpen(!isLangOpen)}
-                    className="flex items-center gap-2 px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all font-black text-[10px] tracking-widest uppercase"
-                  >
-                    <span className="text-sm leading-none">{LANGUAGES.find(l => l.id === locale)?.icon}</span>
-                    <span className="leading-none">{locale.toUpperCase()}</span>
-                    <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`}>expand_more</span>
-                  </button>
-
-                  {isLangOpen && (
-                    <div className="absolute top-[calc(100%+8px)] right-0 w-44 bg-card shadow-2xl rounded-2xl p-2 border border-on-surface/5 animate-fade-in origin-top-right z-[150]">
-                      <div className="flex flex-col gap-1">
-                        {LANGUAGES.map((lang) => (
-                          <button
-                            key={lang.id}
-                            onClick={() => changeLanguage(lang.id)}
-                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all group ${locale === lang.id ? 'bg-primary/5 text-primary' : 'hover:bg-section text-on-surface-variant'}`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="text-base grayscale-[0.2] group-hover:grayscale-0 font-normal">{lang.icon}</span>
-                              <span className="text-[11px] font-black tracking-tight uppercase">{lang.label}</span>
-                            </div>
-                            {locale === lang.id && (
-                              <span className="material-symbols-outlined text-base">check</span>
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+      <header className="absolute inset-x-0 top-0 z-[120]">
+        <div className="hidden h-9 bg-brand-900 text-white lg:block">
+          <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 text-[10px] font-semibold tracking-[0.08em]">
+            <div className="flex items-center gap-6">
+              <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-2 transition-opacity hover:opacity-70">
+                <Phone size={13} aria-hidden="true" />
+                {t("hotline")}: {COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3")}
+              </a>
+              <a href={`mailto:${COMPANY_INFO.email}`} className="flex items-center gap-2 transition-opacity hover:opacity-70">
+                <Mail size={13} aria-hidden="true" />
+                {COMPANY_INFO.email}
+              </a>
             </div>
+            <span className="text-white/65">VIỆT NAM · LÀO · THÁI LAN / EWEC</span>
           </div>
         </div>
 
-        <div className={`flex justify-between items-center max-w-7xl mx-auto px-6 transition-all duration-500 h-24 md:h-28 lg:h-32 landscape:h-14 md:landscape:h-16`}>
-          {/* Logo */}
-          <Link href="/" className={`flex items-center gap-3 md:gap-4 lg:gap-6 group shrink-0 relative ${isOpen ? 'z-[150]' : 'z-[110]'}`}>
-            <div className={`relative transition-all duration-500 drop-shadow-md w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 landscape:w-14 landscape:h-14 md:landscape:w-16 md:landscape:h-16`}>
-              <Image
-                src="/images/logo.jpg"
-                alt="Logo VILA SANMYSHI"
-                fill
-                className="object-contain"
-                priority
-                loading="eager"
-              />
-            </div>
+        <nav className="mx-4 mt-3 flex h-[80px] w-auto max-w-7xl items-center justify-between rounded-2xl border border-brand-100 bg-white/95 px-4 shadow-lg shadow-brand-900/10 backdrop-blur-xl lg:h-[88px] lg:px-6 2xl:mx-auto">
+          <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="VILA SANMYSHI">
+            <Image
+              src="/images/logo.jpg"
+              alt="VILA SANMYSHI"
+              width={92}
+              height={60}
+              loading="eager"
+              className="h-14 w-auto object-contain lg:h-16"
+            />
+            <span className="hidden border-l border-[#10231d]/15 pl-3 sm:block">
+              <strong className="block text-lg font-bold leading-none tracking-tight text-brand-900">
+                VILA SANMYSHI
+              </strong>
+              <small className="mt-1 block text-[8px] font-semibold uppercase tracking-[0.14em] text-brand-600">
+                Hậu cần biên giới
+              </small>
+            </span>
           </Link>
-          <div className="hidden lg:flex items-center space-x-8 font-black text-base tracking-tight h-full">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              const hasDropdown = !!link.dropdown;
-              const isDropdownActive = activeDropdown === link.name;
-              return (
-                <div
-                  key={link.name}
-                  className="relative h-full flex items-center"
-                  onMouseEnter={() => hasDropdown && setActiveDropdown(link.name)}
-                  onMouseLeave={() => hasDropdown && setActiveDropdown(null)}
-                >
-                  <Link
-                    href={link.href}
-                    className={`transition-all duration-200 py-1.5 px-1 relative group flex items-center gap-1 ${isActive || isDropdownActive
-                      ? "text-primary font-bold"
-                      : "text-muted hover:text-primary"
-                      }`}
-                  >
-                    {link.name}
-                    {hasDropdown && (
-                      <span className={`material-symbols-outlined text-sm transition-transform duration-300 ${isDropdownActive ? 'rotate-180' : ''}`}>expand_more</span>
-                    )}
-                    <span className={`absolute bottom-0 left-0 w-full h-[2px] bg-primary transition-transform duration-300 origin-left ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} />
-                  </Link>
 
-                  {/* Dropdown Menu */}
-                  {hasDropdown && isDropdownActive && (
-                    <div className="absolute top-full left-0 w-72 bg-card shadow-2xl rounded-2xl p-4 border border-on-surface/5 animate-fade-in origin-top">
-                      {link.name === t("services") ? (
-                        <>
-                          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-on-surface-variant/40 px-3 mb-3">{t('category_title')}</p>
-                          <div className="grid grid-cols-1 gap-1">
-                            {Object.entries(servicesByCategory)
-                              .filter(([cat]) => cat !== t('other_services'))
-                              .sort(([a], [b]) => a.localeCompare(b))
-                              .map(([cat, { slug, items }]) => (
-                                <Link
-                                  key={cat}
-                                  href={`/services/${slug}`}
-                                  className="p-3 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
-                                >
-                                  <span className="flex items-center gap-3">
-                                    <span className="w-2 h-2 rounded-full bg-primary/40 group-hover/sub:bg-primary transition-colors" />
-                                    {cat}
-                                  </span>
-                                  {items.filter(i => i.name).length > 0
-                                    ? <span className="text-[10px] text-on-surface-variant/40 font-bold">{items.filter(i => i.name).length} {t('services_count')}</span>
-                                    : <span className="text-[10px] text-amber-500 font-bold italic">{t('coming_soon')}</span>
-                                  }
-                                </Link>
-                              ))}
-                          </div>
-                          <div className="mt-2 pt-2 border-t border-on-surface/5">
-                            <Link href="/services" className="flex items-center justify-center gap-2 py-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline">
-                              {t('all_services')} <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                            </Link>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="grid grid-cols-1 gap-1">
-                          {Array.isArray(link.dropdown) && link.dropdown.map((item: any) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className="p-3 rounded-xl hover:bg-section transition-colors text-default hover:text-primary font-black text-sm flex items-center justify-between group/sub"
-                            >
-                              <span className="flex items-center gap-3">
-                                <span className="w-2 h-2 rounded-full bg-primary/40 group-hover/sub:bg-primary transition-colors" />
-                                {item.name}
-                              </span>
-                              <span className="material-symbols-outlined text-base text-on-surface-variant/20 group-hover/sub:text-primary transition-all">chevron_right</span>
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+          <div className="hidden items-center gap-6 xl:flex">
+            {navLinks.map((link) => {
+              const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
+                    isActive
+                      ? "bg-brand-50 text-brand-700"
+                      : "text-on-surface-variant hover:bg-brand-50 hover:text-brand-800"
+                  }`}
+                >
+                  {link.name}
+                </Link>
               );
             })}
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 ml-auto lg:ml-0">
+          <div className="flex items-center gap-2 lg:gap-3">
+            <label className="relative hidden lg:block">
+              <span className="sr-only">Language</span>
+              <select
+                value={locale}
+                onChange={(event) => changeLanguage(event.target.value)}
+                className="h-11 cursor-pointer appearance-none rounded-xl border border-brand-100 bg-white px-3 pr-8 text-[10px] font-semibold uppercase tracking-[0.08em] text-brand-900 outline-none focus:border-brand-500"
+                aria-label="Language"
+              >
+                {LANGUAGES.map((language) => (
+                  <option value={language.id} key={language.id}>
+                    {language.id.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[9px]">▼</span>
+            </label>
+
             <button
+              type="button"
               onClick={() => setIsModalOpen(true)}
-              className={`hidden sm:block bg-primary text-white px-5 py-2.5 lg:px-6 lg:py-3 rounded-full font-black text-[10px] lg:text-xs uppercase tracking-widest shadow-glow-primary hover:scale-[0.98] transition-all active:scale-95 duration-200 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+              className="hidden h-11 items-center gap-2 rounded-full bg-brand-700 px-5 text-xs font-semibold text-white transition-colors hover:bg-brand-800 sm:flex"
             >
-              {t('consult')}
+              {t("consult")}
+              <ArrowUpRight size={15} aria-hidden="true" />
             </button>
 
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[140] relative focus:outline-none"
-              aria-label="Toggle menu"
+              type="button"
+              onClick={() => setIsOpen(true)}
+              className="grid h-11 w-11 place-items-center rounded-xl border border-brand-100 text-brand-900 xl:hidden"
+              aria-label="Open navigation"
+              aria-expanded={isOpen}
             >
-              <span className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? 'rotate-45 translate-y-[8px] bg-white' : 'bg-slate-800'}`} />
-              <span className={`w-7 h-[2px] rounded-full transition-all duration-300 ${isOpen ? 'opacity-0 scale-x-0 bg-white' : 'opacity-100 bg-slate-800'}`} />
-              <span className={`w-7 h-[2px] rounded-full transition-all duration-300 origin-center ${isOpen ? '-rotate-45 -translate-y-[8px] bg-white' : 'bg-slate-800'}`} />
+              <Menu size={22} aria-hidden="true" />
             </button>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
 
       <div
-        className={`fixed inset-0 w-full h-full bg-inverse-surface/90 backdrop-blur-2xl z-[130] lg:hidden transition-all duration-500 ease-in-out px-8 py-12 overflow-y-auto flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed inset-0 z-[160] flex flex-col bg-brand-900 px-5 py-5 text-white transition-[opacity,visibility] duration-300 xl:hidden ${
+          isOpen ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+        aria-hidden={!isOpen}
       >
-        {/* Mobile Menu Header (Inside Scroll) */}
-        <div className="flex justify-between items-center mb-8 shrink-0">
-          <div className="w-24 h-24 relative drop-shadow-md">
-            <Image
-              src="/images/logo.jpg"
-              alt="Logo VILA SANMYSHI"
-              fill
-              className="object-contain"
-            />
-          </div>
+        <div className="flex items-center justify-between border-b border-white/15 pb-5">
+          <Link href="/" className="flex items-center gap-3" onClick={() => setIsOpen(false)}>
+            <Image src="/images/logo.jpg" alt="VILA SANMYSHI" width={82} height={54} className="h-14 w-auto object-contain" />
+            <span className="text-lg font-bold tracking-tight">VILA SANMYSHI</span>
+          </Link>
           <button
+            type="button"
             onClick={() => setIsOpen(false)}
-            className="w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors"
-            aria-label="Close menu"
+            className="grid h-12 w-12 place-items-center border border-white/20"
+            aria-label="Close navigation"
           >
-            <span className="material-symbols-outlined text-4xl">close</span>
+            <X size={24} aria-hidden="true" />
           </button>
         </div>
 
-        <div className="flex flex-col gap-6 landscape:gap-3">
-          {navLinks.map((link, i) => {
-            const isActive = pathname === link.href;
-            const hasDropdown = !!link.dropdown;
-            const isSubOpen = activeDropdown === link.name;
-
-            return (
-              <div key={link.name} className="flex flex-col">
-                <div className="flex items-center justify-between group">
-                  <Link
-                    href={link.href}
-                    style={{ transitionDelay: isOpen ? `${i * 100}ms` : '0ms' }}
-                    className={`text-3xl landscape:text-xl md:text-5xl font-black tracking-tight uppercase transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                      } ${isActive ? "text-primary placeholder-pulse" : "text-white hover:text-primary"
-                      }`}
-                  >
-                    {link.name}
-                  </Link>
-                  {hasDropdown && (
-                    <button
-                      onClick={() => setActiveDropdown(isSubOpen ? null : link.name)}
-                      className="w-10 h-10 landscape:w-8 landscape:h-8 flex items-center justify-center text-white/50"
-                    >
-                      <span className={`material-symbols-outlined text-3xl landscape:text-xl transition-transform ${isSubOpen ? 'rotate-180 text-primary' : ''}`}>expand_more</span>
-                    </button>
-                  )}
-                </div>
-
-                {/* Mobile Submenu */}
-                {hasDropdown && isSubOpen && (
-                  <div className="flex flex-col gap-6 mt-6 ml-4 border-l-2 border-primary/20 pl-6 animate-fade-in">
-                    {link.name === t("services") ? (
-                      <>
-                        {Object.entries(servicesByCategory)
-                          .filter(([cat]) => cat !== t('other_services'))
-                          .map(([cat, { slug }]) => (
-                            <Link
-                              key={cat}
-                              href={`/services/${slug}`}
-                              className="text-xl md:text-2xl font-black text-on-dark-muted hover:text-primary transition-colors flex items-center justify-between group/sub"
-                            >
-                              {cat}
-                            </Link>
-                          ))}
-                        <Link
-                          href="/services"
-                          className="text-lg font-black text-primary uppercase tracking-[0.2em] mt-2 flex items-center gap-2"
-                        >
-                          {t('all_services')} <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                        </Link>
-                      </>
-                    ) : (
-                      <>
-                        {Array.isArray(link.dropdown) && link.dropdown.map((item: any) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            className="text-xl md:text-2xl font-black text-on-dark-muted hover:text-primary transition-colors flex items-center justify-between group/sub"
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        <div className="flex flex-1 flex-col justify-center py-8">
+          {navLinks.map((link, index) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-between border-b border-white/12 py-4 text-[clamp(1.7rem,7vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em] transition-colors hover:text-brand-200"
+            >
+              {link.name}
+              <span className="font-sans text-[10px] font-bold tracking-[0.15em] text-white/35">0{index + 1}</span>
+            </Link>
+          ))}
         </div>
 
-        <div className={`mt-auto pt-10 landscape:pt-6 border-t border-white/10 space-y-8 landscape:space-y-4 transition-all duration-700 delay-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-          }`}>
-          <div className="flex flex-col gap-4">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 italic">Language</span>
-            <div className="flex flex-wrap gap-2">
-              {LANGUAGES.map((lang) => (
-                <button
-                  key={lang.id}
-                  onClick={() => {
-                    changeLanguage(lang.id);
-                    setIsOpen(false);
-                  }}
-                  className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all ${locale === lang.id
-                    ? 'bg-primary border-primary text-white shadow-glow-primary'
-                    : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'
-                    }`}
-                >
-                  <span className="text-lg landscape:text-base">{lang.icon}</span>
-                  <span className="text-xs landscape:text-[10px] font-black uppercase tracking-widest">{lang.label}</span>
-                </button>
-              ))}
-            </div>
+        <div className="border-t border-white/15 pt-5">
+          <div className="mb-5 flex gap-2">
+            {LANGUAGES.map((language) => (
+              <button
+                type="button"
+                key={language.id}
+                onClick={() => changeLanguage(language.id)}
+                className={`min-w-16 border px-3 py-2 text-[10px] font-extrabold uppercase tracking-wider ${
+                  locale === language.id ? "border-brand-300 bg-brand-100 text-brand-900" : "border-white/20 text-white/65"
+                } rounded-lg`}
+              >
+                {language.id}
+              </button>
+            ))}
           </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-3">
-              <span className="text-label-md text-on-dark-faint">{t('hotline')}</span>
-              <a href="tel:0913497246" className="text-2xl font-black text-on-dark hover:text-primary transition-colors">0913 497 246</a>
-            </div>
-            <button
-              onClick={() => {
-                setIsModalOpen(true);
-                setIsOpen(false);
-              }}
-              className="bg-primary text-white p-6 rounded-full font-black text-xs uppercase tracking-widest shadow-glow-primary"
-            >
-              {t('consult')}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(false);
+              setIsModalOpen(true);
+            }}
+            className="flex w-full items-center justify-between rounded-xl bg-white px-5 py-4 text-sm font-semibold text-brand-900"
+          >
+            {t("consult")}
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </button>
         </div>
       </div>
     </>

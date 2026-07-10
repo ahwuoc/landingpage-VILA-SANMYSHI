@@ -1,255 +1,541 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  BadgeCheck,
+  Building2,
+  CheckCircle2,
+  ClipboardCheck,
+  FileCheck2,
+  Globe2,
+  Handshake,
+  MapPin,
+  PackageCheck,
+  Route,
+  SearchCheck,
+  ShieldCheck,
+  Target,
+  UsersRound,
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { BRAND_NAME, COMPANY_INFO } from "@/constants/company";
-import { useTranslations, useLocale } from "next-intl";
-import PageHero from "@/components/PageHero";
 
 export default function AboutView() {
   const t = useTranslations("About");
   const locale = useLocale();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, clientWidth } = scrollContainerRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth / 2 : scrollLeft + clientWidth / 2;
-      scrollContainerRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
+  const businessFields = Array.from({ length: 12 }, (_, index) => t(`business_fields.${index}`));
+  const timeline = Array.from({ length: 8 }, (_, index) => ({
+    year: t(`timeline.${index}.year`),
+    highlight: t(`timeline.${index}.highlight`),
+    description: t(`timeline.${index}.desc`),
+  }));
+  const stats = Array.from({ length: 4 }, (_, index) => ({
+    label: t(`capacity.${index}.label`),
+    value: t(`capacity.${index}.value`),
+    description: t(`capacity.${index}.desc`),
+  }));
+  const values = Array.from({ length: 4 }, (_, index) => ({
+    title: t(`values.${index}.title`),
+    description: t(`values.${index}.desc`),
+  }));
+  const heroProofs = Array.from({ length: 3 }, (_, index) => ({
+    label: t(`hero.proofs.${index}.label`),
+    value: t(`hero.proofs.${index}.value`),
+  }));
+  const processSteps = Array.from({ length: 4 }, (_, index) => ({
+    title: t(`process.steps.${index}.title`),
+    description: t(`process.steps.${index}.desc`),
+  }));
+  const commitments = Array.from({ length: 4 }, (_, index) => t(`process.commitments.${index}`));
+
+  const purposeCards = [
+    { icon: Target, title: t("mission.title"), description: t("mission.content"), featured: true },
+    { icon: Globe2, title: t("vision.title"), description: t("vision.content"), featured: false },
+    {
+      icon: Handshake,
+      title: t("purpose.promise_title"),
+      description: t("purpose.promise_content"),
+      featured: false,
+    },
+  ];
+  const valueIcons = [ShieldCheck, FileCheck2, BadgeCheck, UsersRound];
+  const processIcons = [ClipboardCheck, SearchCheck, Route, PackageCheck];
+
+  const address =
+    locale === "en"
+      ? "13B Ong Ich Khiem, Lao Bao, Quang Tri, Vietnam"
+      : COMPANY_INFO.address;
+  const licenseLabel =
+    locale === "en"
+      ? "Customs Agent License"
+      : locale === "th"
+        ? "ใบอนุญาตตัวแทนพิธีการศุลกากร"
+        : "Quyết định công nhận đại lý làm thủ tục Hải quan";
+
+  const profileItems = [
+    { label: t("info.company_name"), value: COMPANY_INFO.name },
+    { label: t("info.main_office"), value: address },
+    { label: t("info.tax_id"), value: COMPANY_INFO.mst },
+    { label: t("info.representative"), value: COMPANY_INFO.representative },
+    { label: licenseLabel, value: "1391/QĐ-TCHQ · 13/05/2019" },
+    { label: t("info.website"), value: COMPANY_INFO.website },
+    { label: t("info.hotline"), value: COMPANY_INFO.hotline },
+    { label: t("info.email"), value: COMPANY_INFO.email },
+  ];
+
+  useEffect(() => {
+    const container = pageRef.current;
+    if (!container || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const elements = Array.from(container.querySelectorAll<HTMLElement>("[data-about-reveal]"));
+    if (!("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          const element = entry.target as HTMLElement;
+          const delay = Number(element.dataset.aboutDelay ?? 0);
+          const startTransform =
+            element.dataset.aboutReveal === "left"
+              ? "translate3d(-28px, 0, 0)"
+              : element.dataset.aboutReveal === "right"
+                ? "translate3d(28px, 0, 0)"
+                : "translate3d(0, 24px, 0)";
+          element.animate(
+            [
+              { opacity: 0, transform: startTransform },
+              { opacity: 1, transform: "translate3d(0, 0, 0)" },
+            ],
+            {
+              duration: 680,
+              delay,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              fill: "forwards",
+            },
+          );
+          observer.unobserve(element);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    );
+
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollTimeline = (direction: "left" | "right") => {
+    const container = timelineRef.current;
+    if (!container) return;
+    container.scrollBy({
+      left: direction === "left" ? -container.clientWidth * 0.72 : container.clientWidth * 0.72,
+      behavior: "smooth",
+    });
   };
 
-  const businessFields = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => t(`business_fields.${i}`));
-  const timeline = [0, 1, 2, 3, 4, 5, 6, 7].map(i => ({
-    year: t(`timeline.${i}.year`),
-    highlight: t(`timeline.${i}.highlight`),
-    desc: t(`timeline.${i}.desc`)
-  }));
-  const stats = [0, 1, 2, 3].map(i => ({
-    label: t(`capacity.${i}.label`),
-    value: t(`capacity.${i}.value`)
-  }));
-
   return (
-    <div className="bg-page text-default pb-20">
-      <PageHero
-        image="/images/about/office-video-thumb.jpg"
-        imageAlt={t('page_title')}
-        imageOpacity="opacity-40"
-        customOverlay={<>
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/70 via-primary/30 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-        </>}
-        breadcrumb={[{ label: t('hero.title_small') }]}
-        title={BRAND_NAME}
-        description={t('hero.subtitle')}
-      />
+    <div ref={pageRef} className="overflow-hidden bg-white text-brand-900">
+      <header className="relative overflow-hidden bg-brand-50 pb-24 pt-36 lg:min-h-[760px] lg:pb-28 lg:pt-44">
+        <div className="pointer-events-none absolute -right-28 top-10 h-[520px] w-[520px] rounded-full bg-brand-200/60 blur-3xl" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24">
-        {/* Video Placeholder (Simple centered) */}
-        <div className="text-center space-y-8">
-          <h3 className="text-sm lg:text-base font-bold italic text-slate-600 uppercase tracking-widest underline decoration-primary/30 decoration-2 underline-offset-8">
-            {t('video_title')}
-          </h3>
-          <div className="max-w-4xl mx-auto aspect-video bg-slate-100 rounded-3xl overflow-hidden border border-slate-200 relative group cursor-pointer shadow-sm">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-slate-200 group-hover:bg-primary group-hover:border-primary transition-all">
-                <span className="material-symbols-outlined text-slate-900 group-hover:text-white text-3xl">play_arrow</span>
-              </div>
+        <div className="relative mx-auto grid max-w-[1320px] items-center gap-16 px-6 lg:grid-cols-[1.03fr_.97fr] lg:px-8">
+          <div className="max-w-3xl">
+            <div className="mb-6 flex items-center gap-3 text-xs font-semibold text-brand-700">
+              <span className="h-2 w-2 rounded-full bg-brand-500" />
+              {t("hero.title_small")} · Lao Bảo
             </div>
-            <Image
-              src="/images/about/office-video-thumb.jpg"
-              alt="Highlight Video"
-              fill
-              className="object-cover opacity-50 group-hover:opacity-70 transition-opacity"
-            />
-          </div>
-        </div>
+            <h1 className="text-[clamp(3rem,6vw,5.8rem)] font-bold leading-[1.08] tracking-[-0.04em]">
+              <span className="block">{t("page_title")}</span>
+              <span className="block text-brand-600">VILA SANMYSHI.</span>
+            </h1>
+            <p className="mt-7 max-w-2xl text-base font-medium leading-8 text-on-surface-variant lg:text-lg">
+              {t("hero.subtitle")}
+            </p>
 
-        {/* Company Profile (List Style) */}
-        <div className="max-w-4xl">
-          <h2 className="text-heading-lg mb-6 md:mb-12 border-l-4 border-primary pl-4 md:pl-6 uppercase">
-            {t('profile_title')} {BRAND_NAME}:
-          </h2>
-          <div className="space-y-4 text-body-md">
-            {[
-              { label: t('info.company_name'), value: COMPANY_INFO.name },
-              { label: t('info.main_office'), value: locale === 'en' ? "73 Nguyen Du, Lao Bao, Huong Hoa, Quang Tri" : COMPANY_INFO.address },
-              { label: t('info.tax_office'), value: locale === 'en' ? "95 Nguyen Hue, Lao Bao, Huong Hoa, Quang Tri" : COMPANY_INFO.registrationAddress },
-              { label: t('info.tax_id'), value: COMPANY_INFO.mst },
-              { label: t('info.representative'), value: "Ngo Van Toan (Director)" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-4 py-1">
-                <span className="text-primary mt-1 font-bold">♦</span>
-                <div className="flex flex-col sm:flex-row sm:gap-2">
-                  <span className="font-bold whitespace-nowrap">{item.label}:</span>
-                  <span className="text-slate-600">{item.value}</span>
-                </div>
-              </div>
-            ))}
-            {/* Hardcoded or from constants for licenses */}
-            <div className="flex items-start gap-4 py-1">
-              <span className="text-primary mt-1 font-bold">♦</span>
-              <div className="flex flex-col sm:flex-row sm:gap-2">
-                <span className="font-bold whitespace-nowrap">{locale === 'en' ? "Customs Agent License" : "Quyết định công nhận đại lý làm thủ tục Hải quan"}:</span>
-                <span className="text-slate-600">Số 1391/QĐ-TCHQ ngày 13/05/2019</span>
-              </div>
+            <div className="mt-9 grid max-w-2xl gap-3 sm:grid-cols-3">
+              {heroProofs.map((item, index) => {
+                const icons = [FileCheck2, Route, BadgeCheck];
+                const Icon = icons[index];
+                return (
+                  <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-brand-100 bg-white p-4 shadow-sm">
+                    <Icon className="shrink-0 text-brand-600" size={20} aria-hidden="true" />
+                    <span>
+                      <small className="block text-[8px] font-semibold uppercase tracking-[0.1em] text-on-surface-variant">{item.label}</small>
+                      <strong className="mt-1 block text-[11px] font-semibold">{item.value}</strong>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-            {[
-              { label: t('info.website'), value: COMPANY_INFO.website },
-              { label: t('info.phone'), value: COMPANY_INFO.phone },
-              { label: t('info.hotline'), value: COMPANY_INFO.hotline },
-              { label: t('info.email'), value: COMPANY_INFO.email },
-            ].map((item, i) => (
-              <div key={`c-${i}`} className="flex items-start gap-4 py-1">
-                <span className="text-primary mt-1 font-bold">♦</span>
-                <div className="flex flex-col sm:flex-row sm:gap-2">
-                  <span className="font-bold whitespace-nowrap">{item.label}:</span>
-                  <span className="text-slate-600">{item.value}</span>
-                </div>
-              </div>
-            ))}
           </div>
-        </div>
 
-        {/* Business Fields (Simple Grid) */}
-        <div>
-          <h2 className="text-heading-lg mb-6 md:mb-12 border-l-4 border-primary pl-4 md:pl-6 uppercase">
-            {t('business_fields_title')}:
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-10">
-            {businessFields.map((field, i) => (
-              <div key={i} className="flex items-center gap-3 md:gap-6 py-4 md:py-8 px-4 md:px-10 bg-surface-container-low rounded-xl md:rounded-[2.5rem] border border-outline-variant hover:bg-surface-container hover:border-primary/30 transition-all group active:scale-[0.98] shadow-sm hover:shadow-xl">
-                <div className="w-8 h-8 md:w-16 md:h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                  <span className="material-symbols-outlined text-base md:text-3xl">arrow_right_alt</span>
-                </div>
-                <span className="text-[11px] sm:text-xs md:text-2xl lg:text-3xl font-black text-on-surface leading-tight tracking-tight uppercase">{field}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* History Timeline Section */}
-      <section className="relative py-16 lg:py-40 mt-12 md:mt-24 overflow-hidden group/section bg-slate-50">
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/about/history-timeline-bg.jpg" alt="Port Background" fill className="object-cover opacity-30 grayscale-[0.3]" />
-          <div className="absolute inset-0 bg-gradient-to-br from-white via-white/80 to-primary/5" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl lg:text-7xl font-black text-slate-900 text-center mb-12 md:mb-24 uppercase tracking-tighter">
-            {t('timeline_title')}
-          </h2>
-
-          <div className="relative">
-            {/* Timeline Carousel Container */}
-            <div
-              ref={scrollContainerRef}
-              className="flex gap-8 lg:gap-16 overflow-x-auto pb-12 scroll-smooth no-scrollbar snap-x snap-mandatory"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {/* Timeline Line */}
-              <div
-                className="absolute top-[124px] h-[4px] bg-slate-200 z-0 rounded-full"
-                style={{ width: `${timeline.length * 400}px` }}
+          <div className="relative min-h-[480px] lg:min-h-[610px]">
+            <div className="absolute inset-0 overflow-hidden rounded-[2rem] border border-brand-100 bg-brand-200 shadow-2xl shadow-brand-900/15">
+              <Image
+                src="/images/about/hero.png"
+                alt={t("page_title")}
+                fill
+                preload
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                className="object-cover object-center"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-950/45 via-transparent to-transparent" />
+            </div>
 
-              {timeline.map((item, i) => (
-                <div
-                  key={i}
-                  className="relative flex-shrink-0 w-[280px] sm:w-[350px] md:w-[420px] snap-start group animate-fade-up"
-                  style={{ animationDelay: `${i * 100}ms` }}
+            <div className="absolute -bottom-5 left-5 z-10 rounded-2xl bg-white px-6 py-5 text-brand-900 shadow-xl sm:left-[-18px]">
+              <small className="block text-[9px] font-semibold uppercase tracking-[0.12em] text-on-surface-variant">
+                {t("hero.established_label")}
+              </small>
+              <strong className="mt-1 block text-2xl font-bold tracking-tight">02 · 05 · 2018</strong>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section className="py-24 lg:py-32">
+        <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-[.75fr_1.25fr] lg:px-8">
+          <div data-about-reveal="left">
+            <div className="flex items-center gap-3 text-xs font-semibold text-brand-600">
+              <Building2 size={18} aria-hidden="true" />
+              {t("profile_title")}
+            </div>
+            <h2 className="mt-4 max-w-xl text-[clamp(2.4rem,4vw,4rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+              {t("profile_title")} {BRAND_NAME}.
+            </h2>
+            <div className="relative mt-9 aspect-[4/3] max-w-xl overflow-hidden rounded-3xl bg-brand-200 shadow-lg">
+              <Image
+                src="/images/about/history.png"
+                alt={t("profile_title")}
+                fill
+                sizes="(max-width: 1024px) 100vw, 38vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-950/55 to-transparent" />
+              <div className="absolute bottom-4 left-4 rounded-full bg-white/90 px-4 py-2 text-[10px] font-semibold text-brand-800 backdrop-blur">
+                {t("profile_tagline")}
+              </div>
+            </div>
+          </div>
+
+          <dl data-about-reveal="right" className="rounded-3xl border border-brand-100 bg-white px-6 shadow-sm lg:px-8">
+            {profileItems.map((item, index) => (
+              <div
+                key={item.label}
+                className="grid gap-2 border-b border-brand-100 py-5 last:border-b-0 sm:grid-cols-[190px_1fr] sm:gap-8 lg:py-6"
+              >
+                <dt className="flex items-start gap-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-brand-600">
+                  <span className="text-brand-300">0{index + 1}</span>
+                  {item.label}
+                </dt>
+                <dd className="text-sm font-medium leading-6 text-on-surface-variant lg:text-base">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-brand-50 py-24 lg:py-32">
+        <div className="pointer-events-none absolute -right-32 top-16 h-80 w-80 rounded-full bg-brand-200/55 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+          <div data-about-reveal="up" className="grid gap-8 lg:grid-cols-[.72fr_1.28fr] lg:items-end">
+            <div>
+              <div className="flex items-center gap-3 text-xs font-semibold text-brand-600">
+                <Target size={18} aria-hidden="true" />
+                {t("purpose.eyebrow")}
+              </div>
+              <h2 className="mt-4 text-[clamp(2.4rem,4.5vw,4.5rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+                {t("purpose.title")}
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm font-medium leading-7 text-on-surface-variant lg:justify-self-end lg:text-base">
+              {t("purpose.intro")}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {purposeCards.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <article
+                  key={item.title}
+                  data-about-reveal="up"
+                  data-about-delay={index * 90}
+                  className={`flex min-h-80 flex-col rounded-3xl p-8 shadow-sm sm:p-10 ${
+                    item.featured
+                      ? "bg-brand-800 text-white shadow-brand-900/15"
+                      : "border border-brand-100 bg-white"
+                  }`}
                 >
                   <div
-                    className="text-8xl lg:text-[12rem] font-black mb-8 tracking-tighter transition-all duration-700 select-none opacity-20 group-hover:opacity-40 group-hover:scale-105 origin-left"
-                    style={{
-                      WebkitTextStroke: '2px #10b981',
-                      color: 'transparent'
-                    }}
+                    className={`grid h-12 w-12 place-items-center rounded-2xl ${
+                      item.featured ? "bg-white/12 text-brand-100" : "bg-brand-100 text-brand-700"
+                    }`}
                   >
-                    {item.year}
+                    <Icon size={24} aria-hidden="true" />
                   </div>
-
-                  {/* Dot */}
-                  <div className="absolute top-[118px] left-0 w-8 h-8 rounded-full bg-white shadow-xl z-20 border-[6px] border-primary flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 bg-primary rounded-full animate-pulse" />
+                  <div className="mt-auto pt-16">
+                    <p className={`text-xs font-semibold ${item.featured ? "text-brand-200" : "text-brand-500"}`}>
+                      0{index + 1}
+                    </p>
+                    <h3 className="mt-4 text-2xl font-bold tracking-[-0.02em] lg:text-3xl">{item.title}</h3>
+                    <p
+                      className={`mt-5 text-sm font-medium leading-7 lg:text-base ${
+                        item.featured ? "text-white/70" : "text-on-surface-variant"
+                      }`}
+                    >
+                      {item.description}
+                    </p>
                   </div>
+                </article>
+              );
+            })}
+          </div>
 
-                  {/* Content Card */}
-                  <div className="mt-24 p-8 lg:p-10 rounded-[3rem] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-slate-100 group-hover:border-primary/20 group-hover:-translate-y-2 transition-all duration-500 relative overflow-hidden z-10 group-hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)]">
-                    <div className="absolute top-0 left-0 w-2 h-full bg-primary" />
-
-                    <div className="space-y-4">
-                      <div className="text-primary font-black text-2xl lg:text-3xl tracking-tight">
-                        {item.year}
-                      </div>
-                      <h4 className="text-xl lg:text-2xl font-black text-slate-900 leading-tight">
-                        {item.highlight}
-                      </h4>
-                      <p className="text-sm lg:text-base font-medium text-slate-500 leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <div data-about-reveal="up" className="mt-5 overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-sm">
+            <div className="border-b border-brand-100 px-7 py-5 sm:px-9">
+              <h3 className="text-sm font-semibold text-brand-700">{t("purpose.values_title")}</h3>
             </div>
-
-            {/* Navigation Arrows */}
-            <button
-              onClick={() => scroll('left')}
-              className="absolute top-[110px] -left-4 md:-left-8 z-20 flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-xl border border-slate-100 hover:bg-primary hover:text-white transition-all cursor-pointer opacity-0 group-hover/section:opacity-100 text-slate-600"
-            >
-              <span className="material-symbols-outlined">chevron_left</span>
-            </button>
-            <button
-              onClick={() => scroll('right')}
-              className="absolute top-[110px] -right-4 md:-right-8 z-20 flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-xl border border-slate-100 hover:bg-primary hover:text-white transition-all cursor-pointer opacity-0 group-hover/section:opacity-100 text-slate-600"
-            >
-              <span className="material-symbols-outlined">chevron_right</span>
-            </button>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4">
+              {values.map((value, index) => {
+                const Icon = valueIcons[index];
+                return (
+                  <article
+                    key={value.title}
+                    className="border-b border-brand-100 p-7 last:border-b-0 sm:p-8 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:border-b-0 lg:border-r lg:last:border-r-0"
+                  >
+                    <Icon className="text-brand-600" size={23} aria-hidden="true" />
+                    <h4 className="mt-8 text-lg font-bold">{value.title}</h4>
+                    <p className="mt-3 text-sm font-medium leading-6 text-on-surface-variant">{value.description}</p>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24 mt-24">
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-16 border-y border-slate-100">
-          {stats.map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-3xl lg:text-5xl font-black text-on-surface tracking-tighter mb-2">{stat.value}</div>
-              <div className="text-label-md text-faint">{stat.label}</div>
+      <section className="py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div data-about-reveal="up" className="grid items-end gap-8 lg:grid-cols-[1fr_.65fr]">
+            <div>
+              <div className="mb-4 flex items-center gap-3 text-xs font-semibold text-brand-600">
+                <span className="h-2 w-2 rounded-full bg-brand-500" />
+                {t("business_fields_eyebrow")}
+              </div>
+              <h2 className="text-[clamp(2.4rem,4.5vw,4.5rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+                {t("business_fields_title")}
+              </h2>
             </div>
-          ))}
-        </div>
-
-        {/* Vision & Mission */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
-          <div className="space-y-6">
-            <h3 className="text-heading-sm">{t('vision.title')}</h3>
-            <p className="text-body-md text-muted">{t('vision.content')}</p>
+            <p className="max-w-xl text-sm font-medium leading-7 text-on-surface-variant lg:text-base">
+              {t("business_fields_intro")}
+            </p>
           </div>
-          <div className="space-y-6">
-            <h3 className="text-heading-sm">{t('mission.title')}</h3>
-            <p className="text-body-md text-muted">{t('mission.content')}</p>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {businessFields.map((field, index) => (
+              <article
+                key={field}
+                data-about-reveal="up"
+                data-about-delay={(index % 3) * 70}
+                className="group flex min-h-36 flex-col justify-between rounded-2xl border border-brand-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md lg:min-h-44 lg:p-7"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-brand-500">{String(index + 1).padStart(2, "0")}</span>
+                  <ArrowUpRight className="text-brand-300 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand-600" size={19} aria-hidden="true" />
+                </div>
+                <h3 className="mt-8 text-lg font-bold leading-snug lg:text-xl">{field}</h3>
+              </article>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Final CTA */}
-        <div className="bg-page-dark rounded-3xl lg:rounded-[4rem] p-8 md:p-12 lg:p-24 text-center">
-          <h2 className="text-heading-xl text-on-dark mb-8">
-            {t('cta.title')}
-          </h2>
-          <p className="text-body-lg text-on-dark-muted mb-12 max-w-2xl mx-auto">
-            {t('cta.desc')}
-          </p>
-          <Link href="/contact" className="inline-block bg-primary text-on-primary px-12 py-6 rounded-full font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-glow-primary">
-            {t('cta.btn')}
-          </Link>
+      <section className="bg-brand-50 py-24 lg:py-32">
+        <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-[.82fr_1.18fr] lg:items-center lg:px-8">
+          <div data-about-reveal="left" className="relative min-h-[520px] overflow-hidden rounded-[2rem] bg-brand-200 shadow-xl shadow-brand-900/10 lg:min-h-[680px]">
+            <Image
+              src="/images/about/leadership.png"
+              alt={t("process.image_alt")}
+              fill
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-brand-900/10 to-transparent" />
+            <div className="absolute inset-x-5 bottom-5 rounded-2xl border border-white/15 bg-brand-950/70 p-5 text-white backdrop-blur-md sm:inset-x-7 sm:bottom-7 sm:p-6">
+              <div className="flex items-start gap-4">
+                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white/12 text-brand-100">
+                  <MapPin size={21} aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-brand-200">{t("process.route_label")}</p>
+                  <p className="mt-2 text-sm font-medium leading-6 text-white/75">Lao Bảo · Savannakhet · Mukdahan</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div data-about-reveal="right">
+            <div className="flex items-center gap-3 text-xs font-semibold text-brand-600">
+              <Route size={18} aria-hidden="true" />
+              {t("process.eyebrow")}
+            </div>
+            <h2 className="mt-4 text-[clamp(2.4rem,4.5vw,4.5rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+              {t("process.title")}
+            </h2>
+            <p className="mt-6 max-w-2xl text-sm font-medium leading-7 text-on-surface-variant lg:text-base">
+              {t("process.intro")}
+            </p>
+
+            <ol className="mt-10 grid gap-4 sm:grid-cols-2">
+              {processSteps.map((step, index) => {
+                const Icon = processIcons[index];
+                return (
+                  <li key={step.title} className="rounded-2xl border border-brand-100 bg-white p-6 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="grid h-10 w-10 place-items-center rounded-xl bg-brand-100 text-brand-700">
+                        <Icon size={20} aria-hidden="true" />
+                      </div>
+                      <span className="text-xs font-semibold text-brand-400">0{index + 1}</span>
+                    </div>
+                    <h3 className="mt-7 text-lg font-bold">{step.title}</h3>
+                    <p className="mt-3 text-sm font-medium leading-6 text-on-surface-variant">{step.description}</p>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div className="mt-5 rounded-2xl bg-brand-800 p-6 text-white sm:p-8">
+              <h3 className="text-lg font-bold">{t("process.commitment_title")}</h3>
+              <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+                {commitments.map((commitment) => (
+                  <li key={commitment} className="flex items-start gap-3 text-sm font-medium leading-6 text-white/75">
+                    <CheckCircle2 className="mt-0.5 shrink-0 text-brand-200" size={18} aria-hidden="true" />
+                    {commitment}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-brand-900 py-24 text-white lg:py-32">
+        <Image
+          src="/images/about/history-timeline-bg.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-[0.12]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-950 via-brand-900/95 to-brand-800/90" />
+
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+          <div data-about-reveal="up" className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="mb-4 flex items-center gap-3 text-xs font-semibold text-brand-200">
+                <Route size={18} aria-hidden="true" />
+                {t("timeline_period")}
+              </div>
+              <h2 className="text-[clamp(2.5rem,4.5vw,4.5rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+                {t("timeline_title")}
+              </h2>
+            </div>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => scrollTimeline("left")}
+                className="grid h-12 w-12 place-items-center rounded-xl border border-white/20 transition-colors hover:bg-white/10"
+                aria-label={t("timeline_prev")}
+              >
+                <ArrowLeft size={20} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollTimeline("right")}
+                className="grid h-12 w-12 place-items-center rounded-xl border border-white/20 transition-colors hover:bg-white/10"
+                aria-label={t("timeline_next")}
+              >
+                <ArrowRight size={20} aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+
+          <div ref={timelineRef} className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-5">
+            {timeline.map((item, index) => (
+              <article
+                key={`${item.year}-${index}`}
+                className="relative flex w-[82vw] max-w-[360px] shrink-0 snap-start flex-col rounded-2xl border border-white/10 bg-white/[0.07] p-7 backdrop-blur-sm sm:w-[340px] lg:min-h-[340px] lg:p-8"
+              >
+                <div className="flex items-start justify-between">
+                  <strong className="text-4xl font-bold tracking-[-0.03em] text-brand-200 lg:text-5xl">{item.year}</strong>
+                  <span className="text-xs text-white/30">0{index + 1}</span>
+                </div>
+                <div className="mt-auto pt-20">
+                  <h3 className="text-xl font-bold leading-snug lg:text-2xl">{item.highlight}</h3>
+                  <p className="mt-4 text-sm font-medium leading-7 text-white/58">{item.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 lg:py-36">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div data-about-reveal="up" className="mb-12 grid items-end gap-8 lg:grid-cols-[1fr_.65fr]">
+            <h2 className="text-[clamp(2.4rem,4.5vw,4.5rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+              {t("capacity_title")}
+            </h2>
+            <p className="max-w-xl text-sm font-medium leading-7 text-on-surface-variant lg:text-base">
+              {t("capacity_intro")}
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat, index) => (
+              <article
+                key={stat.label}
+                data-about-reveal="up"
+                data-about-delay={index * 70}
+                className="min-h-56 rounded-2xl border border-brand-100 bg-white p-7 shadow-sm lg:p-8"
+              >
+                <strong className="text-4xl font-bold tracking-[-0.03em] text-brand-700 lg:text-5xl">{stat.value}</strong>
+                <h3 className="mt-5 text-xs font-semibold text-brand-600">{stat.label}</h3>
+                <p className="mt-4 text-sm font-medium leading-6 text-on-surface-variant">{stat.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-20 text-white lg:px-8 lg:py-24">
+        <div data-about-reveal="up" className="relative mx-auto grid max-w-7xl items-center gap-10 rounded-[2rem] bg-brand-800 p-8 shadow-xl shadow-brand-900/15 sm:p-10 lg:grid-cols-[1.1fr_.65fr] lg:p-14">
+          <div>
+            <p className="text-xs font-semibold text-brand-200">VILA SANMYSHI · EWEC</p>
+            <h2 className="mt-4 max-w-4xl text-[clamp(2.3rem,4vw,4rem)] font-bold leading-[1.12] tracking-[-0.03em]">
+              {t("cta.title")}
+            </h2>
+          </div>
+          <div>
+            <p className="text-sm font-medium leading-7 text-white/75 lg:text-base">{t("cta.desc")}</p>
+            <Link
+              href="/contact"
+              className="mt-8 inline-flex min-h-13 items-center gap-3 rounded-full bg-white px-6 text-sm font-semibold text-brand-900 transition hover:bg-brand-50"
+            >
+              {t("cta.btn")}
+              <ArrowUpRight size={18} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
