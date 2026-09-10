@@ -431,6 +431,77 @@ const fallbackImages = [
   "/images/services/fulfillment-premium.png",
   "/images/services/container-stat.png",
 ];
+const fallbackNews: NewsItem[] = [
+  {
+    id: 9001,
+    title: {
+      vi: "Checklist hồ sơ thông quan cho lô hàng qua Lao Bảo",
+      en: "A practical customs clearance checklist for Lao Bao shipments",
+      th: "เช็กลิสต์เอกสารสำหรับสินค้าที่ผ่านด่านลาวบาว",
+    },
+    content: {
+      vi: "<p>Những nhóm chứng từ nên chuẩn bị sớm để hạn chế thời gian chờ tại cửa khẩu và chủ động kế hoạch giao nhận.</p>",
+      en: "<p>The document groups to prepare early so border waiting time stays predictable and delivery planning remains on track.</p>",
+      th: "<p>กลุ่มเอกสารที่ควรเตรียมล่วงหน้าเพื่อลดเวลารอที่ด่านและวางแผนการส่งมอบได้ชัดเจน</p>",
+    },
+    image: "/images/news/regulation.png",
+    author: "VILA SANMYSHI",
+    category_id: 901,
+    news_categories: {
+      name: { vi: "Hải quan", en: "Customs", th: "ศุลกากร" },
+      slug: "customs",
+    },
+    date: "2026-09-08",
+    created_at: "2026-09-08T08:00:00.000Z",
+    slug: "checklist-ho-so-thong-quan-lao-bao",
+  },
+  {
+    id: 9002,
+    title: {
+      vi: "Tối ưu tuyến Việt Nam – Lào – Thái Lan theo từng loại hàng",
+      en: "Choosing the right Vietnam – Laos – Thailand route by cargo type",
+      th: "เลือกเส้นทางเวียดนาม – ลาว – ไทยให้เหมาะกับประเภทสินค้า",
+    },
+    content: {
+      vi: "<p>Gợi ý cách cân đối thời gian, phương tiện và điểm bàn giao cho hàng nguyên chuyến, hàng gom và hàng cần kiểm soát đặc biệt.</p>",
+      en: "<p>How to balance timing, vehicles and handover points for full loads, consolidated cargo and controlled commodities.</p>",
+      th: "<p>แนวทางจัดสมดุลเวลา รถ และจุดส่งมอบสำหรับสินค้าเต็มเที่ยว สินค้ารวมเที่ยว และสินค้าที่ต้องควบคุม</p>",
+    },
+    image: "/images/news/featured.png",
+    author: "VILA SANMYSHI",
+    category_id: 902,
+    news_categories: {
+      name: { vi: "Thị trường", en: "Market", th: "ตลาด" },
+      slug: "market",
+    },
+    date: "2026-09-04",
+    created_at: "2026-09-04T08:00:00.000Z",
+    slug: "toi-uu-tuyen-viet-lao-thai",
+  },
+  {
+    id: 9003,
+    title: {
+      vi: "Theo dõi lô hàng minh bạch hơn với một mã tra cứu",
+      en: "Make shipment updates clearer with one tracking code",
+      th: "ติดตามการขนส่งได้ชัดเจนขึ้นด้วยรหัสเดียว",
+    },
+    content: {
+      vi: "<p>Timeline, tình trạng chứng từ và cập nhật tại cửa khẩu được gom vào một luồng theo dõi dễ đọc cho đội ngũ xuất nhập khẩu.</p>",
+      en: "<p>Timeline, document readiness and border updates are brought together in one clear view for import-export teams.</p>",
+      th: "<p>รวมไทม์ไลน์ ความพร้อมเอกสาร และอัปเดตหน้าด่านไว้ในมุมมองเดียวสำหรับทีมส่งออกและนำเข้า</p>",
+    },
+    image: "/images/news/hero.png",
+    author: "VILA SANMYSHI",
+    category_id: 903,
+    news_categories: {
+      name: { vi: "Vận hành", en: "Operations", th: "การดำเนินงาน" },
+      slug: "operations",
+    },
+    date: "2026-08-29",
+    created_at: "2026-08-29T08:00:00.000Z",
+    slug: "theo-doi-lo-hang-mot-ma-tra-cuu",
+  },
+];
 const supportedRemoteHosts = [
   "images.unsplash.com",
   "lh3.googleusercontent.com",
@@ -485,6 +556,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
         image: fallbackImages[index],
         href: "/services",
       }));
+  const landingNews = newsList.length ? newsList : fallbackNews;
 
   const benefits = Array.from({ length: 4 }, (_, index) => ({
     title: coreT(`benefits.${index}.title`),
@@ -503,7 +575,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
             </div>
             <h1 className="mt-7 max-w-3xl text-[clamp(2.7rem,5vw,4.75rem)] font-bold leading-[1.04] tracking-[-0.045em] text-white">
               {current.heroLead}{" "}
-              <span className="text-white">{current.heroHighlight}</span>{" "}
+              <span className="text-brand-accent">{current.heroHighlight}</span>{" "}
               {current.heroTail}
             </h1>
             <p className="mt-7 max-w-xl text-base font-normal leading-8 text-white/68 lg:text-[1.05rem]">
@@ -513,7 +585,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/contact"
-                className="home-button-sheen inline-flex min-h-13 items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                className="home-button-sheen inline-flex min-h-13 items-center justify-center gap-2 rounded-xl bg-brand-accent px-6 text-sm font-semibold text-brand-950 transition-colors hover:bg-[#dda044]"
               >
                 {current.primaryCta}
                 <ArrowRight size={18} aria-hidden="true" />
@@ -529,7 +601,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
             <div className="mt-9 grid gap-3 border-t border-white/15 pt-6 sm:grid-cols-2">
               {current.trust.map((item) => (
                 <span key={item} className="inline-flex items-center gap-2 text-xs leading-5 text-white/65">
-                  <CheckCircle2 className="shrink-0 text-brand-500" size={16} aria-hidden="true" />
+                  <CheckCircle2 className="shrink-0 text-brand-accent" size={16} aria-hidden="true" />
                   {item}
                 </span>
               ))}
@@ -597,7 +669,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
         <nav aria-label={current.servicesEyebrow} className="home-reveal relative mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:py-14">
           <div className="overflow-hidden rounded-2xl border border-white/12 bg-white">
             <div className="flex items-center justify-between border-b border-brand-200 px-5 py-4 sm:px-6">
-              <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-brand-700">{current.servicesEyebrow}</h2>
+              <h2 className="border-l-2 border-brand-accent pl-3 text-xs font-bold uppercase tracking-[0.12em] text-brand-700">{current.servicesEyebrow}</h2>
               <Link href="/services" className="inline-flex items-center gap-2 text-xs font-semibold text-brand-700">
                 {current.allServices}
                 <ArrowRight size={15} aria-hidden="true" />
@@ -949,8 +1021,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
         </div>
       </section>
 
-      {newsList.length > 0 && (
-        <section className="bg-white py-20 lg:py-24">
+      <section className="bg-white py-20 lg:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="home-reveal flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -964,7 +1035,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
             </div>
 
             <div className="home-stagger mt-10 grid gap-6 lg:grid-cols-3">
-              {newsList.slice(0, 6).map((news) => {
+              {landingNews.slice(0, 6).map((news) => {
                 const title = news.title?.[locale] || news.title?.vi;
                 const category = news.news_categories?.name?.[locale] || news.news_categories?.name?.vi || "VILA News";
                 return (
@@ -992,7 +1063,6 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
             </div>
           </div>
         </section>
-      )}
 
       <section className="bg-brand-50 py-20 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.7fr_1.3fr] lg:px-8">

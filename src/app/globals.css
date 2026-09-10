@@ -34,17 +34,18 @@
 /* ---------- Base CSS Variables ---------- */
 :root {
   /* === Brand palette: zinc surfaces + a single green accent === */
-  --brand-50: #fafafa;
-  --brand-100: #f4f4f5;
-  --brand-200: #e4e4e7;
-  --brand-300: #d4d4d8;
-  --brand-400: #a1a1aa;
-  --brand-500: #25754c;
-  --brand-600: #25754c;
-  --brand-700: #1f5f3f;
-  --brand-800: #174a32;
-  --brand-900: #123d2b;
-  --brand-950: #0e2a1c;
+  --brand-50: #f2f8f4;
+  --brand-100: #e4f0e8;
+  --brand-200: #cfe1d5;
+  --brand-300: #a8c6b1;
+  --brand-400: #78a889;
+  --brand-500: #2f8a59;
+  --brand-600: #247a4b;
+  --brand-700: #1c633d;
+  --brand-800: #144b30;
+  --brand-900: #0d3824;
+  --brand-950: #07291b;
+  --brand-accent: #f2ad4e;
 
   --md-primary: var(--brand-600);
   --md-on-primary: #ffffff;
@@ -142,8 +143,8 @@
   --gradient-glass: none;
 
   /* === Shadows === */
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 1px 3px rgba(7, 41, 27, 0.06), 0 8px 24px rgba(7, 41, 27, 0.035);
+  --shadow-card-hover: 0 10px 30px rgba(7, 41, 27, 0.12);
   --shadow-nav: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-glow-primary: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -186,6 +187,7 @@
   --color-brand-800: var(--brand-800);
   --color-brand-900: var(--brand-900);
   --color-brand-950: var(--brand-950);
+  --color-brand-accent: var(--brand-accent);
 
   /* === Material Design 3 Colors === */
 
