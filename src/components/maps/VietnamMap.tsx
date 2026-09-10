@@ -33,10 +33,7 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
   };
 
   return (
-    <div className="relative w-full max-w-[600px] mx-auto aspect-[1/1.2] bg-slate-950/50 rounded-[3rem] border border-white/5 overflow-hidden group">
-      {/* Decorative background element */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/10 blur-[100px] rounded-full pointer-events-none opacity-100 transition-opacity duration-700" />
-
+    <div className="group relative mx-auto aspect-[1/1.2] w-full max-w-[600px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
       {/* Map Background */}
       <div className="absolute inset-0 p-8">
         <div className="relative w-full h-full">
@@ -44,7 +41,7 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
             src="/maps/vietnam.svg"
             alt="Vietnam Map"
             fill
-            priority
+            preload
             className="object-fill opacity-40 transition-all duration-700 filter grayscale brightness-150 contrast-125"
           />
 
@@ -54,19 +51,6 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
             viewBox="0 0 1000 1000"
             preserveAspectRatio="none"
           >
-            <defs>
-              <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="var(--color-primary-fixed)" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="var(--color-primary-fixed)" stopOpacity="0" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
             {markers.map((marker, i) => {
               const { cx, cy } = getCoords(marker);
               const isActive = activeId === marker.id;
@@ -93,8 +77,7 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
                     fontSize={isActive ? "24" : "18"}
                     fontWeight="900"
                     textAnchor={textAnchor}
-                    className="uppercase tracking-widest transition-all duration-500 drop-shadow-2xl"
-                    filter={isActive ? "url(#glow)" : ""}
+                    className="uppercase tracking-widest transition-all duration-500"
                   >
                     {marker.name}
                   </text>
@@ -117,7 +100,7 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
               <div className="flex flex-col items-center gap-2">
                 <div className="flex flex-wrap w-8 h-8 items-center justify-center opacity-60">
                   {[...Array(6)].map((_, i) => (
-                    <div key={i} className="w-1.5 h-1.5 bg-primary/40 rounded-full m-0.5 shadow-glow-primary" />
+                    <div key={i} className="m-0.5 h-1.5 w-1.5 rounded-full bg-primary/40" />
                   ))}
                 </div>
                 <span className="text-[10px] font-black uppercase text-white/50 tracking-[0.2em] drop-shadow-md">{island.name}</span>
@@ -140,14 +123,8 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
                   transform: `translate(-50%, -50%) ${isActive ? 'scale(1.5)' : 'scale(1)'}`,
                 }}
               >
-                {/* Ripple Effect */}
-                <div className={`absolute inset-0 bg-primary/20 rounded-full animate-ping ${isActive ? 'scale-[3]' : 'scale-[2.5]'}`} />
-
-                {/* Outer Glow */}
-                <div className={`absolute inset-0 bg-primary/40 rounded-full blur-md ${isActive ? 'opacity-100' : 'opacity-0 group-hover/marker:opacity-100'} transition-opacity duration-300`} />
-
                 {/* Pin */}
-                <div className={`relative w-3.5 h-3.5 bg-primary-fixed rounded-full border-2 border-slate-950 shadow-glow-primary transition-all duration-300 ${isActive ? 'scale-125 ring-4 ring-primary-fixed/20' : ''}`} />
+                <div className={`relative h-3.5 w-3.5 rounded-full border-2 border-brand-950 bg-primary transition-all duration-300 ${isActive ? 'scale-125 ring-4 ring-primary/20' : ''}`} />
 
               </div>
             );
@@ -155,12 +132,11 @@ export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
         </div>
       </div>
 
-      {/* Decorative Elements */}
+      {/* Territory label */}
       <div className="absolute bottom-8 left-8 origin-bottom-left -rotate-90 translate-x-3 translate-y-[-10px]">
         <p className="text-[10px] font-black text-white/10 uppercase tracking-[0.4em] whitespace-nowrap">Vietnam Territory</p>
       </div>
 
-      <div className="absolute top-8 left-8 right-8 bottom-8 border border-white/5 rounded-[2rem] pointer-events-none" />
     </div>
   );
 }

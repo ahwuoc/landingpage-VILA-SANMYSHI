@@ -15,6 +15,7 @@ export default function Footer() {
     { name: navT("home"), href: "/" },
     { name: navT("about"), href: "/about" },
     { name: navT("services"), href: "/services" },
+    { name: navT("tracking"), href: "/tracking" },
     { name: navT("branches"), href: "/branches" },
     { name: navT("news"), href: "/news" },
     { name: navT("contact"), href: "/contact" },
@@ -22,17 +23,17 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-brand-900 text-white">
-      <div className="absolute inset-x-0 top-0 h-1 bg-brand-500" />
+      <div className="absolute inset-x-0 top-0 h-px bg-brand-500" />
 
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:py-20">
-        <div className="grid gap-14 border-b border-white/15 pb-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:pb-20">
+      <div className="relative mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:py-20">
+        <div className="grid gap-14 border-b border-white/10 pb-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:pb-20">
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-4">
-              <span className="grid h-20 w-28 place-items-center rounded-2xl bg-white px-2">
+              <span className="grid h-16 w-24 place-items-center rounded-xl bg-white px-2">
                 <Image src={COMPANY_INFO.logo} alt={BRAND_NAME} width={106} height={68} className="h-auto w-full object-contain" />
               </span>
               <span>
-                <strong className="block text-2xl font-bold leading-none tracking-tight">
+                <strong className="block text-xl font-bold leading-none tracking-[-0.025em]">
                   VILA SANMYSHI
                 </strong>
                 <small className="mt-2 block text-[9px] font-semibold uppercase tracking-[0.14em] text-brand-200">
@@ -41,7 +42,7 @@ export default function Footer() {
               </span>
             </Link>
 
-            <p className="mt-7 max-w-xl text-sm font-medium leading-7 text-white/62 lg:text-[15px]">{t("about_text")}</p>
+            <p className="mt-7 max-w-xl text-sm font-normal leading-7 text-white/65 lg:text-[15px]">{t("about_text")}</p>
 
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
               {SOCIAL_LINKS.map((social) => (
@@ -66,7 +67,7 @@ export default function Footer() {
                 <Link
                   href={link.href}
                   key={link.href}
-                  className="text-sm font-semibold text-white/72 transition-colors hover:text-white"
+                  className="text-sm font-medium text-white/70 transition-colors hover:text-white"
                 >
                   {link.name}
                 </Link>
@@ -77,7 +78,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <h2 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-200">{t("contact_title")}</h2>
             <address className="space-y-5 not-italic">
-              <div className="flex gap-3 text-sm leading-6 text-white/72">
+              <div className="flex gap-3 text-sm font-normal leading-6 text-white/70">
                 <MapPin className="mt-0.5 shrink-0 text-brand-300" size={18} aria-hidden="true" />
                 <span>{COMPANY_INFO.address}</span>
               </div>
@@ -93,7 +94,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-8 border-b border-white/15 py-9 lg:grid-cols-[220px_1fr] lg:items-center">
+        <div className="grid gap-8 border-b border-white/10 py-9 lg:grid-cols-[220px_1fr] lg:items-center">
           <div className="flex items-center gap-3 text-[10px] font-extrabold uppercase tracking-[0.15em] text-white/50">
             <Route size={18} className="text-brand-300" aria-hidden="true" />
             Hành lang kinh tế Đông – Tây

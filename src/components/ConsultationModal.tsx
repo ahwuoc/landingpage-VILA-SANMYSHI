@@ -99,7 +99,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
       <button
         type="button"
         tabIndex={-1}
-        className="absolute inset-0 cursor-default bg-brand-950/75 backdrop-blur-md animate-fade-in"
+        className="absolute inset-0 cursor-default bg-brand-950/75 backdrop-blur-sm animate-fade-in"
         onClick={handleClose}
         aria-label={t("close_label")}
       />
@@ -108,13 +108,13 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
         role="dialog"
         aria-modal="true"
         aria-labelledby="consultation-modal-title"
-        className="relative max-h-[94svh] w-full max-w-5xl overflow-y-auto rounded-[1.75rem] border border-white/15 bg-white shadow-2xl shadow-brand-950/35 animate-scale-in lg:overflow-hidden lg:rounded-[2rem]"
+        className="relative max-h-[94svh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-brand-200 bg-white shadow-[var(--shadow-elevated)] animate-scale-in lg:overflow-hidden"
       >
         <button
           ref={closeButtonRef}
           type="button"
           onClick={handleClose}
-          className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full border border-brand-100 bg-white text-brand-900 shadow-lg transition hover:bg-brand-50 focus:outline-none focus:ring-4 focus:ring-brand-200 lg:right-5 lg:top-5"
+          className="absolute right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-xl border border-brand-200 bg-white text-on-surface shadow-[var(--shadow-card)] transition-colors hover:bg-brand-50 focus:outline-none focus:ring-2 focus:ring-brand-200 lg:right-5 lg:top-5"
           aria-label={t("close_label")}
         >
           <X size={20} aria-hidden="true" />
@@ -123,7 +123,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
         {isSubmitted ? (
           <div className="grid min-h-[520px] place-items-center bg-brand-50 p-8 text-center lg:min-h-[620px] lg:p-16" aria-live="polite">
             <div className="max-w-lg">
-              <span className="mx-auto grid h-20 w-20 place-items-center rounded-3xl bg-brand-700 text-white shadow-xl shadow-brand-900/20">
+              <span className="mx-auto grid h-16 w-16 place-items-center rounded-xl bg-brand-600 text-white">
                 <CheckCircle2 size={38} aria-hidden="true" />
               </span>
               <p className="mt-8 text-sm font-semibold text-brand-600">VILA SANMYSHI</p>
@@ -136,11 +136,8 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
         ) : (
           <div className="grid lg:grid-cols-[1.05fr_.95fr]">
             <section className="relative overflow-hidden bg-brand-900 p-6 text-white sm:p-9 lg:min-h-[650px] lg:p-12">
-              <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-500/25 blur-3xl" />
-              <div className="pointer-events-none absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-brand-700/60 blur-3xl" />
-
               <div className="relative">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[11px] font-semibold text-brand-100 backdrop-blur">
+                <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70">
                   <FileCheck2 size={16} aria-hidden="true" />
                   {t("campaign_badge")}
                 </div>
@@ -156,7 +153,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                   {campaignBenefits.map((benefit, index) => (
                     <li
                       key={benefit}
-                      className={`${index > 0 ? "hidden sm:flex" : "flex"} items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.07] p-4 text-sm font-medium leading-6 text-white/82 backdrop-blur-sm`}
+                      className={`${index > 0 ? "hidden sm:flex" : "flex"} items-start gap-3 rounded-xl border border-white/10 p-4 text-sm font-normal leading-6 text-white/80`}
                     >
                       <CheckCircle2 className="mt-0.5 shrink-0 text-brand-200" size={18} aria-hidden="true" />
                       {benefit}
@@ -164,7 +161,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                   ))}
                 </ul>
 
-                <div className="mt-8 hidden rounded-2xl border border-white/12 bg-brand-950/35 p-5 sm:block">
+                <div className="mt-8 hidden rounded-xl border border-white/12 bg-brand-950/35 p-5 sm:block">
                   <div className="flex items-center justify-between gap-4 text-[10px] font-semibold text-brand-200">
                     <span>LAO BẢO</span>
                     <Route size={17} aria-hidden="true" />
@@ -187,13 +184,13 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
             </section>
 
             <section className="bg-white p-7 sm:p-9 lg:flex lg:min-h-[650px] lg:flex-col lg:justify-center lg:p-12">
-              <p className="text-xs font-semibold text-brand-600">{t("form_label")}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-600">{t("form_label")}</p>
               <h3 className="mt-3 max-w-md text-2xl font-bold leading-tight tracking-[-0.025em] text-brand-950 sm:text-3xl">
                 {t("form_title")}
               </h3>
               <p className="mt-4 text-sm leading-6 text-on-surface-variant">{t("form_intro")}</p>
 
-              <div className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-[10px] font-semibold text-brand-700">
+              <div className="mt-5 inline-flex w-fit items-center gap-2 rounded-lg bg-brand-100 px-3 py-1.5 text-[10px] font-semibold text-brand-600">
                 <FileCheck2 size={14} aria-hidden="true" />
                 {t("service_label")}: {selectedService}
               </div>
@@ -208,7 +205,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                       name="name"
                       autoComplete="name"
                       placeholder={t("name_placeholder")}
-                      className="min-h-13 w-full rounded-xl border border-brand-100 bg-brand-50 px-4 text-sm font-medium text-brand-950 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100"
+                      className="min-h-13 w-full rounded-xl border border-brand-200 bg-brand-50 px-4 text-sm font-normal text-on-surface outline-none transition focus:border-brand-600 focus:bg-white focus:ring-2 focus:ring-brand-100"
                     />
                   </label>
                   <label className="block">
@@ -220,7 +217,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                       autoComplete="tel"
                       inputMode="tel"
                       placeholder={t("phone_placeholder")}
-                      className="min-h-13 w-full rounded-xl border border-brand-100 bg-brand-50 px-4 text-sm font-medium text-brand-950 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100"
+                      className="min-h-13 w-full rounded-xl border border-brand-200 bg-brand-50 px-4 text-sm font-normal text-on-surface outline-none transition focus:border-brand-600 focus:bg-white focus:ring-2 focus:ring-brand-100"
                     />
                   </label>
                 </div>
@@ -232,12 +229,12 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                     name="message"
                     defaultValue={t("default_message", { service: selectedService })}
                     placeholder={t("message_placeholder")}
-                    className="w-full resize-none rounded-xl border border-brand-100 bg-brand-50 p-4 text-sm font-medium leading-6 text-brand-950 outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100"
+                    className="w-full resize-none rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-normal leading-6 text-on-surface outline-none transition focus:border-brand-600 focus:bg-white focus:ring-2 focus:ring-brand-100"
                   />
                 </label>
 
                 {error && (
-                  <p className="rounded-xl border border-red-200 bg-red-50 p-3 text-center text-xs font-semibold text-red-700" role="alert">
+                  <p className="rounded-xl border border-brand-300 bg-brand-100 p-3 text-center text-xs font-semibold text-on-surface" role="alert">
                     {error}
                   </p>
                 )}
@@ -245,7 +242,7 @@ export default function ConsultationModal({ isOpen, onClose, serviceName }: Cons
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-xl bg-brand-700 px-6 text-sm font-semibold text-white shadow-lg shadow-brand-900/15 transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="group inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-xl bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isLoading ? t("btn_loading") : t("btn_submit")}
                   {!isLoading && <ArrowRight className="transition-transform group-hover:translate-x-1" size={18} aria-hidden="true" />}

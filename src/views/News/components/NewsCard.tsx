@@ -22,7 +22,7 @@ export default function NewsCard({ item }: NewsCardProps) {
 
   return (
     <Link href={`/news/${item.slug || item.id}`} className="group cursor-pointer">
-      <div className="aspect-[4/3] relative rounded-[2.5rem] overflow-hidden mb-8 shadow-lg">
+      <div className="relative mb-7 aspect-[4/3] overflow-hidden rounded-2xl border border-brand-200 shadow-[var(--shadow-card)]">
         <Image
           src={item.image}
           alt={title}
@@ -30,7 +30,7 @@ export default function NewsCard({ item }: NewsCardProps) {
           className="object-cover group-hover:scale-105 transition-transform duration-700"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.1em] text-on-surface shadow-sm">
+        <div className="absolute right-5 top-5 rounded-lg border border-brand-200 bg-white/95 px-4 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-primary shadow-[var(--shadow-card)]">
           {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
         </div>
       </div>
@@ -40,10 +40,10 @@ export default function NewsCard({ item }: NewsCardProps) {
           <span className="w-1.5 h-1.5 bg-primary rounded-full" />
           <span>{item.author}</span>
         </div>
-        <h3 className="text-2xl font-black tracking-tight mb-6 group-hover:text-primary transition-colors leading-tight">
+        <h3 className="mb-5 text-2xl font-bold leading-tight tracking-[-0.025em] transition-colors group-hover:text-primary">
           {title}
         </h3>
-        <p className="text-on-surface-variant leading-relaxed font-medium opacity-80 line-clamp-2">
+        <p className="line-clamp-2 text-sm font-normal leading-7 text-on-surface-variant">
           {excerpt}
         </p>
         <div className="mt-8 flex items-center gap-2 text-primary overflow-hidden">

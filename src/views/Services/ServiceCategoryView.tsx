@@ -28,7 +28,7 @@ export default function ServiceCategoryView({ services, categorySlug, categoryNa
       <PageHero
         image={services[0]?.image || "/images/services/sea-freight-premium.png"}
         imageAlt={categoryName}
-        overlay="bg-black/30"
+        overlay="bg-brand-950/60"
         imageOpacity="opacity-60"
         breadcrumb={[
           { label: t('page_title'), href: "/services" },
@@ -39,11 +39,10 @@ export default function ServiceCategoryView({ services, categorySlug, categoryNa
         description={t('category_desc_template', { name: categoryName })}
       />
 
-      <section className="py-20 max-w-7xl mx-auto px-8">
+      <section className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:py-24">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12">
           <div className="flex items-center gap-3">
-            <span className="w-10 h-[2px] bg-primary rounded-full" />
-            <span className="text-primary text-label-md font-black uppercase tracking-widest">
+            <span className="text-label-md">
               {filtered.length} {t('results_label')}{search && ` cho "${search}"`}
             </span>
           </div>
@@ -54,7 +53,7 @@ export default function ServiceCategoryView({ services, categorySlug, categoryNa
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('search_placeholder')}
-              className="w-full pl-12 pr-4 py-3 bg-surface-container-high border border-on-surface/5 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full rounded-xl border border-brand-200 bg-brand-50 py-3 pl-12 pr-4 text-sm font-normal transition-colors focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/10"
             />
             {search && (
               <button onClick={() => setSearch("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-on-surface transition-colors">
@@ -76,10 +75,10 @@ export default function ServiceCategoryView({ services, categorySlug, categoryNa
               <Link
                 key={service.id}
                 href={`/services/${categorySlug}/${service.id}`}
-                className="group flex gap-6 py-6 hover:bg-surface-container-low rounded-2xl px-4 -mx-4 transition-all"
+                className="group -mx-4 flex gap-6 rounded-xl px-4 py-6 transition-colors hover:bg-brand-50"
               >
                 {/* Thumbnail */}
-                <div className="relative w-32 h-24 lg:w-48 lg:h-36 rounded-2xl overflow-hidden flex-shrink-0">
+                <div className="relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl border border-brand-200 lg:h-36 lg:w-48">
                   <Image
                     src={service.image}
                     alt={title}
@@ -93,11 +92,11 @@ export default function ServiceCategoryView({ services, categorySlug, categoryNa
                 <div className="flex-1 min-w-0 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">
                         {categoryName}
                       </span>
                     </div>
-                    <h3 className="text-base lg:text-xl font-black tracking-tight leading-snug group-hover:text-primary transition-colors mb-2 uppercase">
+                    <h3 className="mb-2 text-base font-bold leading-snug tracking-[-0.02em] transition-colors group-hover:text-primary lg:text-xl">
                       {title}
                     </h3>
                     <p className="text-body-sm text-muted line-clamp-2 hidden sm:block"

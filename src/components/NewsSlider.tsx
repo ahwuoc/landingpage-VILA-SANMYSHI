@@ -37,18 +37,17 @@ export default function NewsSlider({
   };
 
   return (
-    <section className="py-16 md:py-24 lg:py-48 landscape:py-10 bg-white overflow-hidden relative">
+    <section className="relative overflow-hidden bg-white py-20 landscape:py-10 lg:py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-20 lg:mb-32 gap-8">
+        <div className="mb-12 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end lg:mb-16">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-4 md:mb-6">
-              <span className="w-10 h-[2px] bg-primary rounded-full" />
-              <span className="text-primary text-[10px] lg:text-xs font-black uppercase tracking-[0.3em]">{t('badge')}</span>
+              <span className="text-label-lg">{t('badge')}</span>
             </div>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl landscape:text-2xl font-black text-slate-900 tracking-tight leading-tight uppercase">
+            <h2 className="text-4xl font-bold leading-tight tracking-[-0.03em] text-on-surface landscape:text-2xl md:text-5xl">
               {t('title_prefix')} <span className="text-primary">{t('title_highlight')}</span>
             </h2>
-            <p className="mt-4 md:mt-6 text-slate-500 font-medium text-base md:text-lg lg:text-2xl max-w-2xl leading-relaxed landscape:hidden">
+            <p className="mt-5 max-w-2xl text-base font-normal leading-7 text-on-surface-variant landscape:hidden md:text-lg md:leading-8">
               {t('description')}
             </p>
           </div>
@@ -56,13 +55,13 @@ export default function NewsSlider({
           <div className="flex gap-4">
             <button
               onClick={() => swiper?.slidePrev()}
-              className="w-12 h-12 md:w-20 md:h-20 landscape:w-10 landscape:h-10 rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white flex items-center justify-center transition-all"
+              className="flex h-12 w-12 items-center justify-center rounded-xl border border-brand-200 text-on-surface transition-colors hover:border-primary hover:text-primary landscape:h-10 landscape:w-10"
             >
               <span className="material-symbols-outlined text-xl md:text-3xl landscape:text-lg">west</span>
             </button>
             <button
               onClick={() => swiper?.slideNext()}
-              className="w-12 h-12 md:w-20 md:h-20 landscape:w-10 landscape:h-10 rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white flex items-center justify-center transition-all"
+              className="flex h-12 w-12 items-center justify-center rounded-xl border border-brand-200 text-on-surface transition-colors hover:border-primary hover:text-primary landscape:h-10 landscape:w-10"
             >
               <span className="material-symbols-outlined text-xl md:text-3xl landscape:text-lg">east</span>
             </button>
@@ -87,7 +86,7 @@ export default function NewsSlider({
             <SwiperSlide key={news.id} className="!h-auto flex">
               <Link
                 href={`/news/${news.slug || news.id}`}
-                className="group relative flex flex-col h-full bg-white rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 w-full"
+                className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-[var(--shadow-card)] transition duration-300 hover:border-brand-300 hover:shadow-[var(--shadow-card-hover)]"
               >
                 {/* Image Wrap */}
                 <div className="relative aspect-[16/10] landscape:aspect-[21/9] overflow-hidden shrink-0">
@@ -95,12 +94,12 @@ export default function NewsSlider({
                     src={news.image}
                     alt={news.title[locale] || news.title['vi']}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     sizes="(max-width: 768px) 90vw, 50vw"
                   />
                   {/* Category Tag Overlay */}
                   <div className="absolute top-4 left-4">
-                    <span className="bg-primary/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[10px] landscape:text-[8px] font-black uppercase tracking-widest border border-white/20">
+                    <span className="rounded-lg bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary shadow-[var(--shadow-card)] landscape:text-[8px]">
                       {news.news_categories?.name[locale] || news.news_categories?.name['vi'] || ""}
                     </span>
                   </div>
@@ -111,10 +110,10 @@ export default function NewsSlider({
                   {/* Date & Author */}
                   <div className="flex items-center gap-4 mb-4 landscape:mb-2">
                     <div className="flex flex-col">
-                      <span className="text-[10px] landscape:text-[8px] text-slate-400 font-bold uppercase tracking-widest mb-1">
+                      <span className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400 landscape:text-[8px]">
                         {t('author_label')}
                       </span>
-                      <span className="text-slate-900 text-xs landscape:text-[10px] font-black uppercase">
+                      <span className="text-xs font-semibold text-on-surface landscape:text-[10px]">
                         {news.author}
                       </span>
                     </div>
@@ -124,10 +123,10 @@ export default function NewsSlider({
                         const d = formatDate(news.date);
                         return (
                           <>
-                            <span className="text-[10px] landscape:text-[8px] text-slate-400 font-bold uppercase tracking-widest mb-1">
+                            <span className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400 landscape:text-[8px]">
                               {d.year}
                             </span>
-                            <span className="text-primary text-xs landscape:text-[10px] font-black uppercase italic">
+                            <span className="text-xs font-semibold text-primary landscape:text-[10px]">
                               {d.day} . {d.month}
                             </span>
                           </>
@@ -137,7 +136,7 @@ export default function NewsSlider({
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl md:text-2xl landscape:text-sm md:landscape:text-base font-black text-slate-900 leading-tight tracking-tight uppercase mb-6 landscape:mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                  <h3 className="mb-6 line-clamp-2 text-xl font-bold leading-tight tracking-[-0.02em] text-on-surface transition-colors duration-300 group-hover:text-primary landscape:mb-3 landscape:text-sm md:text-2xl md:landscape:text-base">
                     {news.title[locale] || news.title['vi']}
                   </h3>
 
@@ -146,7 +145,7 @@ export default function NewsSlider({
                     <span className="text-[10px] landscape:text-[8px] font-black text-primary uppercase tracking-[0.2em]">
                       {t('read_more')}
                     </span>
-                    <div className="w-10 h-10 landscape:w-8 landscape:h-8 rounded-full bg-slate-50 text-slate-900 flex items-center justify-center group-hover/footer:bg-primary group-hover/footer:text-white transition-all duration-300">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-on-surface transition-colors duration-300 group-hover/footer:bg-primary group-hover/footer:text-white landscape:h-8 landscape:w-8">
                       <span className="material-symbols-outlined text-xl landscape:text-lg">arrow_forward</span>
                     </div>
                   </div>

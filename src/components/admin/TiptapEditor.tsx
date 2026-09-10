@@ -343,7 +343,7 @@ export default function TiptapEditor({ value, onChange, placeholder }: TiptapEdi
             <div className="flex items-center gap-0.5 ml-1 bg-white/60 p-0.5 rounded-lg border border-on-surface/5 animate-in fade-in zoom-in duration-200">
               <MenuButton onClick={() => editor.chain().focus().addColumnAfter().run()} title="Thêm cột"><PlusSquare size={14} /></MenuButton>
               <MenuButton onClick={() => editor.chain().focus().addRowAfter().run()} title="Thêm hàng"><PlusSquare size={14} className="rotate-90" /></MenuButton>
-              <MenuButton onClick={() => editor.chain().focus().deleteTable().run()} title="Xóa bảng"><Trash2 size={14} className="text-red-500" /></MenuButton>
+              <MenuButton onClick={() => editor.chain().focus().deleteTable().run()} title="Xóa bảng"><Trash2 size={14} className="text-on-surface-variant" /></MenuButton>
             </div>
           )}
         </div>

@@ -84,8 +84,6 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-inverse-surface flex items-center justify-center p-4 font-sans">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 blur-[100px] rounded-full" />
       </div>
       <div className="relative w-full max-w-md">
         <div className="flex flex-col items-center mb-10 gap-4">

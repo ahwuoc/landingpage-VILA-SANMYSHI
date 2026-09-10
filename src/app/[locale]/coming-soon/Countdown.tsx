@@ -36,19 +36,14 @@ export default function Countdown() {
 
   const TimeUnit = ({ value, label }: { value: number; label: string }) => (
     <div className="flex flex-col items-center">
-      <div className="relative group">
-        {/* Glow behind the number */}
-        <div className="absolute -inset-2 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full" />
-
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-primary/5 border border-primary/20 rounded-2xl backdrop-blur-md overflow-hidden shadow-sm transition-all group-hover:border-primary/40 group-hover:bg-primary/10">
-          <span className="text-3xl sm:text-4xl font-black text-primary tabular-nums tracking-tighter">
+      <div className="group relative">
+        <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl border border-brand-200 bg-white transition-colors group-hover:border-primary sm:h-20 sm:w-20">
+          <span className="text-3xl font-bold tabular-nums tracking-[-0.03em] text-primary sm:text-4xl">
             {value.toString().padStart(2, "0")}
           </span>
-          {/* Animated glass line */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
         </div>
       </div>
-      <span className="mt-2 text-[10px] font-black text-primary/40 uppercase tracking-[0.3em]">
+      <span className="mt-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary/70">
         {label}
       </span>
     </div>

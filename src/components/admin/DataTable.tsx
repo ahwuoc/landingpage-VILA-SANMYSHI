@@ -30,7 +30,7 @@ export default function DataTable({
   hideAdd = false
 }: DataTableProps) {
   return (
-    <div className="bg-white rounded-3xl lg:rounded-[2.5rem] border border-on-surface/5 shadow-sm overflow-hidden">
+    <div className="overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-[var(--shadow-card)]">
       <div className="p-6 lg:p-10 border-b border-on-surface/5 flex flex-col sm:flex-row items-center justify-between gap-6">
         <h3 className="text-lg lg:text-xl font-black text-on-surface uppercase tracking-tight w-full sm:w-auto text-center sm:text-left">{title}</h3>
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
@@ -87,7 +87,7 @@ export default function DataTable({
                     </button>
                     <button 
                       onClick={() => onDelete?.(item)}
-                      className="w-9 h-9 lg:w-10 lg:h-10 rounded-lg border border-on-surface/5 flex items-center justify-center text-on-surface-variant bg-white lg:bg-transparent hover:bg-white hover:text-red-500 hover:shadow-sm transition-all"
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-brand-200 bg-white text-on-surface-variant transition-colors hover:border-brand-300 hover:text-on-surface lg:h-10 lg:w-10 lg:bg-transparent"
                       title="Xóa"
                     >
                       <span className="material-symbols-outlined text-lg">delete</span>

@@ -20,8 +20,8 @@ const TocList = memo(function TocList({ items }: { items: TocItem[] }) {
   if (items.length === 0) return null;
 
   return (
-    <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2rem]">
-      <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+    <div className="rounded-xl border border-brand-200 bg-brand-50 p-7">
+      <h4 className="mb-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
         <span className="material-symbols-outlined text-base">format_list_bulleted</span>
         {t('toc_title')}
       </h4>
@@ -37,13 +37,13 @@ const TocList = memo(function TocList({ items }: { items: TocItem[] }) {
               style={{ paddingLeft: `${(item.level - 2) * 12}px` }}
               className={`flex items-start gap-2 py-1 text-sm leading-snug transition-colors ${
                 item.isActive
-                  ? "text-primary font-black uppercase tracking-tight"
+                  ? "font-semibold text-primary"
                   : item.isScrolledOver
                   ? "text-slate-300 pointer-events-none"
-                  : "text-slate-500 hover:text-primary font-bold"
+                  : "font-medium text-slate-500 hover:text-primary"
               }`}
             >
-              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${item.isActive ? 'bg-primary shadow-glow-primary' : 'bg-slate-200'}`} />
+              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${item.isActive ? 'bg-primary' : 'bg-slate-200'}`} />
               {item.textContent}
             </a>
           </li>

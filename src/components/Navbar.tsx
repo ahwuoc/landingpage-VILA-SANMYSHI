@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: t("home"), href: "/" },
     { name: t("about"), href: "/about" },
     { name: t("services"), href: "/services" },
+    { name: t("tracking"), href: "/tracking" },
     { name: t("branches"), href: "/branches" },
     { name: t("news"), href: "/news" },
     { name: t("contact"), href: "/contact" },
@@ -59,7 +60,7 @@ export default function Navbar() {
       <ConsultationModal isOpen={isModalOpen} onClose={closeConsultationModal} />
 
       <header className="absolute inset-x-0 top-0 z-[120]">
-        <div className="hidden h-9 bg-brand-900 text-white lg:block">
+        <div className="hidden h-8 bg-brand-900 text-white lg:block">
           <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 text-[10px] font-semibold tracking-[0.08em]">
             <div className="flex items-center gap-6">
               <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-2 transition-opacity hover:opacity-70">
@@ -75,81 +76,83 @@ export default function Navbar() {
           </div>
         </div>
 
-        <nav className="mx-4 mt-3 flex h-[80px] w-auto max-w-7xl items-center justify-between rounded-2xl border border-brand-100 bg-white/95 px-4 shadow-lg shadow-brand-900/10 backdrop-blur-xl lg:h-[88px] lg:px-6 2xl:mx-auto">
-          <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="VILA SANMYSHI">
-            <Image
-              src="/images/logo.jpg"
-              alt="VILA SANMYSHI"
-              width={92}
-              height={60}
-              loading="eager"
-              className="h-14 w-auto object-contain lg:h-16"
-            />
-            <span className="hidden border-l border-[#10231d]/15 pl-3 sm:block">
-              <strong className="block text-lg font-bold leading-none tracking-tight text-brand-900">
-                VILA SANMYSHI
-              </strong>
-              <small className="mt-1 block text-[8px] font-semibold uppercase tracking-[0.14em] text-brand-600">
-                Hậu cần biên giới
-              </small>
-            </span>
-          </Link>
+        <nav className="border-b border-brand-200 bg-white/85 shadow-[var(--shadow-nav)] backdrop-blur-lg">
+          <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:h-[82px]">
+            <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="VILA SANMYSHI">
+              <Image
+                src="/images/logo.jpg"
+                alt="VILA SANMYSHI"
+                width={92}
+                height={60}
+                loading="eager"
+                className="h-12 w-auto object-contain lg:h-14"
+              />
+              <span className="hidden border-l border-brand-200 pl-3 sm:block">
+                <strong className="block text-base font-bold leading-none tracking-[-0.02em] text-on-surface">
+                  VILA SANMYSHI
+                </strong>
+                <small className="mt-1.5 block text-[8px] font-semibold uppercase tracking-[0.12em] text-brand-600">
+                  Hậu cần biên giới
+                </small>
+              </span>
+            </Link>
 
-          <div className="hidden items-center gap-6 xl:flex">
-            {navLinks.map((link) => {
-              const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
-                    isActive
-                      ? "bg-brand-50 text-brand-700"
-                      : "text-on-surface-variant hover:bg-brand-50 hover:text-brand-800"
-                  }`}
+            <div className="hidden items-center gap-5 xl:flex">
+              {navLinks.map((link) => {
+                const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`border-b-2 px-1 py-2 text-sm font-semibold transition-colors ${
+                      isActive
+                        ? "border-brand-600 text-brand-600"
+                        : "border-transparent text-on-surface-variant hover:border-brand-200 hover:text-on-surface"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center gap-2 lg:gap-3">
+              <label className="relative hidden lg:block">
+                <span className="sr-only">Language</span>
+                <select
+                  value={locale}
+                  onChange={(event) => changeLanguage(event.target.value)}
+                  className="h-11 cursor-pointer appearance-none rounded-xl border border-brand-200 bg-white px-3 pr-8 text-[10px] font-semibold uppercase tracking-[0.08em] text-on-surface outline-none focus:border-brand-600"
+                  aria-label="Language"
                 >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
+                  {LANGUAGES.map((language) => (
+                    <option value={language.id} key={language.id}>
+                      {language.id.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[9px]">▼</span>
+              </label>
 
-          <div className="flex items-center gap-2 lg:gap-3">
-            <label className="relative hidden lg:block">
-              <span className="sr-only">Language</span>
-              <select
-                value={locale}
-                onChange={(event) => changeLanguage(event.target.value)}
-                className="h-11 cursor-pointer appearance-none rounded-xl border border-brand-100 bg-white px-3 pr-8 text-[10px] font-semibold uppercase tracking-[0.08em] text-brand-900 outline-none focus:border-brand-500"
-                aria-label="Language"
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="hidden h-11 items-center gap-2 rounded-xl bg-brand-600 px-5 text-xs font-semibold text-white transition-colors hover:bg-brand-700 sm:flex"
               >
-                {LANGUAGES.map((language) => (
-                  <option value={language.id} key={language.id}>
-                    {language.id.toUpperCase()}
-                  </option>
-                ))}
-              </select>
-              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[9px]">▼</span>
-            </label>
+                {t("consult")}
+                <ArrowUpRight size={15} aria-hidden="true" />
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="hidden h-11 items-center gap-2 rounded-full bg-brand-700 px-5 text-xs font-semibold text-white transition-colors hover:bg-brand-800 sm:flex"
-            >
-              {t("consult")}
-              <ArrowUpRight size={15} aria-hidden="true" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setIsOpen(true)}
-              className="grid h-11 w-11 place-items-center rounded-xl border border-brand-100 text-brand-900 xl:hidden"
-              aria-label="Open navigation"
-              aria-expanded={isOpen}
-            >
-              <Menu size={22} aria-hidden="true" />
-            </button>
+              <button
+                type="button"
+                onClick={() => setIsOpen(true)}
+                className="grid h-11 w-11 place-items-center rounded-xl border border-brand-200 text-on-surface xl:hidden"
+                aria-label="Open navigation"
+                aria-expanded={isOpen}
+              >
+                <Menu size={22} aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </nav>
       </header>

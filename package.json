@@ -6,7 +6,10 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tracking:server": "node server/index.cjs",
+    "tracking:dev": "node --watch server/index.cjs",
+    "tracking:seed": "node server/db/seed.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.1",
@@ -39,8 +42,12 @@
     "@types/nodemailer": "^7.0.11",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "lucide-react": "^1.6.0",
     "luxon": "^3.7.2",
+    "mongoose": "^9.9.5",
     "next": "16.2.1",
     "next-intl": "^4.9.0",
     "nodemailer": "^8.0.4",

@@ -18,34 +18,23 @@ export default async function MaintenancePage({ params }: { params: Promise<{ lo
   const t = await getTranslations({ locale, namespace: "Maintenance" });
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row relative overflow-hidden font-sans selection:bg-primary/30 selection:text-white">
-      {/* Immersive Background Layer */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <div className="absolute inset-0 bg-noise pointer-events-none mix-blend-overlay" />
-        <div className="absolute inset-0 mesh-gradient" />
-      </div>
-
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-brand-950 font-sans selection:bg-primary/30 selection:text-white lg:flex-row">
       {/* LEFT SECTION: Full Media Panel */}
       <div className="w-full lg:w-3/5 h-[50vh] lg:h-screen relative overflow-hidden bg-slate-900 group">
         <Image
           src="/images/2bab8143-64a1-4ed5-ab59-238f7f1b7d87.png"
           alt="System Maintenance"
           fill
-          className="object-cover lg:object-contain p-0 lg:p-12 transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-          priority
+          className="object-cover p-0 lg:object-contain lg:p-12"
+          preload
         />
 
-        {/* Dynamic Overlays to make it "Beautiful" */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-slate-950/80 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
-
-        {/* Animated Scanline Effect */}
-        <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(36,232,125,0.05)_50%)] bg-[length:100%_4px] pointer-events-none z-20 animate-pulse" />
+        <div className="absolute inset-0 z-10 bg-brand-950/35" />
 
         {/* Floating ID Tag / Brand Branding */}
         <div className="absolute top-8 left-8 lg:top-12 lg:left-12 z-30">
           <Link href="/" className="flex items-center gap-4 group/logo">
-            <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-2xl overflow-hidden bg-white shadow-2xl transition-all duration-500 group-hover/logo:scale-110">
+            <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-white/10 bg-white shadow-[var(--shadow-card)] lg:h-16 lg:w-16">
               <Image src="/images/logo.jpg" alt="VILA SANMYSHI" fill className="object-contain p-2" />
             </div>
             <div className="hidden sm:block">
@@ -55,45 +44,38 @@ export default async function MaintenancePage({ params }: { params: Promise<{ lo
           </Link>
         </div>
 
-        {/* Grid Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--md-primary) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       </div>
 
       {/* RIGHT SECTION: Control Center / Info Panel */}
-      <div className="w-full lg:w-2/5 h-screen overflow-y-auto lg:overflow-visible flex items-center justify-center p-6 lg:p-12 relative z-30 bg-slate-950/90 backdrop-blur-3xl border-l border-white/5">
+      <div className="relative z-30 flex h-screen w-full items-center justify-center overflow-y-auto border-l border-white/10 bg-brand-950 p-6 lg:w-2/5 lg:overflow-visible lg:p-12">
         <div className="max-w-md w-full py-12 lg:py-0">
           <div className="space-y-10 animate-fade-up">
             {/* Status Header */}
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-md">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-ping" />
-                <span className="text-[9px] font-black text-primary uppercase tracking-[0.3em]">{t("status_badge")}</span>
+              <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">
+                <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <span>{t("status_badge")}</span>
               </div>
 
-              <h1 className="text-4xl lg:text-5xl font-black text-white leading-[1.1] tracking-tight uppercase">
+              <h1 className="text-4xl font-bold leading-[1.08] tracking-[-0.03em] text-white lg:text-5xl">
                 {t("title_part1")} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-300">{t("title_highlight")}</span>
+                <span className="text-white">{t("title_highlight")}</span>
               </h1>
 
-              <p className="text-slate-400 text-sm leading-relaxed font-medium">
+              <p className="text-sm font-normal leading-7 text-white/65">
                 {t("description")}
               </p>
             </div>
 
             {/* Advanced Progress Card */}
-            <div className="p-8 bg-white/[0.02] border border-white/5 rounded-[2rem] space-y-6 relative overflow-hidden group/progress">
+            <div className="group/progress relative space-y-6 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-8">
               <div className="flex justify-between items-end relative z-10">
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{t("load_label")}</span>
                 <span className="text-3xl font-black text-white tabular-nums">65%</span>
               </div>
 
               <div className="h-2.5 bg-white/5 rounded-full overflow-hidden relative z-10">
-                <div
-                  className="h-full bg-gradient-to-r from-primary to-emerald-400 rounded-full relative transition-all duration-[3000ms] shadow-[0_0_15px_rgba(36,232,125,0.3)]"
-                  style={{ width: '65%' }}
-                >
-                  <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)] animate-marquee w-[200%]" />
-                </div>
+                <div className="relative h-full rounded-full bg-primary" style={{ width: '65%' }} />
               </div>
 
               <div className="flex items-center gap-2 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
@@ -109,7 +91,7 @@ export default async function MaintenancePage({ params }: { params: Promise<{ lo
               <div className="grid grid-cols-1 gap-3">
                 <a
                   href={`tel:${COMPANY_INFO.hotline}`}
-                  className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-white/5 hover:border-primary/50 transition-all group/item"
+                  className="group/item flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-white/20 hover:bg-white/[0.05]"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center group-hover/item:bg-primary/20 transition-colors">
@@ -125,18 +107,18 @@ export default async function MaintenancePage({ params }: { params: Promise<{ lo
 
                 <a
                   href={`mailto:${COMPANY_INFO.email}`}
-                  className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-white/5 hover:border-emerald-500/50 transition-all group/item"
+                  className="group/item flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-white/20 hover:bg-white/[0.05]"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center group-hover/item:bg-emerald-500/20 transition-colors">
-                      <span className="material-symbols-outlined text-emerald-400 text-xl">alternate_email</span>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover/item:bg-primary/20">
+                      <span className="material-symbols-outlined text-xl text-primary">alternate_email</span>
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-none mb-1">{t("email_label")}</p>
-                      <p className="text-white font-black group-hover/item:text-emerald-400 transition-colors">{COMPANY_INFO.email}</p>
+                      <p className="font-bold text-white transition-colors group-hover/item:text-primary">{COMPANY_INFO.email}</p>
                     </div>
                   </div>
-                  <span className="material-symbols-outlined text-slate-700 group-hover/item:translate-x-1 group-hover/item:text-emerald-400 transition-all">chevron_right</span>
+                  <span className="material-symbols-outlined text-slate-700 transition-all group-hover/item:translate-x-1 group-hover/item:text-primary">chevron_right</span>
                 </a>
               </div>
             </div>

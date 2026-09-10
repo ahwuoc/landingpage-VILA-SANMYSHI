@@ -10,32 +10,23 @@ export const metadata = {
 
 export default function ComingSoonPage() {
   return (
-    <div className="min-h-screen bg-white flex flex-col lg:flex-row relative overflow-hidden font-sans selection:bg-primary/20 selection:text-primary">
-      {/* Immersive Background Layer */}
-      <div className="absolute inset-0 z-0 opacity-100">
-        <div className="absolute inset-0 bg-noise pointer-events-none opacity-[0.03] mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-primary/5" />
-      </div>
-
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-white font-sans selection:bg-primary/20 selection:text-primary lg:flex-row">
       {/* LEFT SECTION: Immersive Media Panel */}
       <div className="w-full lg:w-1/2 h-[45vh] lg:h-screen relative overflow-hidden bg-slate-900 group">
         <Image
           src="/images/coming-soon-bg.png"
           alt="Future of Logistics"
           fill
-          className="object-cover transition-transform duration-[4000ms] ease-out group-hover:scale-110"
-          priority
+          className="object-cover"
+          preload
         />
 
-        {/* Cinematic Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white/20 z-10 hidden lg:block" />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10" />
-        <div className="absolute inset-0 bg-primary/5 mix-blend-multiply z-10" />
+        <div className="absolute inset-0 z-10 bg-brand-950/20" />
 
         {/* Animated Brand Logo */}
         <div className="absolute top-8 left-8 lg:top-12 lg:left-12 z-30">
           <Link href="/" className="flex items-center gap-4 group/logo">
-            <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-2xl overflow-hidden bg-white shadow-xl transition-all duration-500 group-hover/logo:scale-110 ring-4 ring-primary/10">
+            <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-brand-200 bg-white shadow-[var(--shadow-card)] lg:h-16 lg:w-16">
               <Image src="/images/logo.jpg" alt="VILA SANMYSHI" fill className="object-contain p-2" />
             </div>
             <div className="hidden sm:block">
@@ -50,7 +41,7 @@ export default function ComingSoonPage() {
           {["Hiệu Suất", "Chính Xác", "Toàn Cầu"].map((tag, i) => (
             <div
               key={tag}
-              className="px-4 py-2 bg-white/80 border border-primary/20 rounded-full backdrop-blur-md shadow-sm animate-fade-in"
+              className="animate-fade-in rounded-lg border border-brand-200 bg-white/95 px-4 py-2 shadow-[var(--shadow-card)]"
               style={{ animationDelay: `${i * 200}ms` }}
             >
               <span className="text-[10px] text-primary font-black uppercase tracking-[0.2em]">{tag}</span>
@@ -60,23 +51,23 @@ export default function ComingSoonPage() {
       </div>
 
       {/* RIGHT SECTION: Content / Launch Control */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-20 relative z-30 bg-white/40 backdrop-blur-sm lg:border-l lg:border-primary/5">
+      <div className="relative z-30 flex w-full items-center justify-center border-brand-200 bg-white p-6 lg:w-1/2 lg:border-l lg:p-20">
         <div className="max-w-xl w-full py-12 lg:py-0">
           <div className="space-y-12 animate-fade-up">
             {/* Launch Status */}
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/5 border border-primary/20 rounded-full">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_var(--md-primary)]" />
-                <span className="text-[11px] font-black text-primary uppercase tracking-[0.3em]">Hệ thống đang được chuẩn bị hoàn tất</span>
+              <div className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                <span>Hệ thống đang được chuẩn bị hoàn tất</span>
               </div>
 
-              <h1 className="text-5xl lg:text-7xl font-black text-on-surface leading-[0.95] tracking-tight uppercase">
+              <h1 className="text-5xl font-bold leading-[1.02] tracking-[-0.04em] text-on-surface lg:text-7xl">
                 Giải Pháp<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-emerald-600 to-primary">Logistics</span> <br />
+                <span className="text-primary">Logistics</span> <br />
                 Đỉnh Cao
               </h1>
 
-              <p className="text-on-surface-variant text-lg leading-relaxed font-medium max-w-lg">
+              <p className="max-w-lg text-base font-normal leading-8 text-on-surface-variant lg:text-lg">
                 VILA SANMYSHI đang thiết lập một tiêu chuẩn mới cho dịch vụ giao nhận và thông quan hàng hóa. <span className="text-primary font-bold">Chúng tôi sẽ trở lại trong thời gian ngắn nhất.</span>
               </p>
             </div>
@@ -98,13 +89,13 @@ export default function ComingSoonPage() {
                   <input
                     type="email"
                     placeholder="Địa chỉ email của bạn"
-                    className="w-full h-16 bg-primary/5 border border-primary/10 rounded-2xl px-6 text-on-surface placeholder-on-surface-variant/40 focus:outline-none focus:border-primary focus:bg-white transition-all relative z-10 shadow-sm"
+                    className="relative z-10 h-16 w-full rounded-xl border border-brand-200 bg-brand-50 px-6 text-on-surface placeholder-on-surface-variant/40 transition-colors focus:border-primary focus:bg-white focus:outline-none"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="h-16 px-10 bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest rounded-2xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-primary/20"
+                  className="h-16 rounded-xl bg-primary px-10 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
                 >
                   Kết Nối
                 </button>
@@ -137,9 +128,6 @@ export default function ComingSoonPage() {
         </div>
       </div>
 
-      {/* Decorative Orbs (Right Side) */}
-      <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
     </div>
   );
 }

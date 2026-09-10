@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   ChevronDown, ChevronRight, LayoutDashboard,
-  Package, Newspaper, Handshake,
+  Package, Newspaper, Handshake, Truck,
   Headset, Settings, FileText,
   Tags, Grid, Mail
 } from "lucide-react";
@@ -25,6 +25,7 @@ interface NavItemType {
 
 const NAV_ITEMS: NavItemType[] = [
   { label: "Tổng quan", href: "/admin", icon: LayoutDashboard },
+  { label: "Theo dõi lô hàng", href: "/admin/shipments", icon: Truck },
   {
     label: "Quản lý Dịch vụ",
     icon: Package,
@@ -142,7 +143,7 @@ export default function AdminSidebar({ onClose }: { onClose?: () => void }) {
               fill
               className="object-cover"
               loading="eager"
-              priority
+              preload
             />
           </div>
           <span className="font-black tracking-tighter text-xl uppercase">Admin <span className="text-primary">Vila</span></span>
@@ -161,7 +162,7 @@ export default function AdminSidebar({ onClose }: { onClose?: () => void }) {
 
       {!isLoginPage && (
         <div className="p-8 mt-auto">
-          <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-primary">
                 <Mail size={16} />
@@ -173,7 +174,7 @@ export default function AdminSidebar({ onClose }: { onClose?: () => void }) {
             </div>
             <button
               onClick={handleLogout}
-              className="w-full py-3 bg-white/5 hover:bg-red-500/10 hover:text-red-500 text-slate-400 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border border-white/5 hover:border-red-500/20"
+              className="w-full rounded-xl border border-white/10 bg-white/5 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/60 transition-colors hover:bg-white/10 hover:text-white"
             >
               Đăng xuất
             </button>

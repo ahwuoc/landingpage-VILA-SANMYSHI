@@ -17,31 +17,31 @@ export default function FeaturedNewsCard({ news }: FeaturedNewsCardProps) {
   const excerpt = content.replace(/<[^>]*>/g, "").split(".").slice(0, 2).join(".") + ".";
 
   return (
-    <section className="relative -mt-20 z-20 max-w-7xl mx-auto px-8">
-      <div className="bg-card rounded-[3rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-on-surface/5">
+    <section className="relative z-20 mx-auto -mt-20 max-w-7xl px-6 sm:px-8">
+      <div className="flex flex-col overflow-hidden rounded-2xl border border-brand-200 bg-card shadow-[var(--shadow-card)] lg:flex-row">
         <div className="lg:w-3/5 relative min-h-[400px]">
           <Image src={news.image} alt={title} fill className="object-cover" preload sizes="(max-width: 768px) 100vw, 60vw" />
         </div>
-        <div className="lg:w-2/5 p-12 md:p-20 flex flex-col justify-center">
-          <span className="text-primary text-xs font-black uppercase tracking-widest mb-6 block">
+        <div className="flex flex-col justify-center p-10 md:p-14 lg:w-2/5">
+          <span className="mb-6 block text-xs font-semibold uppercase tracking-[0.12em] text-primary">
             {news.news_categories?.name[locale] || news.news_categories?.name['vi'] || ""} | {news.date ? new Date(news.date).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US') : ""}
           </span>
-          <h2 className="text-4xl font-black tracking-tight mb-8 leading-tight hover:text-primary transition-colors cursor-pointer">
+          <h2 className="mb-7 cursor-pointer text-4xl font-bold leading-tight tracking-[-0.03em] transition-colors hover:text-primary">
             {title}
           </h2>
-          <p className="text-on-surface-variant text-xl lg:text-2xl leading-relaxed mb-10 font-medium opacity-80">
+          <p className="mb-9 text-base font-normal leading-7 text-on-surface-variant lg:text-lg lg:leading-8">
             {excerpt}
           </p>
           <Link
             href={`/news/${news.slug || news.id}`}
             className="flex items-center gap-4 group"
           >
-            <span className="w-12 h-12 rounded-full border border-on-surface/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary transition-all">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-brand-200 transition-colors group-hover:border-primary group-hover:bg-primary">
               <span className="material-symbols-outlined text-on-surface group-hover:text-on-primary">
                 east
               </span>
             </span>
-            <span className="text-sm font-black uppercase tracking-widest">
+            <span className="text-sm font-semibold uppercase tracking-[0.12em]">
               {t('read_article')}
             </span>
           </Link>

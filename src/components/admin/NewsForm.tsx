@@ -168,7 +168,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white p-8 rounded-3xl border border-on-surface/5 shadow-sm space-y-6">
+          <div className="space-y-6 rounded-2xl border border-brand-200 bg-white p-8 shadow-[var(--shadow-card)]">
             <div className="space-y-2">
               <label className="text-sm font-bold text-on-surface/80">Tiêu đề bài viết ({ADMIN_LANGS.find(l => l.id === activeLang)?.label})</label>
               <input
@@ -192,7 +192,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
                     <Zap size={14} /> Dùng mẫu
                   </button>
                   {showTemplates && templates.length > 0 && (
-                    <div className="absolute top-10 right-0 w-80 bg-white/95 backdrop-blur-xl border border-on-surface/5 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-300">
+                    <div className="absolute right-0 top-10 z-50 w-80 overflow-hidden rounded-2xl border border-brand-200 bg-white/95 shadow-[var(--shadow-elevated)] backdrop-blur-lg animate-in fade-in zoom-in-95 duration-300">
                       <div className="p-5 border-b border-on-surface/5 flex items-center justify-between bg-slate-50/50">
                         <h4 className="text-[10px] font-black text-on-surface-variant/40 uppercase tracking-widest flex items-center gap-2">
                           <Zap size={12} className="text-primary" /> Chọn mẫu nội dung
@@ -237,7 +237,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
 
         {/* Sidebar */}
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-3xl border border-on-surface/5 shadow-sm space-y-6">
+          <div className="space-y-6 rounded-2xl border border-brand-200 bg-white p-6 shadow-[var(--shadow-card)]">
             <h3 className="font-bold text-on-surface">Thông tin bổ sung</h3>
             <div className="space-y-4">
               <div className="space-y-2">
@@ -286,7 +286,7 @@ export default function NewsForm({ initialData, isEdit = false }: NewsFormProps)
           </div>
 
           {/* Featured Image */}
-          <div className="bg-white p-6 rounded-3xl border border-on-surface/5 shadow-sm space-y-4">
+          <div className="space-y-4 rounded-2xl border border-brand-200 bg-white p-6 shadow-[var(--shadow-card)]">
             <h3 className="font-bold text-on-surface">Ảnh bìa bài viết</h3>
             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
             <div className="aspect-video relative rounded-2xl overflow-hidden bg-slate-100 group cursor-pointer" onClick={() => fileInputRef.current?.click()}>

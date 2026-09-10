@@ -35,27 +35,27 @@ export default function HomeStats() {
   ];
 
   return (
-    <section className="py-20 lg:py-32 bg-surface">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="bg-white py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           {STATS_ASSETS.map((stat, i) => (
             <div
               key={i}
-              className="relative overflow-hidden rounded-[2rem] min-h-[280px] lg:min-h-[360px] flex flex-col p-7 lg:p-9 group cursor-default"
+              className="group relative flex min-h-[280px] cursor-default flex-col overflow-hidden rounded-2xl border border-brand-200 p-7 lg:min-h-[340px] lg:p-8"
             >
               <Image
                 src={stat.image}
                 alt={t(`items.${i}.label`)}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
+              <div className="absolute inset-0 bg-brand-950/65" />
 
               <p className="relative z-10 text-label-md text-white/70 mb-auto">{t(`items.${i}.label`)}</p>
 
               <div className="relative z-10 mt-auto">
-                <div className="text-4xl lg:text-6xl font-black text-white tracking-tighter flex items-baseline gap-1 mb-1">
+                <div className="mb-1 flex items-baseline gap-1 text-4xl font-bold tracking-[-0.03em] text-white lg:text-5xl">
                   <Counter value={stat.value} duration={stat.duration} />
                   <span className="text-xl lg:text-2xl">{stat.unit}</span>
                 </div>

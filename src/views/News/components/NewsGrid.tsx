@@ -24,21 +24,20 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
     });
 
   return (
-    <section className="py-20 max-w-7xl mx-auto px-8">
+    <section className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:py-24">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
         <div>
           <div className="flex items-center gap-3 mb-3">
-            <span className="w-10 h-[2px] bg-primary rounded-full" />
-            <span className="text-primary text-label-md uppercase font-black tracking-widest">{t('latest_badge')}</span>
+            <span className="text-label-md">{t('latest_badge')}</span>
           </div>
-          <h2 className="text-heading-lg uppercase" dangerouslySetInnerHTML={{ __html: t.raw('grid_title') }} />
+          <h2 className="text-heading-lg" dangerouslySetInnerHTML={{ __html: t.raw('grid_title') }} />
         </div>
         <div className="flex flex-wrap gap-2 text-on-surface">
           <button
             onClick={() => setActive("all")}
-            className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${active === "all"
-              ? "bg-primary text-on-primary border-primary shadow-glow-primary"
-              : "border-on-surface/10 hover:bg-surface-container-high"
+            className={`rounded-xl border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${active === "all"
+              ? "border-primary bg-primary text-on-primary"
+              : "border-brand-200 bg-white hover:border-brand-400"
               }`}
           >
             {t('filter_all')}
@@ -47,9 +46,9 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
             <button
               key={cat.id}
               onClick={() => setActive(cat.slug)}
-              className={`px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border ${active === cat.slug
-                ? "bg-primary text-on-primary border-primary shadow-glow-primary"
-                : "border-on-surface/10 hover:bg-surface-container-high"
+              className={`rounded-xl border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${active === cat.slug
+                ? "border-primary bg-primary text-on-primary"
+                : "border-brand-200 bg-white hover:border-brand-400"
                 }`}
             >
               {cat.name[locale] || cat.name['vi']}
@@ -59,7 +58,7 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
       </div>
 
       {/* List */}
-      <div className="divide-y divide-on-surface/5">
+      <div className="divide-y divide-brand-200">
         {filtered.length === 0 && (
           <p className="text-muted text-center py-16 text-body-md italic">{t('no_posts')}</p>
         )}
@@ -75,10 +74,10 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
             <Link
               key={item.id}
               href={`/news/${item.slug || item.id}`}
-              className="group flex items-center gap-6 py-6 hover:bg-surface-container-low rounded-2xl px-4 -mx-4 transition-all"
+              className="group -mx-4 flex items-center gap-6 rounded-xl px-4 py-6 transition-colors hover:bg-brand-50"
             >
               {/* Thumbnail */}
-              <div className="relative w-32 h-24 lg:w-48 lg:h-32 rounded-2xl overflow-hidden flex-shrink-0">
+              <div className="relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl border border-brand-200 lg:h-32 lg:w-48">
                 <Image
                   src={item.image}
                   alt={title}
@@ -92,11 +91,11 @@ export default function NewsGrid({ newsList, categories }: NewsGridProps) {
               <div className="flex-1 min-w-0 flex flex-col justify-between">
                 <div>
                   <div className="mb-2">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/10 whitespace-nowrap inline-flex items-center">
+                    <span className="inline-flex items-center whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">
                       {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
                     </span>
                   </div>
-                  <h3 className="text-sm lg:text-lg font-black tracking-tight leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-2 uppercase">
+                  <h3 className="mb-2 line-clamp-2 text-sm font-bold leading-snug tracking-[-0.02em] transition-colors group-hover:text-primary lg:text-lg">
                     {title}
                   </h3>
                   <p className="text-body-sm text-slate-500 font-medium line-clamp-2 hidden sm:block">

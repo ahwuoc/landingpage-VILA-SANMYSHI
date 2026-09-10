@@ -30,14 +30,14 @@ export default function HomeServices({
   const { isLandscape, isMobile } = useResponsive();
 
   return (
-    <section className="py-20 lg:py-32 landscape:py-10 bg-white overflow-hidden">
+    <section className="overflow-hidden bg-white py-20 landscape:py-10 lg:py-24">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 lg:mb-24 gap-8">
+        <div className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end lg:mb-16">
           <div className="max-w-3xl">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl landscape:text-2xl md:landscape:text-3xl font-black text-primary tracking-tight leading-tight uppercase mb-6 landscape:mb-2">
+            <h2 className="mb-5 text-4xl font-bold leading-tight tracking-[-0.03em] text-on-surface landscape:text-2xl md:text-5xl md:landscape:text-3xl">
               {t('title')}
             </h2>
-            <p className="text-on-surface-variant font-medium text-lg lg:text-xl leading-relaxed">
+            <p className="text-base font-normal leading-7 text-on-surface-variant lg:text-lg lg:leading-8">
               {t('description')}
             </p>
           </div>
@@ -45,13 +45,13 @@ export default function HomeServices({
           <div className="flex gap-4">
             <button
               onClick={() => swiper?.slidePrev()}
-              className="w-16 h-16 lg:w-20 lg:h-20 landscape:w-10 landscape:h-10 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all"
+              className="flex h-12 w-12 items-center justify-center rounded-xl border border-brand-200 text-on-surface transition-colors hover:border-primary hover:text-primary landscape:h-10 landscape:w-10"
             >
               <span className="material-symbols-outlined text-2xl lg:text-3xl landscape:text-lg">west</span>
             </button>
             <button
               onClick={() => swiper?.slideNext()}
-              className="w-16 h-16 lg:w-20 lg:h-20 landscape:w-10 landscape:h-10 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-all"
+              className="flex h-12 w-12 items-center justify-center rounded-xl border border-brand-200 text-on-surface transition-colors hover:border-primary hover:text-primary landscape:h-10 landscape:w-10"
             >
               <span className="material-symbols-outlined text-2xl lg:text-3xl landscape:text-lg">east</span>
             </button>
@@ -70,13 +70,13 @@ export default function HomeServices({
             640: { slidesPerView: isLandscape ? 3.2 : 2 },
             1024: { slidesPerView: 4 },
           }}
-          className="rounded-[2.5rem]"
+          className="rounded-2xl"
         >
           {services.map((item) => (
             <SwiperSlide key={item.id} className="!h-auto flex">
               <Link
                 href={`/services/${item.service_categories?.slug || "all"}/${item.id}`}
-                className="group relative flex flex-col h-full bg-white rounded-[2.5rem] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_30px_70px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-500 w-full"
+                className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-[var(--shadow-card)] transition duration-300 hover:border-brand-300 hover:shadow-[var(--shadow-card-hover)]"
               >
                 {/* Image Wrap */}
                 <div className="relative aspect-[21/10] md:aspect-[16/10] overflow-hidden shrink-0">
@@ -85,17 +85,16 @@ export default function HomeServices({
                     alt={(item.title[locale] || item.title['vi']) || "VILA SANMYSHI service"}
                     fill
                     sizes="(max-width: 768px) 85vw, (max-width: 1200px) 45vw, 25vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
 
                 {/* Content */}
                 <div className="p-6 md:p-8 lg:p-10 landscape:p-5 flex flex-col flex-1">
-                  <h3 className="text-xl lg:text-2xl landscape:text-base font-black text-slate-900 mb-4 landscape:mb-2 leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem] md:min-h-[4rem] landscape:min-h-0">
+                  <h3 className="mb-4 min-h-[3.5rem] line-clamp-2 text-xl font-bold leading-tight tracking-[-0.02em] text-on-surface transition-colors group-hover:text-primary landscape:mb-2 landscape:min-h-0 landscape:text-base lg:text-2xl">
                     {item.title[locale] || item.title['vi']}
                   </h3>
-                  <p className="text-slate-500 text-sm lg:text-base landscape:text-[10px] font-medium line-clamp-2 mb-4 landscape:mb-4 leading-relaxed landscape:leading-tight">
+                  <p className="mb-4 line-clamp-2 text-sm font-normal leading-7 text-on-surface-variant landscape:text-[10px] landscape:leading-tight lg:text-base">
                     {t('item_default_desc')}
                   </p>
 
@@ -104,7 +103,7 @@ export default function HomeServices({
                       <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
                         {t('view_details')}
                       </span>
-                      <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-100 text-on-surface-variant transition-colors group-hover:bg-primary group-hover:text-white">
                         <span className="material-symbols-outlined text-xl">arrow_forward</span>
                       </div>
                     </div>
@@ -119,7 +118,7 @@ export default function HomeServices({
       <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-12 text-center">
         <Link
           href="/services"
-          className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-full font-black text-xs uppercase tracking-widest hover:scale-[0.98] transition-all shadow-lg"
+          className="inline-flex items-center gap-3 rounded-xl bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
         >
           {t('view_all')}
           <span className="material-symbols-outlined text-lg">arrow_forward</span>

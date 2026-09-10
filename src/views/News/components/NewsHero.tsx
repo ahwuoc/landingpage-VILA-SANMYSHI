@@ -7,7 +7,7 @@ export default function NewsHero() {
     <PageHero
       image="/images/news/hero.png"
       imageAlt={t('page_title')}
-      overlay="bg-black/20"
+      overlay="bg-brand-950/55"
       breadcrumb={[{ label: t('page_title') }]}
       tag={t('hero_tag')}
       title={<span dangerouslySetInnerHTML={{ __html: t.raw('hero_title') }} />}

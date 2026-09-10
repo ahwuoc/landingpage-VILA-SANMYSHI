@@ -10,34 +10,23 @@ export default function NotFound() {
   const locale = useLocale();
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row relative overflow-hidden font-sans selection:bg-primary/30 selection:text-white">
-      {/* Immersive Background Layer */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <div className="absolute inset-0 bg-noise pointer-events-none mix-blend-overlay" />
-        <div className="absolute inset-0 mesh-gradient" />
-      </div>
-
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-brand-950 font-sans selection:bg-primary/30 selection:text-white lg:flex-row">
       {/* LEFT SECTION: Full Media Panel */}
       <div className="w-full lg:w-3/5 h-[40vh] lg:h-screen relative overflow-hidden bg-slate-900 group">
         <Image
           src="/images/2bab8143-64a1-4ed5-ab59-238f7f1b7d87.png"
           alt="404 Error - Not Found"
           fill
-          className="object-cover lg:object-contain p-0 lg:p-12 transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-          priority
+          className="object-cover p-0 lg:object-contain lg:p-12"
+          preload
         />
 
-        {/* Dynamic Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-transparent to-slate-950/80 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
-
-        {/* Animated Scanline Effect */}
-        <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(36,232,125,0.05)_50%)] bg-[length:100%_4px] pointer-events-none z-20 animate-pulse" />
+        <div className="absolute inset-0 z-10 bg-brand-950/35" />
 
         {/* Brand Branding */}
         <div className="absolute top-8 left-8 lg:top-12 lg:left-12 z-30">
           <Link href="/" className="flex items-center gap-4 group/logo">
-            <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-2xl overflow-hidden bg-white shadow-2xl transition-all duration-500 group-hover/logo:scale-110">
+            <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-white/10 bg-white shadow-[var(--shadow-card)] lg:h-16 lg:w-16">
               <Image src="/images/logo.jpg" alt="VILA SANMYSHI" fill className="object-contain p-2" />
             </div>
             <div className="hidden sm:block">
@@ -47,19 +36,17 @@ export default function NotFound() {
           </Link>
         </div>
 
-        {/* Grid Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--md-primary) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       </div>
 
       {/* RIGHT SECTION: Info Panel */}
-      <div className="w-full lg:w-2/5 min-h-[60vh] lg:h-screen overflow-y-auto flex items-center justify-center p-6 lg:p-12 relative z-30 bg-slate-950/90 backdrop-blur-3xl border-l border-white/5">
+      <div className="relative z-30 flex min-h-[60vh] w-full items-center justify-center overflow-y-auto border-l border-white/10 bg-brand-950 p-6 lg:h-screen lg:w-2/5 lg:p-12">
         <div className="max-w-md w-full py-12 lg:py-0">
           <div className="space-y-10 animate-fade-up">
             {/* Status Header */}
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-md">
-                <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
-                <span className="text-[9px] font-black text-red-500 uppercase tracking-[0.3em]">{t('error_404')}</span>
+              <div className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/60">
+                <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <span>{t('error_404')}</span>
               </div>
 
               <h1 className="text-6xl lg:text-8xl font-black text-white leading-none tracking-tighter">
@@ -79,7 +66,7 @@ export default function NotFound() {
             <div className="flex flex-col gap-4">
               <Link
                 href="/"
-                className="group relative flex items-center justify-center gap-3 py-5 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all duration-300"
+                className="group relative flex items-center justify-center gap-3 rounded-xl bg-primary py-5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
               >
                 <span className="material-symbols-outlined text-base">home</span>
                 {t('back_home')}
@@ -88,7 +75,7 @@ export default function NotFound() {
               <div className="grid grid-cols-1 gap-3">
                 <a
                   href={`tel:${COMPANY_INFO.hotline}`}
-                  className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-white/5 hover:border-primary/50 transition-all group/item"
+                  className="group/item flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-white/20 hover:bg-white/[0.05]"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center group-hover/item:bg-primary/20 transition-colors">

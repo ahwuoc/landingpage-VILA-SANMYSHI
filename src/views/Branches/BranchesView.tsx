@@ -35,47 +35,42 @@ export function BranchesView({ branches }: BranchesViewProps) {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Premium Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-950">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-noise opacity-40 mix-blend-overlay" />
-          <div className="absolute inset-0 mesh-gradient" />
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full mb-6">
-            <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-            <span className="text-[10px] font-black tracking-[0.3em] text-primary uppercase">{t("hero_tag")}</span>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-brand-950 pb-20 pt-36 lg:pb-24 lg:pt-48">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center sm:px-8">
+          <div className="mb-6 inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            <span>{t("hero_tag")}</span>
           </div>
 
-          <h1 className="text-4xl lg:text-7xl font-black text-white leading-tight mb-8">
+          <h1 className="mb-8 text-4xl font-bold leading-tight tracking-[-0.03em] text-white lg:text-6xl">
             {t.rich("hero_title", {
-              highlight: (chunks) => <span className="text-primary-fixed">{chunks}</span>
+              highlight: (chunks) => <span className="text-white">{chunks}</span>
             })}
           </h1>
 
-          <p className="max-w-2xl mx-auto text-slate-400 text-lg lg:text-xl font-medium leading-relaxed">
+          <p className="mx-auto max-w-2xl text-base font-normal leading-8 text-white/65 lg:text-lg">
             {t("hero_desc")}
           </p>
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
       </section>
 
       {/* Main Interactive Branch Network Section */}
-      <section className="py-24 bg-slate-950 overflow-hidden relative">
-        <div className="container mx-auto px-6">
+      <section className="relative overflow-hidden bg-brand-950 py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
           <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
 
             {/* Left: Sticky Vietnam Map */}
             <div className="w-full lg:col-span-7 lg:sticky lg:top-32 self-start">
               <div className="space-y-8 mb-12 lg:hidden text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full">
-                  <span className="text-[10px] font-black tracking-[0.3em] text-primary uppercase">{t("map_tag")}</span>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+                  <span>{t("map_tag")}</span>
                 </div>
-                <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight">
+                <h2 className="text-3xl font-bold leading-tight tracking-[-0.03em] text-white lg:text-5xl">
                   {t.rich("map_title", {
-                    highlight: (chunks) => <span className="text-primary-fixed">{chunks}</span>
+                    highlight: (chunks) => <span className="text-white">{chunks}</span>
                   })}
                 </h2>
               </div>
@@ -84,16 +79,16 @@ export function BranchesView({ branches }: BranchesViewProps) {
                 <VietnamMap activeId={activeBranchId} onMarkerClick={handleBranchClick} />
 
                 {/* Stats Overlay for Desktop Map */}
-                <div className="hidden lg:grid grid-cols-2 gap-8 mt-12 pl-8 border-l border-white/5">
+                <div className="mt-12 hidden grid-cols-2 gap-8 border-l border-white/10 pl-8 lg:grid">
                   <div className="space-y-2">
-                    <p className="text-4xl font-black text-primary">
+                    <p className="text-4xl font-bold text-primary">
                       {branches.length.toString().padStart(2, '0')}
                     </p>
-                    <p className="text-slate-500 text-xs font-black uppercase tracking-widest">{t("stat_offices")}</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/45">{t("stat_offices")}</p>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-4xl font-black text-white">01</p>
-                    <p className="text-slate-500 text-xs font-black uppercase tracking-widest">{t("stat_countries")}</p>
+                    <p className="text-4xl font-bold text-white">01</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/45">{t("stat_countries")}</p>
                   </div>
                 </div>
               </div>
@@ -102,15 +97,15 @@ export function BranchesView({ branches }: BranchesViewProps) {
             {/* Right: Scrollable Branch Details */}
             <div className="w-full lg:col-span-5 space-y-6">
               <div className="hidden lg:block space-y-6 mb-12">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full">
-                  <span className="text-[10px] font-black tracking-[0.3em] text-primary uppercase">{t("map_tag")}</span>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
+                  <span>{t("map_tag")}</span>
                 </div>
-                <h2 className="text-4xl xl:text-5xl font-black text-white leading-tight">
+                <h2 className="text-4xl font-bold leading-tight tracking-[-0.03em] text-white xl:text-5xl">
                   {t.rich("map_title", {
-                    highlight: (chunks) => <span className="text-primary-fixed">{chunks}</span>
+                    highlight: (chunks) => <span className="text-white">{chunks}</span>
                   })}
                 </h2>
-                <p className="text-slate-400 text-lg leading-relaxed">
+                <p className="text-base font-normal leading-7 text-white/65 lg:text-lg lg:leading-8">
                   {t("map_desc")}
                 </p>
               </div>
@@ -121,16 +116,16 @@ export function BranchesView({ branches }: BranchesViewProps) {
                     key={branch.id}
                     id={`branch-${branch.id}`}
                     onClick={() => handleBranchClick(branch.id)}
-                    className={`group cursor-pointer rounded-[2rem] border p-6 lg:p-8 transition-all duration-500 shadow-xl ${activeBranchId === branch.id
-                      ? 'bg-slate-900 border-primary ring-1 ring-primary shadow-primary/20'
-                      : 'bg-slate-900/50 backdrop-blur-xl border-white/5 hover:bg-slate-900 hover:border-primary/20'
+                    className={`group cursor-pointer rounded-xl border p-6 transition-colors duration-300 lg:p-8 ${activeBranchId === branch.id
+                      ? 'border-primary bg-white/[0.08]'
+                      : 'border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]'
                       }`}
                   >
                     <div className="flex flex-col gap-6">
                       <div className="space-y-4 flex-grow">
                         <div>
-                          <span className={`text-[10px] font-black tracking-widest uppercase mb-2 block ${activeBranchId === branch.id ? 'text-primary-fixed' : 'text-slate-500'}`}>{t(branch.type)}</span>
-                          <h3 className={`text-xl font-black leading-tight transition-colors ${activeBranchId === branch.id ? 'text-primary-fixed' : 'text-white'}`}>
+                          <span className={`mb-2 block text-[10px] font-semibold uppercase tracking-[0.12em] ${activeBranchId === branch.id ? 'text-white/75' : 'text-white/45'}`}>{t(branch.type)}</span>
+                          <h3 className="text-xl font-bold leading-tight text-white">
                             {branch.name}
                           </h3>
                         </div>
@@ -140,21 +135,21 @@ export function BranchesView({ branches }: BranchesViewProps) {
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeBranchId === branch.id ? 'bg-primary-fixed/20 text-primary-fixed' : 'bg-white/5 text-slate-500'}`}>
                               <span className="material-symbols-outlined text-lg">location_on</span>
                             </div>
-                            <p className="text-slate-400 text-sm font-semibold leading-relaxed">{branch.address}</p>
+                            <p className="text-sm font-normal leading-6 text-white/65">{branch.address}</p>
                           </div>
 
                           <div className="flex items-center gap-4">
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeBranchId === branch.id ? 'bg-primary-fixed/20 text-primary-fixed' : 'bg-white/5 text-slate-500'}`}>
                               <span className="material-symbols-outlined text-lg">call</span>
                             </div>
-                            <p className="text-slate-300 text-sm font-black tracking-wider">{branch.phone}</p>
+                            <p className="text-sm font-semibold tracking-wide text-white/80">{branch.phone}</p>
                           </div>
 
                           <div className="flex items-center gap-4">
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeBranchId === branch.id ? 'bg-primary-fixed/20 text-primary-fixed' : 'bg-white/5 text-slate-500'}`}>
                               <span className="material-symbols-outlined text-lg">mail</span>
                             </div>
-                            <p className="text-slate-400 text-sm font-semibold truncate">{branch.email}</p>
+                            <p className="truncate text-sm font-normal text-white/65">{branch.email}</p>
                           </div>
                         </div>
 
@@ -163,9 +158,9 @@ export function BranchesView({ branches }: BranchesViewProps) {
                             href={branch.mapUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`flex items-center gap-2 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg ${activeBranchId === branch.id
-                              ? 'bg-primary-fixed text-slate-950'
-                              : 'bg-white/5 text-white hover:bg-primary-fixed hover:text-slate-950'
+                            className={`flex items-center gap-2 rounded-xl px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] transition-colors ${activeBranchId === branch.id
+                              ? 'bg-primary text-white'
+                              : 'border border-white/15 text-white hover:bg-white/10'
                               }`}
                           >
                             <span className="material-symbols-outlined text-base">map</span>
@@ -182,20 +177,19 @@ export function BranchesView({ branches }: BranchesViewProps) {
           </div>
         </div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="container mx-auto px-6 text-center">
+      <section className="relative overflow-hidden bg-white py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6 text-center sm:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl lg:text-5xl font-black text-slate-900 mb-6">{t("cta_title")}</h2>
-            <p className="text-slate-500 text-lg lg:text-xl font-medium mb-12">
+            <h2 className="mb-6 text-4xl font-bold tracking-[-0.03em] text-on-surface lg:text-5xl">{t("cta_title")}</h2>
+            <p className="mb-10 text-base font-normal leading-7 text-on-surface-variant lg:text-lg">
               {t("cta_desc")}
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-4 px-10 py-5 bg-primary text-white rounded-full font-black text-xs uppercase tracking-[0.2em] shadow-glow-primary hover:scale-[0.98] transition-all"
+              className="inline-flex items-center gap-3 rounded-xl bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
             >
               Liên hệ ngay
               <span className="material-symbols-outlined">arrow_forward</span>
