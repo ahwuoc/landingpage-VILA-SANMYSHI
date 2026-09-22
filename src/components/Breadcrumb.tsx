@@ -18,6 +18,7 @@ export default function Breadcrumb({ items, isDark = false }: BreadcrumbProps) {
 
   return (
     <nav
+      aria-label={t('home')}
       className={`flex items-center gap-2 mb-8 text-[10px] uppercase font-bold tracking-[0.2em] animate-fade-up ${isDark ? "text-slate-400" : "text-slate-400"
         }`}
     >
@@ -30,13 +31,13 @@ export default function Breadcrumb({ items, isDark = false }: BreadcrumbProps) {
           <span className="opacity-40">/</span>
           {item.href ? (
             <Link
-              href={item.href as any}
+              href={item.href}
               className="hover:text-primary transition-colors"
             >
               {item.label}
             </Link>
           ) : (
-            <span className={`${isDark ? "text-white" : "text-slate-900"} font-black`}>
+            <span aria-current="page" className={`${isDark ? "text-white" : "text-slate-900"} font-black`}>
               {item.label}
             </span>
           )}

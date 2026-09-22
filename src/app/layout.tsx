@@ -1,4 +1,4 @@
-import { Be_Vietnam_Pro } from "next/font/google";
+import { Be_Vietnam_Pro, Lora } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/react";
@@ -11,13 +11,21 @@ const beVietnamPro = Be_Vietnam_Pro({
   display: "swap",
 });
 
+const editorial = Lora({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-editorial",
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${beVietnamPro.variable} light scroll-smooth`} data-scroll-behavior="smooth">
+    <html lang="vi" className={`${beVietnamPro.variable} ${editorial.variable} light scroll-smooth`} data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

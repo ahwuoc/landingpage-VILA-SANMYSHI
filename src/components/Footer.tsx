@@ -1,16 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Mail, MapPin, Phone, Route } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { ArrowUp, ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { BRAND_NAME, COMPANY_INFO, SOCIAL_LINKS } from "@/constants/company";
+import styles from "./Footer.module.css";
 
 export default function Footer() {
   const t = useTranslations("Footer");
   const navT = useTranslations("Navbar");
+  const locale = useLocale();
   const year = new Date().getFullYear();
-
+  const copy = locale === "vi"
+    ? { line: "Kết nối bằng sự", emphasis: "tận tâm.", corridor: "Hành lang kinh tế Đông – Tây", countries: ["Việt Nam", "Lào", "Thái Lan"], tax: "Mã số thuế" }
+    : locale === "th"
+      ? { line: "เชื่อมต่อด้วย", emphasis: "ความใส่ใจ", corridor: "ระเบียงเศรษฐกิจตะวันออก–ตะวันตก", countries: ["เวียดนาม", "ลาว", "ไทย"], tax: "เลขประจำตัวผู้เสียภาษี" }
+      : { line: "Connected through", emphasis: "care.", corridor: "East–West Economic Corridor", countries: ["Vietnam", "Laos", "Thailand"], tax: "Tax ID" };
   const navLinks = [
     { name: navT("home"), href: "/" },
     { name: navT("about"), href: "/about" },
@@ -22,100 +28,48 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-brand-900 text-white">
-      <div className="absolute inset-x-0 top-0 h-px bg-brand-500" />
-
-      <div className="relative mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:py-20">
-        <div className="grid gap-14 border-b border-white/10 pb-14 md:grid-cols-2 lg:grid-cols-12 lg:gap-10 lg:pb-20">
-          <div className="lg:col-span-5">
-            <Link href="/" className="inline-flex items-center gap-4">
-              <span className="grid h-16 w-24 place-items-center rounded-xl bg-white px-2">
-                <Image src={COMPANY_INFO.logo} alt={BRAND_NAME} width={106} height={68} className="h-auto w-full object-contain" />
-              </span>
-              <span>
-                <strong className="block text-xl font-bold leading-none tracking-[-0.025em]">
-                  VILA SANMYSHI
-                </strong>
-                <small className="mt-2 block text-[9px] font-semibold uppercase tracking-[0.14em] text-brand-200">
-                  Border logistics · EWEC
-                </small>
-              </span>
+    <footer className={styles.footer}>
+      <div className={styles.inner}>
+        <div className={styles.main}>
+          <div className={styles.introduction}>
+            <Link href="/" className={styles.brand} aria-label={BRAND_NAME}>
+              <span className={styles.logo}><Image src={COMPANY_INFO.logo} alt="" width={92} height={60} /></span>
+              <span><strong>{BRAND_NAME}</strong><small>IMPORT – EXPORT & LOGISTICS</small></span>
             </Link>
-
-            <p className="mt-7 max-w-xl text-sm font-normal leading-7 text-white/65 lg:text-[15px]">{t("about_text")}</p>
-
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
-              {SOCIAL_LINKS.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target={social.href.startsWith("http") ? "_blank" : undefined}
-                  rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-white/60 transition-colors hover:text-brand-100"
-                >
-                  {social.name}
-                  <ArrowUpRight size={13} aria-hidden="true" />
-                </a>
-              ))}
+            <p className={styles.statement}>{copy.line}<br /><em>{copy.emphasis}</em></p>
+            <p className={styles.description}>{t("about_text")}</p>
+            <div className={styles.socials}>
+              {SOCIAL_LINKS.map((social) => <a key={social.name} href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined} rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}>{social.name}<ArrowUpRight size={12} aria-hidden="true" /></a>)}
             </div>
           </div>
-
-          <div className="lg:col-span-2 lg:col-start-7">
-            <h2 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-200">{t("nav_title")}</h2>
-            <nav className="grid grid-cols-2 gap-x-5 gap-y-4 md:grid-cols-1">
-              {navLinks.map((link) => (
-                <Link
-                  href={link.href}
-                  key={link.href}
-                  className="text-sm font-medium text-white/70 transition-colors hover:text-white"
-                >
-                  {link.name}
-                </Link>
-              ))}
+          <div className={styles.navigation}>
+            <h2>{t("nav_title")}</h2>
+            <nav aria-label={t("nav_title")}>
+              {navLinks.map((link) => <Link href={link.href} key={link.href}>{link.name}</Link>)}
             </nav>
           </div>
-
-          <div className="lg:col-span-4">
-            <h2 className="mb-6 text-[10px] font-semibold uppercase tracking-[0.12em] text-brand-200">{t("contact_title")}</h2>
-            <address className="space-y-5 not-italic">
-              <div className="flex gap-3 text-sm font-normal leading-6 text-white/70">
-                <MapPin className="mt-0.5 shrink-0 text-brand-300" size={18} aria-hidden="true" />
-                <span>{COMPANY_INFO.address}</span>
-              </div>
-              <a href={`tel:${COMPANY_INFO.phone}`} className="flex items-center gap-3 text-sm font-bold transition-colors hover:text-brand-100">
-                <Phone className="shrink-0 text-brand-300" size={18} aria-hidden="true" />
-                {COMPANY_INFO.phone}
-              </a>
-              <a href={`mailto:${COMPANY_INFO.email}`} className="flex items-center gap-3 text-sm font-bold transition-colors hover:text-brand-100">
-                <Mail className="shrink-0 text-brand-300" size={18} aria-hidden="true" />
-                {COMPANY_INFO.email}
-              </a>
+          <div className={styles.contact}>
+            <h2>{t("contact_title")}</h2>
+            <address>
+              <div className={styles.address}><MapPin size={17} aria-hidden="true" /><span>{COMPANY_INFO.address}</span></div>
+              <a href={`tel:${COMPANY_INFO.phone}`} className={styles.phone}><Phone size={16} aria-hidden="true" /><span>{COMPANY_INFO.phone.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3")}</span></a>
+              <a href={`mailto:${COMPANY_INFO.email}`} className={styles.email}><Mail size={16} aria-hidden="true" /><span>{COMPANY_INFO.email}</span></a>
             </address>
+            <Link href="/contact" className={styles.contactLink}>{navT("consult")}<ArrowUpRight size={16} aria-hidden="true" /></Link>
           </div>
         </div>
 
-        <div className="grid gap-8 border-b border-white/10 py-9 lg:grid-cols-[220px_1fr] lg:items-center">
-          <div className="flex items-center gap-3 text-[10px] font-extrabold uppercase tracking-[0.15em] text-white/50">
-            <Route size={18} className="text-brand-300" aria-hidden="true" />
-            Hành lang kinh tế Đông – Tây
-          </div>
-          <div className="grid grid-cols-[auto_1fr_auto_1fr_auto] items-center gap-3 font-headline text-sm font-semibold uppercase tracking-[0.08em] sm:text-base">
-            <span>Việt Nam</span>
-            <i className="h-px bg-white/20" />
-            <span>Lào</span>
-            <i className="h-px bg-white/20" />
-            <span>Thái Lan</span>
+        <div className={styles.corridor}>
+          <p><span className={styles.corridorDot} />EWEC<span className={styles.corridorLabel}>{copy.corridor}</span></p>
+          <div className={styles.route}>
+            {copy.countries.map((country, index) => <span key={country} className={styles.country}><i aria-hidden="true" /><span>{country}</span>{index < 2 && <span className={styles.routeLine} aria-hidden="true" />}</span>)}
           </div>
         </div>
-
-        <div className="flex flex-col gap-4 pt-8 text-[9px] font-bold uppercase tracking-[0.11em] text-white/42 md:flex-row md:items-center md:justify-between">
+        <div className={styles.wordmark} aria-hidden="true">VILA SANMYSHI</div>
+        <div className={styles.bottom}>
           <p>{t("copyright", { year, company: COMPANY_INFO.shortName })}</p>
-          <div className="flex items-center gap-6">
-            <span>MST {COMPANY_INFO.mst}</span>
-            <a href="#top" className="transition-colors hover:text-white">
-              {t("back_to_top")} ↑
-            </a>
-          </div>
+          <span>{copy.tax}: {COMPANY_INFO.mst}</span>
+          <a href="#top">{t("back_to_top")}<ArrowUp size={13} aria-hidden="true" /></a>
         </div>
       </div>
     </footer>

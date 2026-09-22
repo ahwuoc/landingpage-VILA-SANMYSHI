@@ -1,142 +1,46 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
+import { useLocale } from "next-intl";
+import { ArrowUpRight, MapPin, Navigation, Globe2 } from "lucide-react";
+import { COMPANY_INFO } from "@/constants/company";
+import styles from "./VietnamMap.module.css";
 
-import { VIETNAM_COORDINATES } from "@/constants/vietnamCoordinates";
+const copy = {
+  vi: { region: "Khu vực Lao Bảo", office: "Địa chỉ văn phòng", title: "Lao Bảo, Quảng Trị", note: "Điểm đánh dấu thể hiện khu vực Lao Bảo. Mở Google Maps để xem đường đi chi tiết.", addressNote: "Liên hệ trước khi đến văn phòng để được hướng dẫn đường đi.", open: "Mở Google Maps", label: "Chế độ bản đồ", map: "Bản đồ khu vực Việt Nam, Lào, Thái Lan với vị trí Lao Bảo, Quảng Trị", directions: "Tìm đường đến văn phòng" },
+  en: { region: "Lao Bao area", office: "Office address", title: "Lao Bao, Quang Tri", note: "The marker shows the Lao Bao area. Open Google Maps for detailed directions.", addressNote: "Please contact us before visiting for directions to our office.", open: "Open Google Maps", label: "Map view", map: "Regional map of Vietnam, Laos and Thailand showing Lao Bao, Quang Tri", directions: "Get office directions" },
+  th: { region: "พื้นที่ลาวบาว", office: "ที่อยู่สำนักงาน", title: "ลาวบาว กวางจิ", note: "หมุดแสดงพื้นที่ลาวบาว เปิด Google Maps เพื่อดูเส้นทางโดยละเอียด", addressNote: "กรุณาติดต่อก่อนเดินทางเพื่อรับคำแนะนำเส้นทางไปสำนักงาน", open: "เปิด Google Maps", label: "มุมมองแผนที่", map: "แผนที่ภูมิภาคเวียดนาม ลาว และไทย แสดงตำแหน่งลาวบาว กวางจิ", directions: "เส้นทางไปสำนักงาน" },
+};
 
-interface Marker {
-  id: string;
-  name: string;
-  locationId: string;
-  type: string;
-}
-
-interface VietnamMapProps {
-  activeId?: string | null;
-  onMarkerClick?: (id: string) => void;
-}
-
-const markers: Marker[] = [
-  { id: "hq", name: "Quảng Trị", locationId: "VN25", type: "hq_label" },
-];
-
-const islands = [
-  { id: "hoangsa", name: "Hoàng Sa", ...VIETNAM_COORDINATES.HOANGSA },
-  { id: "truongsa", name: "Trường Sa", ...VIETNAM_COORDINATES.TRUONGSA },
-];
-
-export function VietnamMap({ activeId, onMarkerClick }: VietnamMapProps) {
-  const getCoords = (marker: Marker) => {
-    const coords = VIETNAM_COORDINATES[marker.locationId] || { cx: 0, cy: 0 };
-    return coords;
-  };
+export function VietnamMap({ address = COMPANY_INFO.address, officeView = false }: { address?: string; officeView?: boolean }) {
+  const locale = useLocale();
+  const text = copy[locale as keyof typeof copy] || copy.vi;
+  const [view, setView] = useState<"region" | "office">(officeView ? "office" : "region");
+  const query = view === "office" ? address : "Lao Bảo, Quảng Trị, Việt Nam";
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
   return (
-    <div className="group relative mx-auto aspect-[1/1.2] w-full max-w-[600px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-      {/* Map Background */}
-      <div className="absolute inset-0 p-8">
-        <div className="relative w-full h-full">
-          <Image
-            src="/maps/vietnam.svg"
-            alt="Vietnam Map"
-            fill
-            preload
-            className="object-fill opacity-40 transition-all duration-700 filter grayscale brightness-150 contrast-125"
-          />
-
-          {/* Decorative Connection Lines & Labels */}
-          <svg
-            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-            viewBox="0 0 1000 1000"
-            preserveAspectRatio="none"
-          >
-            {markers.map((marker, i) => {
-              const { cx, cy } = getCoords(marker);
-              const isActive = activeId === marker.id;
-              const lineEndX = cx > 500 ? cx + (isActive ? 120 : 100) : cx - (isActive ? 120 : 100);
-              const textAnchor = cx > 500 ? "start" : "end";
-
-              return (
-                <g
-                  key={i}
-                  className={`transition-all duration-500 ${isActive ? 'opacity-100 scale-110' : 'opacity-40 hover:opacity-100'}`}
-                >
-                  <line
-                    x1={cx} y1={cy} x2={lineEndX} y2={cy}
-                    stroke={isActive ? "var(--color-primary-fixed)" : "white"}
-                    strokeWidth={isActive ? "2" : "1"}
-                    strokeDasharray={isActive ? "0" : "4 2"}
-                    className="transition-all duration-500"
-                  />
-                  <circle cx={lineEndX} cy={cy} r={isActive ? 4 : 2} fill={isActive ? "var(--color-primary-fixed)" : "white"} />
-                  <text
-                    x={lineEndX + (cx > 500 ? 15 : -15)}
-                    y={cy + 5}
-                    fill={isActive ? "var(--color-primary-fixed)" : "white"}
-                    fontSize={isActive ? "24" : "18"}
-                    fontWeight="900"
-                    textAnchor={textAnchor}
-                    className="uppercase tracking-widest transition-all duration-500"
-                  >
-                    {marker.name}
-                  </text>
-                </g>
-              );
-            })}
-          </svg>
-
-          {/* Islands (Crucial for VN Map) */}
-          {islands.map((island) => (
-            <div
-              key={island.id}
-              className="absolute pointer-events-none"
-              style={{
-                left: `${(island.cx / 1000) * 100}%`,
-                top: `${(island.cy / 1000) * 100}%`,
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              <div className="flex flex-col items-center gap-2">
-                <div className="flex flex-wrap w-8 h-8 items-center justify-center opacity-60">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="m-0.5 h-1.5 w-1.5 rounded-full bg-primary/40" />
-                  ))}
-                </div>
-                <span className="text-[10px] font-black uppercase text-white/50 tracking-[0.2em] drop-shadow-md">{island.name}</span>
-              </div>
-            </div>
-          ))}
-
-          {/* Branch Markers */}
-          {markers.map((marker) => {
-            const { cx, cy } = getCoords(marker);
-            const isActive = activeId === marker.id;
-            return (
-              <div
-                key={marker.id}
-                onClick={() => onMarkerClick?.(marker.id)}
-                className={`absolute group/marker cursor-pointer transition-all duration-500 ${isActive ? 'z-30' : 'z-10'}`}
-                style={{
-                  left: `${(cx / 1000) * 100}%`,
-                  top: `${(cy / 1000) * 100}%`,
-                  transform: `translate(-50%, -50%) ${isActive ? 'scale(1.5)' : 'scale(1)'}`,
-                }}
-              >
-                {/* Pin */}
-                <div className={`relative h-3.5 w-3.5 rounded-full border-2 border-brand-950 bg-primary transition-all duration-300 ${isActive ? 'scale-125 ring-4 ring-primary/20' : ''}`} />
-
-              </div>
-            );
-          })}
+    <div className={styles.panel}>
+      <div className={styles.toolbar}>
+        <div className={styles.heading}><Globe2 size={17} /><span>{text.title}</span></div>
+        <div className={styles.controls} role="group" aria-label={text.label}>
+          <button type="button" aria-pressed={view === "region"} onClick={() => setView("region")}><Globe2 size={13} />{text.region}</button>
+          <button type="button" aria-pressed={view === "office"} onClick={() => setView("office")}><MapPin size={13} />{text.office}</button>
         </div>
       </div>
-
-      {/* Territory label */}
-      <div className="absolute bottom-8 left-8 origin-bottom-left -rotate-90 translate-x-3 translate-y-[-10px]">
-        <p className="text-[10px] font-black text-white/10 uppercase tracking-[0.4em] whitespace-nowrap">Vietnam Territory</p>
+      <div className={styles.canvas}>
+        <Image src="/maps/indochina.svg" alt={text.map} fill className={styles.geography} sizes="(max-width: 760px) 100vw, 65vw" />
+        {view === "office" && <div className={styles.addressCard}>
+          <span><MapPin size={14} />{text.office}</span>
+          <p>{address}</p>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer">{text.directions}<ArrowUpRight size={14} /></a>
+        </div>}
       </div>
-
+      <div className={styles.caption}>
+        <p><Navigation size={14} />{view === "office" ? text.addressNote : text.note}</p>
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer">{text.open}<ArrowUpRight size={15} /></a>
+      </div>
     </div>
   );
 }

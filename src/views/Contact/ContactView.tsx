@@ -1,34 +1,134 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from "react";
-import Image from "next/image";
-import { COMPANY_INFO, BRAND_NAME } from "@/constants/company";
+import { ArrowDown, ArrowUpRight, CheckCircle2, ChevronDown, ClipboardList, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
+import { COMPANY_INFO } from "@/constants/company";
 import PageHero from "@/components/PageHero";
+import { VietnamMap } from "@/components/maps/VietnamMap";
 import { useTranslations, useLocale } from "next-intl";
+import styles from "./Contact.module.css";
 
-export default function ContactView() {
+const contactCopy = {
+  vi: {
+    title: "Bắt đầu bằng",
+    accent: "một cuộc trò chuyện.",
+    intro: "Một lô hàng, một tuyến đường hay một câu hỏi về thủ tục. Chia sẻ với chúng tôi để cùng tìm phương án phù hợp cho doanh nghiệp của bạn.",
+    image: "Cửa khẩu Quốc tế Lao Bảo, Quảng Trị",
+    supportTitle: "Kết nối đúng người.",
+    supportAccent: "An tâm từng bước.",
+    supportDesc: "Trao đổi trực tiếp với VILA SANMYSHI về khai báo hải quan, xuất nhập khẩu và vận chuyển trên tuyến Việt Nam – Lào – Thái Lan.",
+    phoneNote: "Gọi để trao đổi nhu cầu vận chuyển",
+    emailNote: "Gửi thông tin lô hàng và tài liệu liên quan",
+    zalo: "Trao đổi qua Zalo",
+    zaloNote: "Kết nối nhanh với đội ngũ tư vấn",
+    formTitle: "Kể cho chúng tôi về lô hàng của bạn.",
+    formNote: "Các trường có dấu * là bắt buộc.",
+    namePlaceholder: "Họ và tên của bạn",
+    phonePlaceholder: "Số điện thoại liên hệ",
+    emailPlaceholder: "ten@doanhnghiep.com",
+    selectPlaceholder: "Chọn dịch vụ cần tư vấn",
+    privacy: "Thông tin bạn gửi sẽ được sử dụng để tiếp nhận và phản hồi yêu cầu tư vấn.",
+    prepareTitle: "Chuẩn bị một chút, tư vấn rõ hơn.",
+    prepareItems: ["Tên hàng, số lượng và trọng lượng dự kiến", "Điểm nhận, điểm giao và thời gian mong muốn", "Chứng từ hiện có hoặc nội dung cần hỗ trợ"],
+    mapLabel: "Ghé thăm chúng tôi",
+    mapTitle: "Hẹn gặp tại Lao Bảo.",
+    mapNote: "Vui lòng liên hệ trước khi đến để chúng tôi hướng dẫn đường đi và sắp xếp người đón tiếp.",
+    error: "Chưa gửi được yêu cầu. Vui lòng thử lại hoặc liên hệ qua điện thoại.",
+    countries: "Việt Nam · Lào · Thái Lan",
+    getAdvice: "Gửi yêu cầu tư vấn",
+  },
+  en: {
+    title: "It starts with",
+    accent: "a conversation.",
+    intro: "A shipment, a route or a question about customs. Share your needs and let us work together on a practical solution for your business.",
+    image: "Lao Bao International Border Gate, Quang Tri",
+    supportTitle: "The right connection.",
+    supportAccent: "Confidence at every step.",
+    supportDesc: "Talk directly with VILA SANMYSHI about customs clearance, import-export and transport between Vietnam, Laos and Thailand.",
+    phoneNote: "Call to discuss your transport needs",
+    emailNote: "Send shipment details and related documents",
+    zalo: "Chat on Zalo",
+    zaloNote: "Connect with our advisory team",
+    formTitle: "Tell us about your shipment.",
+    formNote: "Fields marked * are required.",
+    namePlaceholder: "Your full name",
+    phonePlaceholder: "Your contact number",
+    emailPlaceholder: "name@company.com",
+    selectPlaceholder: "Choose a service",
+    privacy: "The information you send will be used to review and respond to your enquiry.",
+    prepareTitle: "A few details make advice more useful.",
+    prepareItems: ["Goods, quantity and estimated weight", "Pickup, delivery and preferred timing", "Available documents or questions to discuss"],
+    mapLabel: "Visit us",
+    mapTitle: "Meet us in Lao Bao.",
+    mapNote: "Please contact us before visiting so we can provide directions and arrange someone to welcome you.",
+    error: "Your request could not be sent. Please try again or contact us by phone.",
+    countries: "Vietnam · Laos · Thailand",
+    getAdvice: "Send an enquiry",
+  },
+  th: {
+    title: "เริ่มต้นด้วย",
+    accent: "การพูดคุยกัน",
+    intro: "ไม่ว่าจะเป็นสินค้า เส้นทาง หรือคำถามเกี่ยวกับพิธีการศุลกากร บอกความต้องการของคุณเพื่อร่วมกันค้นหาทางเลือกที่เหมาะสมกับธุรกิจ",
+    image: "ด่านพรมแดนนานาชาติลาวบาว กวางจิ",
+    supportTitle: "เชื่อมต่อกับผู้ที่เข้าใจ",
+    supportAccent: "มั่นใจในทุกขั้นตอน",
+    supportDesc: "พูดคุยโดยตรงกับ VILA SANMYSHI เกี่ยวกับพิธีการศุลกากร การนำเข้า-ส่งออก และการขนส่งระหว่างเวียดนาม ลาว และไทย",
+    phoneNote: "โทรเพื่อปรึกษาความต้องการด้านการขนส่ง",
+    emailNote: "ส่งรายละเอียดสินค้าและเอกสารที่เกี่ยวข้อง",
+    zalo: "พูดคุยผ่าน Zalo",
+    zaloNote: "ติดต่อทีมที่ปรึกษาของเรา",
+    formTitle: "บอกเราเกี่ยวกับสินค้าของคุณ",
+    formNote: "ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอก",
+    namePlaceholder: "ชื่อและนามสกุลของคุณ",
+    phonePlaceholder: "หมายเลขโทรศัพท์ติดต่อ",
+    emailPlaceholder: "name@company.com",
+    selectPlaceholder: "เลือกบริการที่ต้องการปรึกษา",
+    privacy: "ข้อมูลที่คุณส่งจะใช้เพื่อพิจารณาและตอบกลับคำขอคำปรึกษาของคุณ",
+    prepareTitle: "เตรียมข้อมูลเล็กน้อย เพื่อคำแนะนำที่ชัดเจน",
+    prepareItems: ["ชนิดสินค้า จำนวน และน้ำหนักโดยประมาณ", "จุดรับ จุดส่ง และเวลาที่ต้องการ", "เอกสารที่มีอยู่หรือคำถามที่ต้องการปรึกษา"],
+    mapLabel: "เยี่ยมชมเรา",
+    mapTitle: "พบกันที่ลาวบาว",
+    mapNote: "กรุณาติดต่อก่อนเดินทางเพื่อรับคำแนะนำเส้นทางและให้เราจัดเตรียมผู้ต้อนรับ",
+    error: "ไม่สามารถส่งคำขอได้ กรุณาลองอีกครั้งหรือติดต่อทางโทรศัพท์",
+    countries: "เวียดนาม · ลาว · ไทย",
+    getAdvice: "ส่งคำขอคำปรึกษา",
+  },
+};
+
+export default function ContactView({ initialMessage = "", initialService = "" }: { initialMessage?: string; initialService?: string }) {
   const t = useTranslations("Contact");
   const locale = useLocale();
+  const copy = contactCopy[locale as keyof typeof contactCopy] ?? contactCopy.vi;
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [services, setServices] = useState<{ id: string; title: Record<string, string> }[]>([]);
+  const fallbackServiceNames = locale === "en"
+    ? ["Customs clearance", "Cross-border transport", "Warehousing & consolidation"]
+    : locale === "th"
+      ? ["พิธีการศุลกากร", "ขนส่งข้ามพรมแดน", "คลังสินค้าและรวบรวมสินค้า"]
+      : ["Khai báo hải quan", "Vận tải xuyên biên giới", "Kho bãi & gom hàng"];
+  const serviceNames = services.length
+    ? services.map(service => service.title[locale] || service.title.vi).filter(Boolean)
+    : fallbackServiceNames;
+  const address = locale === "vi" ? COMPANY_INFO.address : "13B Ong Ich Khiem, Lao Bao, Quang Tri, Vietnam";
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(COMPANY_INFO.address)}`;
 
   useEffect(() => {
     fetch("/api/services")
-      .then(r => r.json())
-      .then(data => setServices(data))
+      .then(response => response.json())
+      .then(data => setServices(Array.isArray(data) ? data : []))
       .catch(() => {});
   }, []);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (loading) return;
+    const form = event.currentTarget;
     setLoading(true);
     setError("");
     setSuccess(false);
- 
-
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const data = {
       name: formData.get("name"),
       phone: formData.get("phone"),
@@ -38,199 +138,72 @@ export default function ContactView() {
     };
 
     try {
-      const res = await fetch("/api/contact", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
-      if (res.ok) {
+      if (response.ok) {
         setSuccess(true);
-        (e.target as HTMLFormElement).reset();
+        form.reset();
       } else {
-        const errorData = await res.json();
-        throw new Error(errorData.error || t('error_msg'));
+        throw new Error(copy.error);
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch {
+      setError(copy.error);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="bg-surface selection:bg-primary/30 text-on-surface">
+    <div className={styles.page}>
       <PageHero
         image="/images/contact/hero.png"
-        imageAlt="VILA SANMYSHI Contact"
-        overlay="bg-brand-950/55"
-        align="center"
-        breadcrumb={[{ label: t('page_title') }]}
-        tag={t('hero_tag')}
-        title={<span dangerouslySetInnerHTML={{ __html: t.raw('hero_title').replace('{brand}', BRAND_NAME) }} />}
-        description={t('hero_desc')}
+        imageAlt={copy.image}
+        breadcrumb={[{ label: t("page_title") }]}
+        tag={t("hero_tag")}
+        title={<span>{copy.title}<br /><span>{copy.accent}</span></span>}
+        description={copy.intro}
       />
 
-      <section className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Contact Info & Support Image */}
-          <div className="space-y-12 lg:space-y-16 order-2 lg:order-1">
-            <div>
-              <div className="mb-10 lg:mb-16">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{t('support_badge')}</span>
-                </div>
-                <h2 className="text-3xl font-bold tracking-[-0.03em] lg:text-4xl" dangerouslySetInnerHTML={{ __html: t.raw('support_title') }} />
-              </div>
+      <div className={styles.connectionBar}><div className={`${styles.container} ${styles.connectionInner}`}><p><MapPin size={16} aria-hidden="true" />Lao Bảo, Quảng Trị<span>{copy.countries}</span></p><a href="#inquiry">{copy.getAdvice}<ArrowDown size={16} aria-hidden="true" /></a></div></div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
-                <div className="rounded-2xl border border-brand-200 bg-white p-6 shadow-[var(--shadow-card)] lg:p-8">
-                  <div className="w-10 lg:w-12 h-10 lg:h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 lg:mb-6">
-                    <span className="material-symbols-outlined text-primary text-xl lg:text-2xl">call</span>
-                  </div>
-                  <h3 className="mb-1 text-base font-bold tracking-[-0.02em] lg:mb-2 lg:text-lg">{t('phone_label')}</h3>
-                  <p className="text-sm lg:text-base text-on-surface-variant font-bold">{COMPANY_INFO.phone}</p>
-                  <p className="text-[10px] lg:text-xs text-slate-400 mt-2 font-medium">{t('phone_note')}</p>
-                </div>
-                <div className="rounded-2xl bg-brand-900 p-6 text-white lg:p-8">
-                  <div className="w-10 lg:w-12 h-10 lg:h-12 bg-primary rounded-xl flex items-center justify-center mb-4 lg:mb-6">
-                    <span className="material-symbols-outlined text-white text-xl lg:text-2xl">mail</span>
-                  </div>
-                  <h3 className="mb-1 text-base font-bold tracking-[-0.02em] lg:mb-2 lg:text-lg">{t('email_label')}</h3>
-                  <p className="text-sm font-bold text-white lg:text-base">{COMPANY_INFO.email}</p>
-                  <p className="mt-2 text-[10px] font-normal text-white/55 lg:text-xs">{t('email_note')}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-brand-200 bg-brand-900 shadow-[var(--shadow-card)]">
-              <Image
-                src="/images/contact/support.png"
-                alt="Đội ngũ hỗ trợ khách hàng VILA SANMYSHI"
-                fill
-                className="object-cover opacity-80"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-brand-950/35" />
-              <div className="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 text-white">
-                <div className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1 lg:mb-2 italic">{t('team_badge')}</div>
-                <div className="text-xl lg:text-2xl font-black tracking-tight uppercase">{t('team_title')}</div>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-brand-200 bg-brand-50 p-6 lg:p-10">
-              <h3 className="text-lg lg:text-xl font-black mb-4 lg:mb-6 uppercase tracking-tight flex items-center gap-3">
-                <span className="material-symbols-outlined text-primary lg:text-3xl">location_on</span>
-                {t('address_title')}
-              </h3>
-              <p className="text-sm lg:text-base text-on-surface-variant font-bold leading-relaxed">
-                {COMPANY_INFO.address.split(',').slice(0, 2).join(',')}, <br />
-                {COMPANY_INFO.address.split(',').slice(2).join(',')}
-              </p>
-              <div className="mt-6 lg:mt-8 flex flex-col sm:flex-row gap-4">
-                <button className="flex-1 bg-white border border-on-surface/10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-colors shadow-sm">
-                  {t('btn_directions')}
-                </button>
-                <button className="flex-1 bg-white border border-on-surface/10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-colors shadow-sm">
-                  {t('btn_office')}
-                </button>
-              </div>
-            </div>
+      <section className={`${styles.container} ${styles.contactGrid}`}>
+        <div className={styles.contactInfo}>
+          <p className={styles.eyebrow}><span>01 /</span>{t("support_badge")}</p>
+          <h2 className={styles.sectionTitle}>{copy.supportTitle}<em>{copy.supportAccent}</em></h2>
+          <p className={styles.description}>{copy.supportDesc}</p>
+          <div className={styles.contactMethods}>
+            <a href={`tel:${COMPANY_INFO.phone}`}><span className={styles.methodIcon}><Phone size={19} strokeWidth={1.6} aria-hidden="true" /></span><div><span>{t("phone_label")}</span><strong>{COMPANY_INFO.phone}</strong><p>{copy.phoneNote}</p></div><ArrowUpRight size={18} aria-hidden="true" /></a>
+            <a href={`mailto:${COMPANY_INFO.email}`}><span className={styles.methodIcon}><Mail size={19} strokeWidth={1.6} aria-hidden="true" /></span><div><span>{t("email_label")}</span><strong>{COMPANY_INFO.email}</strong><p>{copy.emailNote}</p></div><ArrowUpRight size={18} aria-hidden="true" /></a>
+            <a href={`https://zalo.me/${COMPANY_INFO.phone}`} target="_blank" rel="noopener noreferrer"><span className={styles.methodIcon}><MessageCircle size={19} strokeWidth={1.6} aria-hidden="true" /></span><div><span>Zalo</span><strong>{copy.zalo}</strong><p>{copy.zaloNote}</p></div><ArrowUpRight size={18} aria-hidden="true" /></a>
           </div>
+          <div className={styles.address}><MapPin size={22} strokeWidth={1.5} aria-hidden="true" /><div><h3>{t("address_title")}</h3><p>{address}</p><div className={styles.addressLinks}><a href={mapUrl} target="_blank" rel="noopener noreferrer">{t("btn_directions")}<ArrowUpRight size={14} aria-hidden="true" /></a><a href="#office-map">{t("btn_office")}<ArrowDown size={14} aria-hidden="true" /></a></div></div></div>
+          <div className={styles.prepare}><ClipboardList size={22} strokeWidth={1.5} aria-hidden="true" /><div><h3>{copy.prepareTitle}</h3><ul>{copy.prepareItems.map(item => <li key={item}><CheckCircle2 size={13} aria-hidden="true" />{item}</li>)}</ul></div></div>
+        </div>
 
-          {/* Contact Form */}
-          <div className="order-1 flex h-fit flex-col rounded-2xl border border-brand-200 bg-white p-8 shadow-[var(--shadow-card)] md:p-10 lg:order-2 lg:p-12">
-            <div className="mb-8 lg:mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">{t('form_badge')}</span>
-              </div>
-              <h2 className="mb-3 text-2xl font-bold tracking-[-0.03em] text-on-surface lg:mb-4 lg:text-3xl" dangerouslySetInnerHTML={{ __html: t.raw('form_title') }} />
-              <p className="text-base font-normal leading-7 text-on-surface-variant lg:text-lg">{t('form_desc')}</p>
+        <div className={styles.formPanel}>
+          <div className={styles.formHeader}><p className={styles.eyebrow}><span>02 /</span>{t("form_badge")}</p><h2>{copy.formTitle}</h2><p>{t("form_desc")}</p></div>
+          <form id="inquiry" onSubmit={handleSubmit} className={styles.form} aria-busy={loading}>
+            <p className={styles.requiredNote}>{copy.formNote}</p>
+            <div className={styles.fieldRow}>
+              <div className={styles.field}><label htmlFor="contact-name">{t("field_name")}</label><input id="contact-name" name="name" type="text" required autoComplete="name" placeholder={copy.namePlaceholder} /></div>
+              <div className={styles.field}><label htmlFor="contact-phone">{t("field_phone")}</label><input id="contact-phone" name="phone" type="tel" required autoComplete="tel" placeholder={copy.phonePlaceholder} /></div>
             </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-8 flex-grow">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
-                <div className="space-y-2 lg:space-y-3">
-                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_name')}</label>
-                  <input name="name" type="text" required placeholder="Nguyễn Văn A" className="w-full rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-normal transition-colors focus:border-primary focus:bg-white focus:outline-none lg:p-5" />
-                </div>
-                <div className="space-y-2 lg:space-y-3">
-                  <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_phone')}</label>
-                  <input name="phone" type="tel" required placeholder="090 000 0000" className="w-full rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-normal transition-colors focus:border-primary focus:bg-white focus:outline-none lg:p-5" />
-                </div>
-              </div>
-
-              <div className="space-y-2 lg:space-y-3">
-                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_email')}</label>
-                <input name="email" type="email" placeholder="email@gmail.com" className="w-full rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-normal transition-colors focus:border-primary focus:bg-white focus:outline-none lg:p-5" />
-              </div>
-
-              <div className="space-y-2 lg:space-y-3">
-                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_service')}</label>
-                <div className="relative">
-                  <select name="service" className="w-full appearance-none rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-medium transition-colors focus:border-primary focus:bg-white focus:outline-none lg:p-5">
-                    {services.map(s => {
-                      const title = s.title[locale] || s.title['vi'];
-                      return (
-                        <option key={s.id} value={title}>{title}</option>
-                      );
-                    })}
-                  </select>
-                  <span className="material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-faint">expand_more</span>
-                </div>
-              </div>
-
-              <div className="space-y-2 lg:space-y-3">
-                <label className="text-[9px] lg:text-[10px] font-black uppercase tracking-widest ml-1 text-slate-500 uppercase">{t('field_message')}</label>
-                <textarea name="message" rows={4} placeholder={t('placeholder_message')} className="w-full resize-none rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm font-normal transition-colors focus:border-primary focus:bg-white focus:outline-none lg:p-5" />
-              </div>
-
-              {success && (
-                <div className="rounded-xl border border-primary/20 bg-primary/10 p-5">
-                  <p className="text-center text-xs font-semibold uppercase tracking-[0.12em] text-primary">{t('success_msg')}</p>
-                </div>
-              )}
-
-              {error && (
-                <div className="rounded-xl border border-brand-300 bg-brand-100 p-5">
-                  <p className="text-center text-xs font-semibold uppercase tracking-[0.12em] text-on-surface">{error}</p>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full rounded-xl bg-primary py-5 text-xs font-semibold uppercase tracking-[0.12em] text-on-primary transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50 lg:text-sm"
-              >
-                {loading ? t('btn_loading') : t('btn_submit')}
-              </button>
-
-              <p className="text-[8px] lg:text-[9px] text-center font-bold text-slate-400 uppercase tracking-widest mt-4">
-                {t('privacy_note')}
-              </p>
-            </form>
-          </div>
+            <div className={styles.field}><label htmlFor="contact-email">{t("field_email")}</label><input id="contact-email" name="email" type="email" autoComplete="email" placeholder={copy.emailPlaceholder} /></div>
+            <div className={styles.field}><label htmlFor="contact-service">{t("field_service")}</label><div className={styles.selectWrap}><select id="contact-service" name="service" defaultValue={initialService || ""}><option value="">{copy.selectPlaceholder}</option>{initialService && <option value={initialService}>{initialService}</option>}{Array.from(new Set(serviceNames)).filter(name => name !== initialService).map(name => <option key={name} value={name}>{name}</option>)}</select><ChevronDown size={17} aria-hidden="true" /></div></div>
+            <div className={styles.field}><label htmlFor="contact-message">{t("field_message")}</label><textarea id="contact-message" name="message" defaultValue={initialMessage} rows={5} placeholder={t("placeholder_message")} /></div>
+            {success && <div className={styles.success} role="status"><CheckCircle2 size={18} aria-hidden="true" /><p>{t("success_msg")}</p></div>}
+            {error && <p className={styles.error} role="alert">{error}</p>}
+            <button type="submit" disabled={loading} className={styles.submit}><span>{loading ? t("btn_loading") : t("btn_submit")}</span><Send size={17} aria-hidden="true" /></button>
+            <p className={styles.privacy}>{copy.privacy}</p>
+          </form>
         </div>
       </section>
-      <section className="group relative mx-6 mb-20 h-[450px] overflow-hidden rounded-2xl border border-brand-200 shadow-[var(--shadow-card)] sm:mx-8 lg:mb-24 lg:h-[600px]">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15246.131102555555!2d106.5744!3d16.6321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x316ae38c11e737bd%3A0x673416e788812c3b!2zQ-G7rWEga2jhuql1IFF14buRYyB04bq_IExhbyBC4bqjbw!5e0!3m2!1svi!2svn!4v1711181234567!5m2!1svi!2svn"
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen={true}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="grayscale-0 hover:grayscale-0 transition-all duration-700"
-          title="Google Maps Location"
-        ></iframe>
-        <div className="absolute left-6 top-6 max-w-xs rounded-xl border border-brand-200 bg-white/95 p-4 shadow-[var(--shadow-card)] lg:left-10 lg:top-10 lg:p-6">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="material-symbols-outlined text-primary">location_on</span>
-            <h4 className="font-black text-xs lg:text-sm uppercase tracking-tight">{t('map_office')}</h4>
-          </div>
-          <p className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase leading-relaxed uppercase tracking-tighter">Cửa khẩu Lao Bảo, <br />Quảng Trị, Việt Nam</p>
-        </div>
+
+      <section id="office-map" className={styles.mapSection}>
+        <div className={styles.container}><div className={styles.mapHeading}><div><p className={styles.eyebrow}><span>03 /</span>{copy.mapLabel}</p><h2 className={styles.sectionTitle}>{copy.mapTitle}</h2></div><p>{copy.mapNote}</p></div><VietnamMap officeView /></div>
       </section>
     </div>
   );

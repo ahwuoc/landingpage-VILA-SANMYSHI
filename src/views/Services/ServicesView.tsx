@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Link } from "@/i18n/routing";
 import { useState, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { ServiceItem } from "@/lib/data";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, ClipboardCheck, FileText, PackageCheck, Phone, Search, SlidersHorizontal, X } from "lucide-react";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
+import type { ServiceItem } from "@/lib/data";
+import { COMPANY_INFO } from "@/constants/company";
 import ConsultationModal from "@/components/ConsultationModal";
 import PageHero from "@/components/PageHero";
 import { useTranslations, useLocale } from "next-intl";
@@ -17,6 +19,7 @@ import TableCell from "@tiptap/extension-table-cell";
 import ImageExtension from "@tiptap/extension-image";
 import { Link as LinkExtension } from "@tiptap/extension-link";
 import Typography from "@tiptap/extension-typography";
+import styles from "./Services.module.css";
 
 const fallbackServices: ServiceItem[] = [
   {
@@ -93,337 +96,165 @@ const fallbackServices: ServiceItem[] = [
   },
 ];
 
-function ServicesViewInner({ services, id, categorySlug, categoryName }: {
+
+const copy = {
+  vi: {
+    hero: "Mỗi nhu cầu,", heroAccent: "một giải pháp.", heroDescription: "Từ hồ sơ hải quan đến vận chuyển xuyên biên giới. Chọn dịch vụ phù hợp, cùng chúng tôi làm rõ từng bước cho lô hàng của bạn.", catalog: "Dịch vụ theo nhu cầu", catalogAccent: "Đồng hành từ đầu đến cuối.", catalogIntro: "Khám phá từng giải pháp hoặc tìm nhanh theo công việc bạn cần hỗ trợ.", browse: "Khám phá dịch vụ", clear: "Xóa tìm kiếm", clearFilters: "Đặt lại bộ lọc", filter: "Lọc theo dịch vụ", results: "giải pháp", empty: "Chưa có dịch vụ phù hợp với tìm kiếm này.", emptyDescription: "Thử một từ khóa khác hoặc trao đổi trực tiếp để đội ngũ hỗ trợ xác định nhu cầu.", inquire: "Tư vấn dịch vụ này", back: "Tất cả dịch vụ", detailLabel: "Thông tin dịch vụ", contentEmpty: "Hãy chia sẻ tuyến vận chuyển, loại hàng và yêu cầu của bạn để đội ngũ tư vấn cụ thể về dịch vụ này.", prepare: "Để buổi tư vấn hữu ích hơn", prepareItems: ["Tuyến gửi và nơi nhận hàng", "Loại hàng, số kiện, khối lượng", "Chứng từ hiện có và thời gian dự kiến"], advisor: "Cùng làm rõ", advisorAccent: "lô hàng của bạn.", advisorDescription: "Một cuộc trao đổi để xác định phạm vi công việc và những thông tin cần chuẩn bị.", related: "Khám phá thêm", processLabel: "Cách chúng tôi phối hợp", processTitle: "Rõ ràng từng bước.", processDescription: "Phương án được trao đổi theo đặc điểm hàng hóa và yêu cầu thực tế.", steps: ["Chia sẻ nhu cầu", "Thống nhất phương án", "Phối hợp thực hiện"], stepDetails: ["Gửi thông tin hàng hóa, tuyến đường, thời điểm dự kiến và hồ sơ đang có.", "Cùng rà soát phạm vi công việc, điều kiện thực hiện và các chi phí cần xác nhận.", "Phối hợp hồ sơ, phương tiện và các đầu mối giao nhận theo phương án đã thống nhất."], cta: "Bạn có một lô hàng.", ctaAccent: "Chúng tôi sẵn sàng lắng nghe.", ctaDescription: "Bắt đầu bằng những thông tin bạn đang có. Đội ngũ VILA SANMYSHI sẽ cùng bạn làm rõ bước tiếp theo.", tools: "Chuẩn bị lô hàng", categoryIntro: "Khám phá các dịch vụ trong nhóm này và trao đổi phương án phù hợp cho lô hàng của bạn.",
+  },
+  en: {
+    hero: "Every shipment,", heroAccent: "a considered solution.", heroDescription: "From customs documents to cross-border transport. Find the support you need and work through each step with our team.", catalog: "Services for your needs", catalogAccent: "Support from start to finish.", catalogIntro: "Explore our solutions or search for the task you need help with.", browse: "Explore services", clear: "Clear search", clearFilters: "Reset filters", filter: "Filter services", results: "solutions", empty: "No services match this search.", emptyDescription: "Try another keyword, or speak with our team to clarify the support you need.", inquire: "Discuss this service", back: "All services", detailLabel: "About this service", contentEmpty: "Share your route, cargo and requirements so our team can discuss this service with you in detail.", prepare: "Make the most of our conversation", prepareItems: ["Origin and destination", "Cargo type, package count and weight", "Available documents and preferred timing"], advisor: "Let’s understand", advisorAccent: "your shipment.", advisorDescription: "A conversation to define the scope of work and the information to prepare.", related: "Explore more", processLabel: "How we work together", processTitle: "Clarity at every step.", processDescription: "We discuss a plan based on your goods and actual requirements.", steps: ["Share your needs", "Agree on an approach", "Coordinate the shipment"], stepDetails: ["Send your cargo details, route, preferred timing and available documents.", "Review the scope, operating conditions and costs that need confirmation together.", "Coordinate documents, vehicles and handover contacts according to the agreed plan."], cta: "You have a shipment.", ctaAccent: "We’re here to listen.", ctaDescription: "Start with the details you have. The VILA SANMYSHI team will help clarify your next step.", tools: "Prepare your shipment", categoryIntro: "Explore services in this category and discuss a suitable approach for your shipment.",
+  },
+  th: {
+    hero: "ทุกความต้องการ", heroAccent: "มีแนวทางที่เหมาะสม", heroDescription: "ตั้งแต่เอกสารศุลกากรถึงการขนส่งข้ามแดน เลือกบริการที่ตรงความต้องการและวางแผนแต่ละขั้นตอนร่วมกับเรา", catalog: "บริการตามความต้องการ", catalogAccent: "เคียงข้างตั้งแต่ต้นจนจบ", catalogIntro: "สำรวจบริการหรือค้นหางานที่คุณต้องการความช่วยเหลือ", browse: "สำรวจบริการ", clear: "ล้างการค้นหา", clearFilters: "รีเซ็ตตัวกรอง", filter: "กรองบริการ", results: "บริการ", empty: "ไม่พบบริการที่ตรงกับการค้นหานี้", emptyDescription: "ลองคำค้นอื่นหรือพูดคุยกับทีมงานเพื่อระบุบริการที่คุณต้องการ", inquire: "ปรึกษาเกี่ยวกับบริการนี้", back: "บริการทั้งหมด", detailLabel: "ข้อมูลบริการ", contentEmpty: "แจ้งเส้นทาง สินค้า และข้อกำหนดของคุณ เพื่อให้ทีมงานปรึกษารายละเอียดบริการนี้", prepare: "เตรียมข้อมูลเพื่อการปรึกษาที่เป็นประโยชน์", prepareItems: ["ประเทศต้นทางและจุดหมายปลายทาง", "ประเภทสินค้า จำนวนหีบห่อ และน้ำหนัก", "เอกสารที่มีและเวลาที่ต้องการ"], advisor: "มาทำความเข้าใจ", advisorAccent: "สินค้าของคุณ", advisorDescription: "พูดคุยเพื่อกำหนดขอบเขตงานและข้อมูลที่ต้องเตรียม", related: "สำรวจเพิ่มเติม", processLabel: "ขั้นตอนการทำงานร่วมกัน", processTitle: "ชัดเจนในทุกขั้นตอน", processDescription: "หารือแนวทางตามลักษณะสินค้าและความต้องการจริง", steps: ["แจ้งความต้องการ", "ตกลงแนวทาง", "ประสานการดำเนินงาน"], stepDetails: ["ส่งรายละเอียดสินค้า เส้นทาง เวลาที่ต้องการ และเอกสารที่มี", "ร่วมทบทวนขอบเขตงาน เงื่อนไขการดำเนินงาน และค่าใช้จ่ายที่ต้องยืนยัน", "ประสานเอกสาร ยานพาหนะ และผู้รับส่งสินค้าตามแนวทางที่ตกลง"], cta: "คุณมีสินค้าที่ต้องส่ง", ctaAccent: "เราพร้อมรับฟัง", ctaDescription: "เริ่มด้วยข้อมูลที่คุณมี ทีมงาน VILA SANMYSHI จะช่วยทำให้ขั้นตอนต่อไปชัดเจนขึ้น", tools: "เตรียมการขนส่ง", categoryIntro: "สำรวจบริการในหมวดนี้และปรึกษาแนวทางที่เหมาะสมสำหรับสินค้าของคุณ",
+  },
+};
+
+function plainText(html: string) {
+  return html.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, " ").trim();
+}
+function normalizeSearch(value: string) {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLocaleLowerCase();
+}
+
+type ServicesProps = {
   services: ServiceItem[];
   id?: string;
   categorySlug?: string;
   categoryName?: string;
   catSlugMap?: Record<string, string>;
-}) {
+  categoryPage?: boolean;
+};
+
+function ServicesViewInner({ services, id, categorySlug, categoryName, categoryPage = false }: ServicesProps) {
   const t = useTranslations("Services");
   const locale = useLocale();
+  const c = copy[locale === "en" || locale === "th" ? locale : "vi"];
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | undefined>();
-  const searchParams = useSearchParams();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const activeCategory = selectedCategory || searchParams.get("category") || "all";
-  const displayServices = useMemo(() => services.length > 0 ? services : fallbackServices, [services]);
+  const [search, setSearch] = useState("");
+  const activeCategory = categoryPage ? "all" : searchParams.get("category") || "all";
+  const displayServices = useMemo(() => {
+    if (services.length || id) return services;
+    if (categoryPage && categorySlug !== "all") return fallbackServices.filter((service) => service.service_categories?.slug === categorySlug);
+    return fallbackServices;
+  }, [services, id, categoryPage, categorySlug]);
+  const localize = (value: Record<string, string>) => value[locale] || value.vi || "";
+  const categories = useMemo(() => {
+    const unique = new Map<string, { name: string; slug: string; count: number }>();
+    displayServices.forEach((service) => {
+      const category = service.service_categories;
+      if (!category?.slug) return;
+      const existing = unique.get(category.slug);
+      unique.set(category.slug, { name: category.name[locale] || category.name.vi, slug: category.slug, count: (existing?.count || 0) + 1 });
+    });
+    return [...unique.values()];
+  }, [displayServices, locale]);
+  const filtered = displayServices.filter((service) => {
+    if (id) return service.id === id;
+    const matchesCategory = activeCategory === "all" || service.service_categories?.slug === activeCategory;
+    const text = [localize(service.title), plainText(localize(service.content)), service.service_categories ? localize(service.service_categories.name) : ""].join(" ");
+    return matchesCategory && normalizeSearch(text).includes(normalizeSearch(search.trim()));
+  });
+  const singleService = id ? filtered[0] : undefined;
+  const isSingle = Boolean(singleService);
+  const title = singleService ? localize(singleService.title) : "";
 
-  const openModal = (serviceName: string) => {
+  function openModal(serviceName?: string) {
     setSelectedService(serviceName);
     setModalOpen(true);
-  };
-
-  const categories = useMemo(() => {
-    const unique = new Map<string, { name: string; slug: string }>();
-    displayServices.forEach(s => {
-      if (s.service_categories) {
-        const name = s.service_categories.name[locale] || s.service_categories.name['vi'];
-        unique.set(name, { name, slug: s.service_categories.slug });
-      }
-    });
-    return Array.from(unique.values());
-  }, [displayServices, locale]);
-
-  const filtered = useMemo(() => {
-    if (id) return displayServices.filter(s => s.id === id);
-    if (activeCategory === "all") return displayServices;
-    return displayServices.filter(s => s.service_categories?.slug === activeCategory);
-  }, [displayServices, id, activeCategory]);
-
-  const isSingle = !!id && filtered.length === 1;
-  const singleService = isSingle ? filtered[0] : null;
+  }
+  function chooseCategory(category: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (category === "all") params.delete("category");
+    else params.set("category", category);
+    router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
+  }
+  function resetFilters() {
+    setSearch("");
+    chooseCategory("all");
+  }
+  const stepIcons = [FileText, ClipboardCheck, PackageCheck];
 
   return (
-    <div className="bg-surface selection:bg-primary/30 text-on-surface">
+    <div className={styles.page}>
       <PageHero
-        image={singleService?.image || "/images/services/sea-freight-premium.png"}
-        imageAlt={(
-          singleService?.title[locale] || singleService?.title['vi']
-        ) || t('page_title')}
-        overlay="bg-brand-950/60"
-        imageOpacity="opacity-60"
+        image={singleService?.image || (categoryPage ? displayServices[0]?.image : undefined) || "/images/services/cross-border-premium.png"}
+        imageAlt={title || categoryName || t("page_title")}
         breadcrumb={[
-          { label: t('page_title'), href: "/services" },
-          ...(categorySlug && categoryName ? [{ label: categoryName, href: `/services/${categorySlug}` }] : []),
-          ...(isSingle && singleService ? [{ label: singleService.title[locale] || singleService.title['vi'] }] : [{ label: categoryName || t('breadcrumb_all') }]),
+          { label: t("page_title"), href: "/services" },
+          ...(isSingle && categorySlug && categoryName ? [{ label: categoryName, href: `/services?category=${categorySlug}` }] : []),
+          { label: title || categoryName || t("breadcrumb_all") },
         ]}
-        tag={t('hero_tag')}
-        title={isSingle
-          ? <span dangerouslySetInnerHTML={{ __html: t.raw('hero_title_detail') }} />
-          : <span dangerouslySetInnerHTML={{ __html: t.raw('hero_title_list') }} />
-        }
+        tag={isSingle ? categoryName || t("hero_tag") : t("hero_tag")}
+        title={isSingle ? title : categoryPage ? <>{t("category_label")}<br /><em>{categoryName}</em></> : <>{c.hero}<br /><em>{c.heroAccent}</em></>}
+        description={isSingle ? plainText(localize(singleService!.content)).slice(0, 200) || c.contentEmpty : categoryPage ? c.categoryIntro : c.heroDescription}
       />
 
-      {!isSingle && categories.length > 0 && (
-        <div className="mx-auto max-w-7xl px-6 pt-16 sm:px-8">
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => setSelectedCategory("all")}
-              className={`rounded-xl border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${activeCategory === "all" ? "border-primary bg-primary text-white" : "border-brand-200 bg-white text-on-surface-variant hover:border-brand-400 hover:text-on-surface"}`}
-            >
-              {t('filter_all')}
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat.slug}
-                onClick={() => setSelectedCategory(cat.slug)}
-                className={`rounded-xl border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${activeCategory === cat.slug ? "border-primary bg-primary text-white" : "border-brand-200 bg-white text-on-surface-variant hover:border-brand-400 hover:text-on-surface"}`}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
+      <div className={styles.contextBar}>
+        <div className={styles.container}>
+          {isSingle || categoryPage ? <Link href="/services"><ArrowLeft size={14} aria-hidden="true" />{c.back}</Link> : <a href="#service-catalog">{c.browse}<ArrowDown size={14} aria-hidden="true" /></a>}
+          <span>VIETNAM <i /> LAOS <i /> THAILAND</span>
+          <Link href="/#shipment-tools">{c.tools}<ArrowUpRight size={14} aria-hidden="true" /></Link>
         </div>
+      </div>
+
+      {singleService ? (
+        <section className={`${styles.container} ${styles.detailLayout}`}>
+          <article className={styles.article}>
+            <p className={styles.eyebrow}><span />{c.detailLabel}</p>
+            <h2 className={styles.articleTitle}>{title}</h2>
+            {localize(singleService.content).trim() ? <ServiceContent key={`${singleService.id}-${locale}`} content={localize(singleService.content)} /> : <p className={styles.articleIntro}>{c.contentEmpty}</p>}
+            <div className={styles.preparation}><h3><ClipboardCheck size={19} aria-hidden="true" />{c.prepare}</h3><ul>{c.prepareItems.map((item) => <li key={item}><Check size={14} aria-hidden="true" />{item}</li>)}</ul><Link href="/#shipment-tools">{c.tools}<ArrowUpRight size={14} aria-hidden="true" /></Link></div>
+          </article>
+          <aside className={styles.sidebar}>
+            <div className={styles.advisor}><p className={styles.eyebrow}>VILA SANMYSHI</p><h2>{c.advisor}<br /><em>{c.advisorAccent}</em></h2><p>{c.advisorDescription}</p><button type="button" className={styles.lightButton} onClick={() => openModal(title)}>{t("cta_expert")}<ArrowUpRight size={16} aria-hidden="true" /></button><a className={styles.advisorPhone} href={`tel:${COMPANY_INFO.phone}`}><Phone size={15} aria-hidden="true" />{COMPANY_INFO.phone.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3")}</a></div>
+            <nav className={styles.related} aria-label={c.related}><h3>{c.related}</h3><Link href="/services">{c.back}<ArrowRight size={13} aria-hidden="true" /></Link>{categories.map((category) => <Link key={category.slug} href={{ pathname: "/services", query: { category: category.slug } }}>{category.name}<ArrowRight size={13} aria-hidden="true" /></Link>)}</nav>
+          </aside>
+        </section>
+      ) : (
+        <section id="service-catalog" className={`${styles.container} ${styles.catalog}`} aria-labelledby="service-catalog-title">
+          <div className={styles.sectionHeading}><div><p className={styles.eyebrow}><span />{categoryPage ? categoryName : c.catalog}</p><h2 id="service-catalog-title">{categoryPage ? categoryName : c.catalogAccent}</h2></div><p>{c.catalogIntro}</p></div>
+          <div className={styles.toolbar}>
+            <div className={styles.search}><Search size={16} aria-hidden="true" /><label className="sr-only" htmlFor="services-search">{t("search_placeholder")}</label><input id="services-search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder={t("search_placeholder")} />{search && <button type="button" onClick={() => setSearch("")} aria-label={c.clear}><X size={16} aria-hidden="true" /></button>}</div>
+            <p className={styles.resultCount} aria-live="polite"><strong>{filtered.length.toString().padStart(2, "0")}</strong>{c.results}</p>
+          </div>
+          {!categoryPage && categories.length > 0 && <div className={styles.filters} role="group" aria-label={c.filter}><SlidersHorizontal size={15} aria-hidden="true" /><button type="button" onClick={() => chooseCategory("all")} aria-pressed={activeCategory === "all"}>{t("filter_all")}<span>{displayServices.length}</span></button>{categories.map((category) => <button key={category.slug} type="button" onClick={() => chooseCategory(category.slug)} aria-pressed={activeCategory === category.slug}>{category.name}<span>{category.count}</span></button>)}</div>}
+          {filtered.length ? <div className={styles.serviceGrid}>
+            {filtered.map((service, index) => {
+              const serviceTitle = localize(service.title);
+              const description = plainText(localize(service.content));
+              const isFallback = service.id.startsWith("fallback-");
+              const href = `/services/${service.service_categories?.slug || categorySlug || "all"}/${service.id}`;
+              return <article key={service.id} className={styles.serviceCard}>
+                <div className={styles.serviceImage}><Image src={service.image || "/images/services/cross-border-premium.png"} alt={serviceTitle} fill sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw" className={styles.coverImage} /><span className={styles.serviceNumber}>{String(index + 1).padStart(2, "0")}</span></div>
+                <div className={styles.serviceBody}><p className={styles.category}>{service.service_categories ? localize(service.service_categories.name) : categoryName || t("page_title")}</p><h3>{isFallback ? serviceTitle : <Link href={href}>{serviceTitle}</Link>}</h3><p className={styles.description}>{description || c.contentEmpty}</p>{isFallback ? <button type="button" className={styles.cardAction} onClick={() => openModal(serviceTitle)}>{c.inquire}<ArrowUpRight size={17} aria-hidden="true" /></button> : <Link href={href} className={styles.cardAction}>{t("view_detail")}<ArrowUpRight size={17} aria-hidden="true" /></Link>}</div>
+              </article>;
+            })}
+          </div> : <div className={styles.emptyState}><Search size={31} strokeWidth={1} aria-hidden="true" /><h3>{c.empty}</h3><p>{c.emptyDescription}</p><div>{(search || activeCategory !== "all") && <button type="button" className={styles.primaryButton} onClick={resetFilters}>{c.clearFilters}<X size={14} aria-hidden="true" /></button>}<button type="button" className={styles.textButton} onClick={() => openModal(categoryName)}>{t("cta_expert")}<ArrowUpRight size={15} aria-hidden="true" /></button></div></div>}
+        </section>
       )}
-      <section className="py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          {isSingle && singleService ? (
-            <div className="flex flex-col lg:flex-row gap-16">
-              {/* Main Content */}
-              <div className="flex-1 min-w-0">
-                <div className="mb-12">
-                  <span className="mb-6 inline-block text-xs font-semibold uppercase tracking-[0.12em] text-primary">
-                    {categoryName}
-                  </span>
-                  <h1 className="mb-8 text-4xl font-bold leading-tight tracking-[-0.03em] text-on-surface lg:text-6xl">
-                    {singleService.title[locale] || singleService.title['vi']}
-                  </h1>
 
-                  <div className="relative mb-12 aspect-[21/9] overflow-hidden rounded-2xl border border-brand-200 shadow-[var(--shadow-card)]">
-                    <Image
-                      src={singleService.image}
-                      alt={singleService.title[locale] || singleService.title['vi']}
-                      fill
-                      className="object-cover"
-                      preload
-                    />
-                  </div>
-
-                  <ServiceContent content={singleService.content[locale] || singleService.content['vi'] || ""} />
-                </div>
-              </div>
-
-              {/* Sidebar */}
-              <div className="lg:w-96 flex-shrink-0">
-                <div className="sticky top-32 space-y-8">
-                  <div className="relative overflow-hidden rounded-2xl bg-brand-900 p-8 text-white lg:p-10">
-                    <h3 className="relative z-10 mb-4 text-2xl font-bold tracking-[-0.02em]">{t('cta_expert')}</h3>
-                    <p className="relative z-10 mb-8 text-sm font-normal leading-7 text-white/65">
-                      {t('cta_desc')}
-                    </p>
-                    <button
-                      onClick={() => openModal(singleService.title[locale] || singleService.title['vi'])}
-                      className="relative z-10 w-full rounded-xl bg-primary py-4 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
-                    >
-                      {t('cta_expert')}
-                    </button>
-
-                    <div className="mt-8 pt-8 border-t border-white/10 space-y-4 relative z-10">
-                      <div className="flex items-center gap-4 text-sm text-white/70">
-                        <span className="material-symbols-outlined text-primary">check_circle</span>
-                        {t('sidebar_cta_check1')}
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-white/70">
-                        <span className="material-symbols-outlined text-primary">check_circle</span>
-                        {t('sidebar_cta_check2')}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Related Services Links or Other Info */}
-                  <div className="rounded-2xl border border-brand-200 bg-brand-50 p-8">
-                    <h4 className="mb-6 text-sm font-bold tracking-[-0.01em] text-on-surface">{t('category_title')}</h4>
-                    <div className="space-y-3">
-                      <Link
-                        href="/services"
-                        className={`block w-full rounded-xl px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.1em] transition-colors ${activeCategory === "all" ? "bg-primary text-white" : "border border-brand-200 bg-white text-on-surface-variant hover:border-brand-300 hover:text-on-surface"}`}
-                      >
-                        {t('filter_all')}
-                      </Link>
-                      {categories.map(cat => {
-                        return (
-                          <Link
-                            key={cat.slug}
-                            href={`/services/${cat.slug}`}
-                            className={`block w-full rounded-xl px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.1em] transition-colors ${activeCategory === cat.slug ? "bg-primary text-white" : "border border-brand-200 bg-white text-on-surface-variant hover:border-brand-300 hover:text-on-surface"}`}
-                          >
-                            {cat.name}
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <>
-              {filtered.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {filtered.map((service, index) => {
-                    const title = service.title[locale] || service.title['vi'];
-                    const content = service.content[locale] || service.content['vi'];
-
-                    return (
-                      <Link
-                        key={service.id}
-                        href={service.id.startsWith("fallback-") ? "/contact" : `/services/${categorySlug || service.service_categories?.slug || "all"}/${service.id}`}
-                        className="group relative flex flex-col overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-[var(--shadow-card)] transition duration-300 hover:border-brand-300 hover:shadow-[var(--shadow-card-hover)] animate-fade-up"
-                        style={{ animationDelay: `${index * 50}ms` }}
-                      >
-                        {/* Image Wrap */}
-                        <div className="relative aspect-[16/10] overflow-hidden">
-                          <Image
-                            src={service.image}
-                            alt={title}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                          />
-                          {/* Category Tag */}
-                          <div className="absolute top-6 left-6">
-                            <span className="rounded-lg border border-brand-200 bg-white/95 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary shadow-[var(--shadow-card)]">
-                              {service.service_categories?.name[locale] || service.service_categories?.name['vi'] || t('page_title')}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-8 lg:p-10 flex flex-col flex-1">
-                          <h3 className="mb-4 text-xl font-bold leading-tight tracking-[-0.02em] text-on-surface transition-colors group-hover:text-primary lg:text-2xl">
-                            {title}
-                          </h3>
-                          <div
-                            className="mb-8 flex-1 line-clamp-3 text-sm font-normal leading-7 text-on-surface-variant lg:text-base"
-                            dangerouslySetInnerHTML={{ __html: (content || "").replace(/<[^>]*>/g, "").substring(0, 120) + "..." }}
-                          />
-
-                          <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-                            <span className="text-primary text-[10px] font-black uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all">
-                              {t('view_solution')}
-                            </span>
-                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-100 text-on-surface-variant transition-colors group-hover:bg-primary group-hover:text-white">
-                              <span className="material-symbols-outlined text-xl">arrow_forward</span>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="rounded-2xl border border-dashed border-brand-300 bg-brand-50 py-32 text-center">
-                  <span className="material-symbols-outlined text-6xl text-slate-300 mb-6">inventory_2</span>
-                  <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">{t('not_found')}</p>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </section>
-      {/* Global Bottom CTA */}
-      <section className="relative overflow-hidden bg-brand-900 py-20 text-center lg:py-24">
-        <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <h2 className="mb-8 text-display-md text-on-dark">
-            <span dangerouslySetInnerHTML={{ __html: t.raw('cta_title') }} />
-          </h2>
-          <p className="mx-auto mb-10 max-w-2xl text-body-xl text-on-dark-muted">
-            {t('cta_desc')}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button
-              onClick={() => openModal("General Logistics")}
-              className="w-full rounded-xl bg-primary px-10 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700 sm:w-auto"
-            >
-              {t('cta_expert')}
-            </button>
-            <button className="w-full rounded-xl border border-white/20 px-10 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-white/10 sm:w-auto">
-              {t('cta_process')}
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <ConsultationModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        serviceName={selectedService}
-      />
+      <section id="service-process" className={styles.process} aria-labelledby="service-process-title"><div className={styles.container}><div className={styles.sectionHeading}><div><p className={styles.eyebrow}><span />{c.processLabel}</p><h2 id="service-process-title">{c.processTitle}</h2></div><p>{c.processDescription}</p></div><div className={styles.processGrid}>{c.steps.map((step, index) => { const Icon = stepIcons[index]; return <article key={step}><div className={styles.stepTop}><span>0{index + 1}</span><Icon size={21} strokeWidth={1.5} aria-hidden="true" /></div><h3>{step}</h3><p>{c.stepDetails[index]}</p></article>; })}</div></div></section>
+      <section className={styles.cta}><div className={styles.container}><div><p className={styles.eyebrow}>LET’S TALK LOGISTICS</p><h2>{c.cta}<br /><em>{c.ctaAccent}</em></h2><p>{c.ctaDescription}</p></div><div className={styles.ctaActions}><button type="button" className={styles.lightButton} onClick={() => openModal(title || categoryName)}>{t("cta_expert")}<ArrowUpRight size={17} aria-hidden="true" /></button><a className={styles.ctaProcess} href="#service-process">{t("cta_process")}<ArrowUpRight size={14} aria-hidden="true" /></a></div></div></section>
+      <ConsultationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} serviceName={selectedService} />
     </div>
   );
 }
 
 function ServiceContent({ content }: { content: string }) {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
-      ImageExtension.configure({
-        HTMLAttributes: {
-          class: 'rounded-2xl border border-brand-200 shadow-[var(--shadow-card)] my-12',
-        },
-      }),
-      LinkExtension.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: 'text-primary hover:underline font-bold',
-        },
-      }),
-      Typography,
-    ],
+    extensions: [StarterKit.configure({ link: false }), Table.configure({ resizable: false, renderWrapper: true }), TableRow, TableHeader, TableCell, ImageExtension, LinkExtension.configure({ openOnClick: true, HTMLAttributes: { rel: "noopener noreferrer" } }), Typography],
     content,
     editable: false,
     immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        class: "prose prose-lg prose-slate max-w-none " +
-          "prose-headings:font-bold prose-headings:tracking-[-0.03em] " +
-          "prose-h2:text-3xl prose-h3:text-2xl " +
-          "prose-p:text-slate-600 prose-p:leading-relaxed " +
-          "prose-strong:text-slate-900 prose-strong:font-bold " +
-          "prose-li:text-slate-600 " +
-          "prose-table:border-collapse prose-table:my-8 " +
-          "prose-th:bg-slate-50 prose-th:p-4 prose-th:text-xs prose-th:uppercase prose-th:tracking-wider prose-th:border prose-th:border-slate-100 " +
-          "prose-td:p-4 prose-td:border prose-td:border-slate-100 prose-td:text-sm",
-      },
-    },
+    editorProps: { attributes: { class: styles.richContent } },
   });
-
-  return (
-    <div className="tiptap-content">
-      <style jsx global>{`
-        .tiptap-content .overflow-x-auto {
-          width: 100%;
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
-        }
-        .tiptap-content table {
-          min-width: 700px;
-          width: 100%;
-        }
-      `}</style>
-      <div className="overflow-x-auto">
-        <EditorContent editor={editor} />
-      </div>
-    </div>
-  );
+  return <div className={styles.reader}>{editor ? <EditorContent editor={editor} /> : <p>{plainText(content)}</p>}</div>;
 }
 
-export default function ServicesView(props: {
-  services: ServiceItem[];
-  id?: string;
-  categorySlug?: string;
-  categoryName?: string;
-  catSlugMap?: Record<string, string>;
-}) {
-  return (
-    <Suspense fallback={null}>
-      <ServicesViewInner {...props} />
-    </Suspense>
-  );
+export default function ServicesView(props: ServicesProps) {
+  return <Suspense fallback={<div className={styles.loading} aria-busy="true"><span /></div>}><ServicesViewInner {...props} /></Suspense>;
 }

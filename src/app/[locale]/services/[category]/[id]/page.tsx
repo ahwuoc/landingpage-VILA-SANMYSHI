@@ -59,7 +59,7 @@ export default async function ServiceDetailPage({
   let catName = "";
   if (category === "all") {
     const t_services = await getTranslations({ locale, namespace: "Services" });
-    catName = t_services('all_services');
+    catName = t_services('breadcrumb_all');
   } else {
     const { data: cat } = await supabase.from("service_categories").select("name").eq("slug", category).single();
     if (!cat) notFound();

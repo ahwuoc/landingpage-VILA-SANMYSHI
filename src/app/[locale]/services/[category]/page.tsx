@@ -18,12 +18,21 @@ export async function generateMetadata({
   const { locale, category } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
+  if (category === "all") {
+    const servicesMetadata = await getTranslations({ locale, namespace: "Metadata.services" });
+    return {
+      title: servicesMetadata("title"),
+      description: servicesMetadata("description"),
+      alternates: { canonical: `/${locale}/services/all` },
+    };
+  }
+
   const { data: cat } = await supabase.from("service_categories").select("name").eq("slug", category).single();
   if (!cat) return { title: t("category_not_found") };
-  
+
   const nameObj = cat.name as Record<string, string>;
   const catName = nameObj[locale] || nameObj['vi'];
-  
+
   return {
     title: `${catName} | VILA SANMYSHI`,
     description: t("category_desc_template", { name: catName }),
@@ -43,10 +52,10 @@ export default async function ServiceCategoryPage({
     const services = await getServicesList();
     const t = await getTranslations({ locale, namespace: "Services" });
     return (
-      <ServiceCategoryView 
-        services={services} 
-        categorySlug="all" 
-        categoryName={t('all_services')} 
+      <ServiceCategoryView
+        services={services}
+        categorySlug="all"
+        categoryName={t('breadcrumb_all')}
       />
     );
   }
@@ -61,10 +70,10 @@ export default async function ServiceCategoryPage({
   const filtered = services.filter(s => s.category_id === cat.id);
 
   return (
-    <ServiceCategoryView 
-      services={filtered} 
-      categorySlug={category} 
-      categoryName={catLocalizedName} 
+    <ServiceCategoryView
+      services={filtered}
+      categorySlug={category}
+      categoryName={catLocalizedName}
     />
   );
 }

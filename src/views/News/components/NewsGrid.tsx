@@ -1,126 +1,43 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Link } from "@/i18n/routing";
-import Image from "next/image";
-import { NewsItem } from "@/lib/data";
-import { useTranslations, useLocale } from "next-intl";
+import { useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, BookOpen, Search } from 'lucide-react';
+import { useLocale } from 'next-intl';
+import type { NewsItem } from '@/lib/data';
+import KnowledgeHub from '@/views/Home/KnowledgeHub';
+import NewsCard from './NewsCard';
+import { articleText, newsCopy, newsLanguage } from '../newsPresentation';
+import styles from '../News.module.css';
 
-interface NewsGridProps {
-  newsList: NewsItem[];
-  categories: { id: number; name: Record<string, string>; slug: string }[];
-}
+const normalize = (value: string) => value.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+const pageSize = 9;
 
-export default function NewsGrid({ newsList, categories }: NewsGridProps) {
-  const t = useTranslations("NewsPage");
+export default function NewsGrid({ newsList, categories }: { newsList: NewsItem[]; categories: { id: number; name: Record<string, string>; slug: string }[] }) {
   const locale = useLocale();
-  const [active, setActive] = useState("all");
+  const copy = newsCopy[newsLanguage(locale)];
+  const [active, setActive] = useState('all');
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const filtered = newsList.filter((item) => (active === 'all' || item.category_id === categories.find((category) => category.slug === active)?.id) && normalize(`${item.title[locale] || item.title.vi} ${articleText(item.content[locale] || item.content.vi)}`).includes(normalize(query.trim())));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const visible = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-  const filtered = active === "all"
-    ? newsList
-    : newsList.filter(n => {
-      const cat = categories.find(c => c.slug === active);
-      return cat && n.category_id === cat.id;
-    });
+  function changePage(next: number) {
+    setPage(next);
+    headingRef.current?.focus({ preventScroll: true });
+    headingRef.current?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  }
+
+  if (!newsList.length) return <KnowledgeHub locale={locale} />;
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:py-24">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-12">
-        <div>
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-label-md">{t('latest_badge')}</span>
-          </div>
-          <h2 className="text-heading-lg" dangerouslySetInnerHTML={{ __html: t.raw('grid_title') }} />
-        </div>
-        <div className="flex flex-wrap gap-2 text-on-surface">
-          <button
-            onClick={() => setActive("all")}
-            className={`rounded-xl border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${active === "all"
-              ? "border-primary bg-primary text-on-primary"
-              : "border-brand-200 bg-white hover:border-brand-400"
-              }`}
-          >
-            {t('filter_all')}
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActive(cat.slug)}
-              className={`rounded-xl border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition-colors ${active === cat.slug
-                ? "border-primary bg-primary text-on-primary"
-                : "border-brand-200 bg-white hover:border-brand-400"
-                }`}
-            >
-              {cat.name[locale] || cat.name['vi']}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* List */}
-      <div className="divide-y divide-brand-200">
-        {filtered.length === 0 && (
-          <p className="text-muted text-center py-16 text-body-md italic">{t('no_posts')}</p>
-        )}
-        {filtered.map((item) => {
-          const title = item.title[locale] || item.title['vi'];
-          const content = item.content[locale] || item.content['vi'];
-          const excerpt = content
-            ?.replace(/<[^>]*>/g, "")
-            ?.split(".")
-            ?.slice(0, 2)
-            ?.join(".") + "." || "";
-          return (
-            <Link
-              key={item.id}
-              href={`/news/${item.slug || item.id}`}
-              className="group -mx-4 flex items-center gap-6 rounded-xl px-4 py-6 transition-colors hover:bg-brand-50"
-            >
-              {/* Thumbnail */}
-              <div className="relative h-24 w-32 flex-shrink-0 overflow-hidden rounded-xl border border-brand-200 lg:h-32 lg:w-48">
-                <Image
-                  src={item.image}
-                  alt={title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="200px"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 min-w-0 flex flex-col justify-between">
-                <div>
-                  <div className="mb-2">
-                    <span className="inline-flex items-center whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">
-                      {item.news_categories?.name[locale] || item.news_categories?.name['vi'] || ""}
-                    </span>
-                  </div>
-                  <h3 className="mb-2 line-clamp-2 text-sm font-bold leading-snug tracking-[-0.02em] transition-colors group-hover:text-primary lg:text-lg">
-                    {title}
-                  </h3>
-                  <p className="text-body-sm text-slate-500 font-medium line-clamp-2 hidden sm:block">
-                    {excerpt}
-                  </p>
-                </div>
-                <div className="flex items-center gap-4 mt-3 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <span className="material-symbols-outlined text-sm flex-shrink-0">person</span>
-                    <span className="truncate">{item.author}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 flex-shrink-0 opacity-60">
-                    <span className="material-symbols-outlined text-sm">calendar_month</span>
-                    <span>{item.date ? new Date(item.date).toLocaleDateString(locale === 'vi' ? "vi-VN" : "en-US", { day: '2-digit', month: '2-digit' }) : ""}</span>
-                  </div>
-                  <span className="ml-auto flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0 whitespace-nowrap">
-                    <span className="hidden xs:inline">{t('read_more')}</span>
-                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                  </span>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+    <section className={`${styles.container} ${styles.listing}`} aria-labelledby="news-list-heading">
+      <div className={styles.listingHeader}><div><p className={styles.eyebrow}>{copy.latest}</p><h2 id="news-list-heading" ref={headingRef} tabIndex={-1} className={styles.title}>{copy.articles} <em>{copy.articlesAccent}</em></h2></div><label className={styles.search}><Search size={17} aria-hidden="true" /><span className="sr-only">{copy.search}</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} placeholder={copy.search} /></label></div>
+      <div className={styles.toolbar}><div className={styles.filters} role="group" aria-label={copy.latest}><button type="button" aria-pressed={active === 'all'} onClick={() => { setActive('all'); setPage(1); }}>{copy.all}</button>{categories.map((category) => <button key={category.id} type="button" aria-pressed={active === category.slug} onClick={() => { setActive(category.slug); setPage(1); }}>{category.name[locale] || category.name.vi}</button>)}</div><p className={styles.resultCount} aria-live="polite">{String(filtered.length).padStart(2, '0')} {copy.results}</p></div>
+      {visible.length ? <div className={styles.grid}>{visible.map((item) => <NewsCard key={item.id} item={item} />)}</div> : <div className={styles.empty}><BookOpen size={30} aria-hidden="true" /><p>{copy.empty}</p><button type="button" onClick={() => { setActive('all'); setQuery(''); setPage(1); }}>{copy.reset}</button></div>}
+      {totalPages > 1 && <nav className={styles.pagination} aria-label={copy.pagination}><button type="button" disabled={currentPage === 1} onClick={() => changePage(currentPage - 1)}><ArrowLeft size={15} aria-hidden="true" />{copy.previous}</button><span aria-live="polite">{copy.page} {currentPage} / {totalPages}</span><button type="button" disabled={currentPage === totalPages} onClick={() => changePage(currentPage + 1)}>{copy.next}<ArrowRight size={15} aria-hidden="true" /></button></nav>}
     </section>
   );
 }

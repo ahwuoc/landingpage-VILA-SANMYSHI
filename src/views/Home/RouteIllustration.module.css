@@ -1,0 +1,180 @@
+.figure {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  color: #f7f8f2;
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 20px 16px;
+  border-bottom: 1px solid rgb(247 248 242 / 15%);
+  color: #e6edda;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.captionDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #d8e8a3;
+}
+
+.coordinates {
+  margin-left: auto;
+  color: #abc4b8;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.contours {
+  stroke: #afc8b4;
+  stroke-width: 0.7;
+  opacity: 0.1;
+}
+
+.countries {
+  fill: #214d40;
+  stroke: #6c9581;
+  stroke-width: 1.1;
+}
+
+.countries path:nth-child(2) {
+  fill: #295343;
+}
+
+.countries path:nth-child(3) {
+  fill: #315d48;
+  stroke: #94ad85;
+}
+
+.countryNames {
+  fill: #b8ccac;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.routeHalo {
+  stroke: #d8e8a3;
+  stroke-width: 9;
+  opacity: 0.07;
+}
+
+.route {
+  stroke: #d8e8a3;
+  stroke-width: 2;
+  stroke-dasharray: 4 5;
+  stroke-linecap: round;
+}
+
+.leaders {
+  stroke: #abc4a0;
+  stroke-width: 0.8;
+  opacity: 0.65;
+}
+
+.nodeRing {
+  fill: #d8e8a3;
+  fill-opacity: 0.1;
+  stroke: #d8e8a3;
+  stroke-opacity: 0.25;
+  stroke-width: 0.7;
+}
+
+.node {
+  fill: #d8e8a3;
+  stroke: #234938;
+  stroke-width: 2;
+}
+
+.cityNames {
+  fill: #f7f8f2;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  paint-order: stroke;
+  stroke: #153f35;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+.compass {
+  fill: #c7d9b9;
+  stroke: #829d83;
+  stroke-width: 0.65;
+}
+
+.compass text {
+  stroke: none;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.cornerMarks {
+  stroke: #809b84;
+  stroke-width: 0.7;
+  opacity: 0.35;
+}
+
+.footnote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px 0;
+  border-top: 1px solid rgb(247 248 242 / 15%);
+  color: #a7bfb0;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.routeKey {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.routeKey i {
+  display: block;
+  width: 24px;
+  border-top: 1px dashed #d8e8a3;
+}
+
+@media (max-width: 640px) {
+  .caption {
+    padding: 0 0 14px;
+    font-size: 10px;
+  }
+
+  .coordinates {
+    font-size: 9px;
+  }
+
+  .cityNames {
+    font-size: 22px;
+  }
+
+  .countryNames {
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .footnote {
+    padding: 12px 0 0;
+    font-size: 9px;
+    gap: 8px;
+  }
+}

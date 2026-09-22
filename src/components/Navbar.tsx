@@ -1,15 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Mail, Menu, Phone, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Globe2, Mail, Menu, Phone, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { COMPANY_INFO } from "@/constants/company";
 import { ADMIN_LANGS as LANGUAGES } from "@/constants/languages";
 import ConsultationModal from "./ConsultationModal";
-
-const consultationOfferKey = "vila-consultation-offer-seen";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -18,6 +17,13 @@ export default function Navbar() {
   const t = useTranslations("Navbar");
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const copy = locale === "vi"
+    ? { navigation: "Điều hướng chính", open: "Mở menu", close: "Đóng menu", language: "Ngôn ngữ", region: "VIỆT NAM · LÀO · THÁI LAN" }
+    : locale === "th"
+      ? { navigation: "เมนูหลัก", open: "เปิดเมนู", close: "ปิดเมนู", language: "ภาษา", region: "เวียดนาม · ลาว · ไทย" }
+      : { navigation: "Main navigation", open: "Open menu", close: "Close menu", language: "Language", region: "VIETNAM · LAOS · THAILAND" };
 
   const navLinks = [
     { name: t("home"), href: "/" },
@@ -30,126 +36,92 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    document.body.classList.toggle("menu-open", isOpen);
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const menuButton = menuButtonRef.current;
+    document.body.style.overflow = "hidden";
+    document.body.classList.add("menu-open");
+    const focusable = () => Array.from(menuRef.current?.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), select") ?? []);
+    focusable()[0]?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      const first = elements[0];
+      const last = elements.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    const desktop = window.matchMedia("(min-width: 1200px)");
+    const closeOnDesktop = () => { if (desktop.matches) setIsOpen(false); };
+    desktop.addEventListener("change", closeOnDesktop);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       document.body.classList.remove("menu-open");
+      document.removeEventListener("keydown", handleKeyDown);
+      desktop.removeEventListener("change", closeOnDesktop);
+      menuButton?.focus();
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    if (pathname !== "/" || isOpen || isModalOpen || sessionStorage.getItem(consultationOfferKey)) return;
-
-    const timer = window.setTimeout(() => setIsModalOpen(true), 3800);
-    return () => window.clearTimeout(timer);
-  }, [isModalOpen, isOpen, pathname]);
-
-  const closeConsultationModal = () => {
-    sessionStorage.setItem(consultationOfferKey, "1");
-    setIsModalOpen(false);
-  };
-
   const changeLanguage = (nextLocale: string) => {
-    router.replace(pathname, { locale: nextLocale as "vi" | "en" | "th" });
+    setIsOpen(false);
+    router.replace(`${pathname}${window.location.search}${window.location.hash}`, { locale: nextLocale as "vi" | "en" | "th" });
   };
 
   return (
     <>
-      <ConsultationModal isOpen={isModalOpen} onClose={closeConsultationModal} />
+      <ConsultationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-      <header className="absolute inset-x-0 top-0 z-[120]">
-        <div className="hidden h-8 bg-brand-900 text-white lg:block">
-          <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 text-[10px] font-semibold tracking-[0.08em]">
-            <div className="flex items-center gap-6">
-              <a href={`tel:${COMPANY_INFO.hotline}`} className="flex items-center gap-2 transition-opacity hover:opacity-70">
-                <Phone size={13} aria-hidden="true" />
-                {t("hotline")}: {COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3")}
-              </a>
-              <a href={`mailto:${COMPANY_INFO.email}`} className="flex items-center gap-2 transition-opacity hover:opacity-70">
-                <Mail size={13} aria-hidden="true" />
-                {COMPANY_INFO.email}
-              </a>
+      <header className={styles.header}>
+        <div className={styles.utility}>
+          <div className={styles.utilityInner}>
+            <p className={styles.promise}><span />{t("topbar_slogan")}</p>
+            <div className={styles.utilityContacts}>
+              <a href={`mailto:${COMPANY_INFO.email}`}><Mail size={12} aria-hidden="true" />{COMPANY_INFO.email}</a>
+              <a href={`tel:${COMPANY_INFO.hotline}`}><Phone size={12} aria-hidden="true" />{COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3")}</a>
             </div>
-            <span className="text-white/65">VIỆT NAM · LÀO · THÁI LAN / EWEC</span>
           </div>
         </div>
 
-        <nav className="border-b border-brand-200 bg-white/85 shadow-[var(--shadow-nav)] backdrop-blur-lg">
-          <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:h-[82px]">
-            <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="VILA SANMYSHI">
-              <Image
-                src="/images/logo.jpg"
-                alt="VILA SANMYSHI"
-                width={92}
-                height={60}
-                loading="eager"
-                className="h-12 w-auto object-contain lg:h-14"
-              />
-              <span className="hidden border-l border-brand-200 pl-3 sm:block">
-                <strong className="block text-base font-bold leading-none tracking-[-0.02em] text-on-surface">
-                  VILA SANMYSHI
-                </strong>
-                <small className="mt-1.5 block text-[8px] font-semibold uppercase tracking-[0.12em] text-brand-600">
-                  Hậu cần biên giới
-                </small>
+        <nav className={styles.navigation} aria-label={copy.navigation}>
+          <div className={styles.navInner}>
+            <Link href="/" className={styles.brand} aria-label="VILA SANMYSHI">
+              <Image src={COMPANY_INFO.logo} alt="" width={92} height={60} loading="eager" className={styles.logo} />
+              <span className={styles.brandName}>
+                <strong>VILA SANMYSHI</strong>
+                <small>{t("brand_tag")} & LOGISTICS</small>
               </span>
             </Link>
 
-            <div className="hidden items-center gap-5 xl:flex">
+            <div className={styles.desktopLinks}>
               {navLinks.map((link) => {
-                const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`border-b-2 px-1 py-2 text-sm font-semibold transition-colors ${
-                      isActive
-                        ? "border-brand-600 text-brand-600"
-                        : "border-transparent text-on-surface-variant hover:border-brand-200 hover:text-on-surface"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                );
+                const active = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+                return <Link key={link.href} href={link.href} aria-current={active ? "page" : undefined} className={active ? styles.activeLink : undefined}>{link.name}</Link>;
               })}
             </div>
 
-            <div className="flex items-center gap-2 lg:gap-3">
-              <label className="relative hidden lg:block">
-                <span className="sr-only">Language</span>
-                <select
-                  value={locale}
-                  onChange={(event) => changeLanguage(event.target.value)}
-                  className="h-11 cursor-pointer appearance-none rounded-xl border border-brand-200 bg-white px-3 pr-8 text-[10px] font-semibold uppercase tracking-[0.08em] text-on-surface outline-none focus:border-brand-600"
-                  aria-label="Language"
-                >
-                  {LANGUAGES.map((language) => (
-                    <option value={language.id} key={language.id}>
-                      {language.id.toUpperCase()}
-                    </option>
-                  ))}
+            <div className={styles.actions}>
+              <label className={styles.language}>
+                <Globe2 size={15} aria-hidden="true" />
+                <select value={locale} onChange={(event) => changeLanguage(event.target.value)} aria-label={copy.language}>
+                  {LANGUAGES.map((language) => <option value={language.id} key={language.id}>{language.id.toUpperCase()}</option>)}
                 </select>
-                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[9px]">▼</span>
+                <ChevronDown size={11} aria-hidden="true" />
               </label>
-
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(true)}
-                className="hidden h-11 items-center gap-2 rounded-xl bg-brand-600 px-5 text-xs font-semibold text-white transition-colors hover:bg-brand-700 sm:flex"
-              >
-                {t("consult")}
-                <ArrowUpRight size={15} aria-hidden="true" />
+              <button type="button" onClick={() => setIsModalOpen(true)} className={styles.consult}>
+                {t("consult")}<ArrowUpRight size={16} aria-hidden="true" />
               </button>
-
-              <button
-                type="button"
-                onClick={() => setIsOpen(true)}
-                className="grid h-11 w-11 place-items-center rounded-xl border border-brand-200 text-on-surface xl:hidden"
-                aria-label="Open navigation"
-                aria-expanded={isOpen}
-              >
+              <button ref={menuButtonRef} type="button" onClick={() => setIsOpen(true)} className={styles.menuButton} aria-label={copy.open} aria-expanded={isOpen} aria-controls="mobile-navigation">
                 <Menu size={22} aria-hidden="true" />
               </button>
             </div>
@@ -157,67 +129,24 @@ export default function Navbar() {
         </nav>
       </header>
 
-      <div
-        className={`fixed inset-0 z-[160] flex flex-col bg-brand-900 px-5 py-5 text-white transition-[opacity,visibility] duration-300 xl:hidden ${
-          isOpen ? "visible opacity-100" : "invisible opacity-0"
-        }`}
-        aria-hidden={!isOpen}
-      >
-        <div className="flex items-center justify-between border-b border-white/15 pb-5">
-          <Link href="/" className="flex items-center gap-3" onClick={() => setIsOpen(false)}>
-            <Image src="/images/logo.jpg" alt="VILA SANMYSHI" width={82} height={54} className="h-14 w-auto object-contain" />
-            <span className="text-lg font-bold tracking-tight">VILA SANMYSHI</span>
-          </Link>
-          <button
-            type="button"
-            onClick={() => setIsOpen(false)}
-            className="grid h-12 w-12 place-items-center border border-white/20"
-            aria-label="Close navigation"
-          >
-            <X size={24} aria-hidden="true" />
-          </button>
+      <div ref={menuRef} id="mobile-navigation" role="dialog" aria-modal={isOpen ? true : undefined} aria-label={copy.navigation} aria-hidden={!isOpen} inert={!isOpen} className={`${styles.mobileMenu} ${isOpen ? styles.menuVisible : ""}`}>
+        <div className={styles.mobileHeader}>
+          <Link href="/" className={styles.mobileBrand} onClick={() => setIsOpen(false)}><span>VILA</span> SANMYSHI</Link>
+          <button type="button" onClick={() => setIsOpen(false)} className={styles.closeMenu} aria-label={copy.close}><X size={23} aria-hidden="true" /></button>
         </div>
-
-        <div className="flex flex-1 flex-col justify-center py-8">
+        <nav className={styles.mobileLinks} aria-label={copy.navigation}>
           {navLinks.map((link, index) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="flex items-center justify-between border-b border-white/12 py-4 text-[clamp(1.7rem,7vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em] transition-colors hover:text-brand-200"
-            >
-              {link.name}
-              <span className="font-sans text-[10px] font-bold tracking-[0.15em] text-white/35">0{index + 1}</span>
+            <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)}>
+              <span>{link.name}</span><small>0{index + 1}</small>
             </Link>
           ))}
-        </div>
-
-        <div className="border-t border-white/15 pt-5">
-          <div className="mb-5 flex gap-2">
-            {LANGUAGES.map((language) => (
-              <button
-                type="button"
-                key={language.id}
-                onClick={() => changeLanguage(language.id)}
-                className={`min-w-16 border px-3 py-2 text-[10px] font-extrabold uppercase tracking-wider ${
-                  locale === language.id ? "border-brand-300 bg-brand-100 text-brand-900" : "border-white/20 text-white/65"
-                } rounded-lg`}
-              >
-                {language.id}
-              </button>
-            ))}
+        </nav>
+        <div className={styles.mobileBottom}>
+          <div className={styles.mobileLanguages}>
+            {LANGUAGES.map((language) => <button type="button" key={language.id} onClick={() => changeLanguage(language.id)} aria-pressed={locale === language.id}>{language.label}</button>)}
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(false);
-              setIsModalOpen(true);
-            }}
-            className="flex w-full items-center justify-between rounded-xl bg-white px-5 py-4 text-sm font-semibold text-brand-900"
-          >
-            {t("consult")}
-            <ArrowUpRight size={18} aria-hidden="true" />
-          </button>
+          <button type="button" onClick={() => { setIsOpen(false); setIsModalOpen(true); }} className={styles.mobileConsult}>{t("consult")}<ArrowUpRight size={19} aria-hidden="true" /></button>
+          <p>{copy.region}</p>
         </div>
       </div>
     </>

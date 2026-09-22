@@ -1,202 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { VietnamMap } from "@/components/maps/VietnamMap";
-import { useTranslations } from "next-intl";
+import Breadcrumb from "@/components/Breadcrumb";
+import { ArrowUpRight, MapPin, Mail, Phone, ArrowRight, Route } from "lucide-react";
+import { useLocale } from "next-intl";
+import styles from "./Branches.module.css";
 
-interface Branch {
-  id: string;
-  type: string;
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  mapUrl: string;
-  image: string;
-}
+interface Branch { id: string; type: string; name: string; address: string; phone: string; email: string; mapUrl: string; image: string; }
+const copy = {
+  vi: { breadcrumb: "Chi nhánh", tag: "Hiện diện tại Lao Bảo · Kết nối Đông Dương", title: "Một điểm tựa.", accent: "Kết nối nhiều hành trình.", intro: "Từ Lao Bảo, Quảng Trị, VILA SANMYSHI đồng hành cùng doanh nghiệp trong khai báo hải quan và vận chuyển hàng hóa Việt Nam – Lào – Thái Lan.", office: "Trụ sở chính", place: "Lao Bảo, Quảng Trị", address: "Địa chỉ", contact: "Kết nối trực tiếp", directions: "Tìm đường đến văn phòng", connect: "Trao đổi về lô hàng", routeTag: "Hành lang kinh tế Đông – Tây", routeTitle: "Am hiểu địa phương.", routeAccent: "Thông suốt kết nối.", routeBody: "Một đầu mối phối hợp hồ sơ, thủ tục cửa khẩu và vận chuyển xuyên biên giới. Trao đổi cùng đội ngũ để lựa chọn phương án phù hợp với lô hàng của bạn.", routeNote: "Các điểm kết nối vận chuyển · không phải danh sách văn phòng", services: "Khám phá dịch vụ", countries: ["Thái Lan", "Lào", "Việt Nam"], photo: "Cửa khẩu quốc tế Lao Bảo" },
+  en: { breadcrumb: "Locations", tag: "Based in Lao Bao · Connected across Indochina", title: "One trusted base.", accent: "Many connected journeys.", intro: "From Lao Bao, Quang Tri, VILA SANMYSHI supports businesses with customs clearance and freight transport across Vietnam, Laos and Thailand.", office: "Head office", place: "Lao Bao, Quang Tri", address: "Address", contact: "Contact our team", directions: "Find office directions", connect: "Discuss your shipment", routeTag: "East–West Economic Corridor", routeTitle: "Local understanding.", routeAccent: "Connected journeys.", routeBody: "One point of contact for documentation, border procedures and cross-border transport. Speak with our team to find the right approach for your cargo.", routeNote: "Transport connection points · not a list of offices", services: "Explore services", countries: ["Thailand", "Laos", "Vietnam"], photo: "Lao Bao international border gate" },
+  th: { breadcrumb: "ที่ตั้ง", tag: "ตั้งอยู่ที่ลาวบาว · เชื่อมต่ออินโดจีน", title: "จุดเริ่มต้นที่วางใจได้", accent: "เชื่อมต่อทุกการเดินทาง", intro: "จากลาวบาว จังหวัดกวางจิ VILA SANMYSHI สนับสนุนธุรกิจด้านพิธีการศุลกากรและการขนส่งระหว่างเวียดนาม ลาว และไทย", office: "สำนักงานใหญ่", place: "ลาวบาว กวางจิ", address: "ที่อยู่", contact: "ติดต่อทีมงาน", directions: "ค้นหาเส้นทางไปสำนักงาน", connect: "ปรึกษาเรื่องการขนส่ง", routeTag: "ระเบียงเศรษฐกิจตะวันออก–ตะวันตก", routeTitle: "เข้าใจพื้นที่", routeAccent: "เชื่อมต่ออย่างราบรื่น", routeBody: "ประสานงานเอกสาร ขั้นตอนชายแดน และการขนส่งข้ามพรมแดนผ่านผู้ติดต่อเดียว พูดคุยกับทีมงานเพื่อเลือกแนวทางที่เหมาะกับสินค้าของคุณ", routeNote: "จุดเชื่อมต่อการขนส่ง · ไม่ใช่รายชื่อสำนักงาน", services: "สำรวจบริการ", countries: ["ไทย", "ลาว", "เวียดนาม"], photo: "ด่านชายแดนนานาชาติลาวบาว" },
+};
 
-interface BranchesViewProps {
-  branches: Branch[];
-}
-
-export function BranchesView({ branches }: BranchesViewProps) {
-  const t = useTranslations("Branches");
-  const [activeBranchId, setActiveBranchId] = useState<string | null>(null);
-
-  const handleBranchClick = (id: string) => {
-    setActiveBranchId(id);
-    const element = document.getElementById(`branch-${id}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-  };
-
+export function BranchesView({ branches }: { branches: Branch[] }) {
+  const locale = useLocale();
+  const text = copy[locale as keyof typeof copy] || copy.vi;
   return (
-    <main className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-brand-950 pb-20 pt-36 lg:pb-24 lg:pt-48">
-        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center sm:px-8">
-          <div className="mb-6 inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
-            <span className="h-2 w-2 rounded-full bg-primary" />
-            <span>{t("hero_tag")}</span>
-          </div>
-
-          <h1 className="mb-8 text-4xl font-bold leading-tight tracking-[-0.03em] text-white lg:text-6xl">
-            {t.rich("hero_title", {
-              highlight: (chunks) => <span className="text-white">{chunks}</span>
-            })}
-          </h1>
-
-          <p className="mx-auto max-w-2xl text-base font-normal leading-8 text-white/65 lg:text-lg">
-            {t("hero_desc")}
-          </p>
+    <div className={styles.page}>
+      <header className={`${styles.container} ${styles.hero}`}>
+        <Breadcrumb items={[{ label: text.breadcrumb }]} />
+        <div className={styles.heroGrid}>
+          <div><p className={styles.eyebrow}><span />{text.tag}</p><h1>{text.title}<em>{text.accent}</em></h1></div>
+          <p className={styles.intro}>{text.intro}</p>
         </div>
-
-        <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
-      </section>
-
-      {/* Main Interactive Branch Network Section */}
-      <section className="relative overflow-hidden bg-brand-950 py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 sm:px-8">
-          <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-
-            {/* Left: Sticky Vietnam Map */}
-            <div className="w-full lg:col-span-7 lg:sticky lg:top-32 self-start">
-              <div className="space-y-8 mb-12 lg:hidden text-center">
-                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
-                  <span>{t("map_tag")}</span>
-                </div>
-                <h2 className="text-3xl font-bold leading-tight tracking-[-0.03em] text-white lg:text-5xl">
-                  {t.rich("map_title", {
-                    highlight: (chunks) => <span className="text-white">{chunks}</span>
-                  })}
-                </h2>
-              </div>
-
-              <div className="relative">
-                <VietnamMap activeId={activeBranchId} onMarkerClick={handleBranchClick} />
-
-                {/* Stats Overlay for Desktop Map */}
-                <div className="mt-12 hidden grid-cols-2 gap-8 border-l border-white/10 pl-8 lg:grid">
-                  <div className="space-y-2">
-                    <p className="text-4xl font-bold text-primary">
-                      {branches.length.toString().padStart(2, '0')}
-                    </p>
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/45">{t("stat_offices")}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-4xl font-bold text-white">01</p>
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/45">{t("stat_countries")}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Scrollable Branch Details */}
-            <div className="w-full lg:col-span-5 space-y-6">
-              <div className="hidden lg:block space-y-6 mb-12">
-                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-white/70">
-                  <span>{t("map_tag")}</span>
-                </div>
-                <h2 className="text-4xl font-bold leading-tight tracking-[-0.03em] text-white xl:text-5xl">
-                  {t.rich("map_title", {
-                    highlight: (chunks) => <span className="text-white">{chunks}</span>
-                  })}
-                </h2>
-                <p className="text-base font-normal leading-7 text-white/65 lg:text-lg lg:leading-8">
-                  {t("map_desc")}
-                </p>
-              </div>
-
-              <div className="max-h-[700px] xl:max-h-[850px] overflow-y-auto pr-4 space-y-6 custom-scrollbar scroll-smooth">
-                {branches.map((branch) => (
-                  <div
-                    key={branch.id}
-                    id={`branch-${branch.id}`}
-                    onClick={() => handleBranchClick(branch.id)}
-                    className={`group cursor-pointer rounded-xl border p-6 transition-colors duration-300 lg:p-8 ${activeBranchId === branch.id
-                      ? 'border-primary bg-white/[0.08]'
-                      : 'border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]'
-                      }`}
-                  >
-                    <div className="flex flex-col gap-6">
-                      <div className="space-y-4 flex-grow">
-                        <div>
-                          <span className={`mb-2 block text-[10px] font-semibold uppercase tracking-[0.12em] ${activeBranchId === branch.id ? 'text-white/75' : 'text-white/45'}`}>{t(branch.type)}</span>
-                          <h3 className="text-xl font-bold leading-tight text-white">
-                            {branch.name}
-                          </h3>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-4">
-                          <div className="flex items-start gap-4">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeBranchId === branch.id ? 'bg-primary-fixed/20 text-primary-fixed' : 'bg-white/5 text-slate-500'}`}>
-                              <span className="material-symbols-outlined text-lg">location_on</span>
-                            </div>
-                            <p className="text-sm font-normal leading-6 text-white/65">{branch.address}</p>
-                          </div>
-
-                          <div className="flex items-center gap-4">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeBranchId === branch.id ? 'bg-primary-fixed/20 text-primary-fixed' : 'bg-white/5 text-slate-500'}`}>
-                              <span className="material-symbols-outlined text-lg">call</span>
-                            </div>
-                            <p className="text-sm font-semibold tracking-wide text-white/80">{branch.phone}</p>
-                          </div>
-
-                          <div className="flex items-center gap-4">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeBranchId === branch.id ? 'bg-primary-fixed/20 text-primary-fixed' : 'bg-white/5 text-slate-500'}`}>
-                              <span className="material-symbols-outlined text-lg">mail</span>
-                            </div>
-                            <p className="truncate text-sm font-normal text-white/65">{branch.email}</p>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 flex gap-4">
-                          <a
-                            href={branch.mapUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={`flex items-center gap-2 rounded-xl px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.12em] transition-colors ${activeBranchId === branch.id
-                              ? 'bg-primary text-white'
-                              : 'border border-white/15 text-white hover:bg-white/10'
-                              }`}
-                          >
-                            <span className="material-symbols-outlined text-base">map</span>
-                            {t("btn_map")}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative overflow-hidden bg-white py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 text-center sm:px-8">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="mb-6 text-4xl font-bold tracking-[-0.03em] text-on-surface lg:text-5xl">{t("cta_title")}</h2>
-            <p className="mb-10 text-base font-normal leading-7 text-on-surface-variant lg:text-lg">
-              {t("cta_desc")}
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-3 rounded-xl bg-primary px-8 py-4 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
-            >
-              Liên hệ ngay
-              <span className="material-symbols-outlined">arrow_forward</span>
-            </Link>
-          </div>
+        <div className={styles.baseline}><span>VILA SANMYSHI / {text.office}</span><span>VN · LA · TH <ArrowUpRight size={13} /></span></div>
+      </header>
+      <section className={`${styles.container} ${styles.location}`} aria-label={text.office}>
+        <div className={styles.map}><VietnamMap address={branches[0]?.address} /></div>
+        <div className={styles.offices}>
+          {branches.map((branch) => <article className={styles.office} key={branch.id} id={`branch-${branch.id}`}>
+            <p className={styles.officeTag}><span />{text.office}<span className={styles.officeCode}>VN / 01</span></p>
+            <h2>{text.place}</h2><p className={styles.companyName}>{branch.name}</p>
+            <div className={styles.address}><MapPin size={19} /><div><span>{text.address}</span><p>{branch.address}</p></div></div>
+            <div className={styles.contact}><span>{text.contact}</span><a href={`tel:${branch.phone.replace(/\s/g, "")}`}><Phone size={15} />{branch.phone}<ArrowUpRight size={14} /></a><a href={`mailto:${branch.email}`}><Mail size={15} />{branch.email}<ArrowUpRight size={14} /></a></div>
+            <a className={styles.directions} href={branch.mapUrl} target="_blank" rel="noopener noreferrer">{text.directions}<ArrowUpRight size={17} /></a>
+            <Link className={styles.inquiry} href="/contact">{text.connect}<ArrowRight size={15} /></Link>
+          </article>)}
         </div>
       </section>
-    </main>
+      <section className={styles.connections}>
+        <div className={`${styles.container} ${styles.connectionGrid}`}>
+          <div className={styles.photo}><Image src="/images/contact/hero.png" alt={text.photo} fill sizes="(max-width: 760px) 100vw, 45vw" className={styles.photoImage} /><span><MapPin size={13} />{text.photo}</span></div>
+          <div className={styles.connectionCopy}><p className={styles.eyebrow}><Route size={16} />{text.routeTag}</p><h2>{text.routeTitle}<em>{text.routeAccent}</em></h2><p>{text.routeBody}</p><div className={styles.route}>{text.countries.map((country, i) => <div key={country}><span>0{i + 1}</span><strong>{country}</strong>{i < 2 && <ArrowRight size={17} />}</div>)}</div><small>{text.routeNote}</small><Link className={styles.serviceLink} href="/services">{text.services}<ArrowUpRight size={16} /></Link></div>
+        </div>
+      </section>
+    </div>
   );
 }

@@ -1,133 +1,98 @@
-import Image from "next/image";
-import Link from "next/link";
-import Countdown from "./Countdown";
+import { ArrowRight, ArrowUpRight, Mail, Phone } from "lucide-react";
+import { Link } from "@/i18n/routing";
+import { COMPANY_INFO } from "@/constants/company";
+import StatusShell from "../_status/StatusShell";
+import styles from "../_status/Status.module.css";
 
-export const metadata = {
-  title: "Sắp Ra Mắt | VILA SANMYSHI",
-  description: "Trang web chính thức của VILA SANMYSHI đang trong giai đoạn hoàn thiện. Giải pháp Logistics & Khai báo Hải quan chuyên nghiệp tại Cửa khẩu Lao Bảo.",
-  robots: { index: false, follow: false },
+const copy = {
+  vi: {
+    metadataTitle: "Sắp ra mắt | VILA SANMYSHI",
+    eyebrow: "Một trải nghiệm mới đang đến",
+    title: "Hành trình mới.",
+    highlight: "Kết nối vươn xa.",
+    description: "Chúng tôi đang hoàn thiện trải nghiệm trực tuyến của VILA SANMYSHI, giúp bạn tiếp cận các dịch vụ vận tải, kho bãi và khai báo hải quan dễ dàng hơn.",
+    notice: "Website đang trong giai đoạn chuẩn bị.",
+    noticeDetail: "Ngày ra mắt sẽ được cập nhật tại đây. Bạn có thể liên hệ trực tiếp để được tư vấn dịch vụ ngay hôm nay.",
+    support: "Trao đổi cùng đội ngũ VILA",
+    hotline: "Gọi cho chúng tôi",
+    email: "Gửi yêu cầu qua email",
+    home: "Về trang chủ",
+    imageAlt: "Cảng container kết nối mạng lưới vận tải hàng hóa",
+    caption: "Sẵn sàng cho chặng tiếp theo.",
+    captionDetail: "Việt Nam · Lào · Thái Lan",
+  },
+  en: {
+    metadataTitle: "Coming soon | VILA SANMYSHI",
+    eyebrow: "A new experience is on the way",
+    title: "A new chapter.",
+    highlight: "A wider connection.",
+    description: "We are preparing a new online experience for VILA SANMYSHI, making our transport, warehousing and customs declaration services easier to explore.",
+    notice: "Our website is taking shape.",
+    noticeDetail: "The launch date will be announced here. You can contact our team directly for service enquiries today.",
+    support: "Talk to the VILA team",
+    hotline: "Give us a call",
+    email: "Send us an email",
+    home: "Back to home",
+    imageAlt: "Container port connecting cargo transport networks",
+    caption: "Ready for the next journey.",
+    captionDetail: "Vietnam · Laos · Thailand",
+  },
+  th: {
+    metadataTitle: "เร็ว ๆ นี้ | VILA SANMYSHI",
+    eyebrow: "ประสบการณ์ใหม่กำลังจะมาถึง",
+    title: "เริ่มต้นการเดินทางใหม่",
+    highlight: "เชื่อมต่อได้ไกลกว่าเดิม",
+    description: "เรากำลังเตรียมประสบการณ์ออนไลน์ใหม่ของ VILA SANMYSHI เพื่อให้คุณเข้าถึงบริการขนส่ง คลังสินค้า และพิธีการศุลกากรได้สะดวกยิ่งขึ้น",
+    notice: "เว็บไซต์ของเราอยู่ระหว่างการเตรียมความพร้อม",
+    noticeDetail: "เราจะประกาศวันเปิดตัวที่นี่ คุณสามารถติดต่อทีมงานเพื่อสอบถามบริการได้ตั้งแต่วันนี้",
+    support: "พูดคุยกับทีมงาน VILA",
+    hotline: "โทรหาเรา",
+    email: "ส่งอีเมลถึงเรา",
+    home: "กลับสู่หน้าหลัก",
+    imageAlt: "ท่าเรือคอนเทนเนอร์ที่เชื่อมต่อเครือข่ายการขนส่งสินค้า",
+    caption: "พร้อมสำหรับการเดินทางครั้งต่อไป",
+    captionDetail: "เวียดนาม · ลาว · ไทย",
+  },
 };
 
-export default function ComingSoonPage() {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const text = copy[locale as keyof typeof copy] ?? copy.vi;
+
+  return {
+    title: text.metadataTitle,
+    description: text.description,
+    robots: { index: false, follow: false },
+  };
+}
+
+export default async function ComingSoonPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const text = copy[locale as keyof typeof copy] ?? copy.vi;
+
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden bg-white font-sans selection:bg-primary/20 selection:text-primary lg:flex-row">
-      {/* LEFT SECTION: Immersive Media Panel */}
-      <div className="w-full lg:w-1/2 h-[45vh] lg:h-screen relative overflow-hidden bg-slate-900 group">
-        <Image
-          src="/images/coming-soon-bg.png"
-          alt="Future of Logistics"
-          fill
-          className="object-cover"
-          preload
-        />
-
-        <div className="absolute inset-0 z-10 bg-brand-950/20" />
-
-        {/* Animated Brand Logo */}
-        <div className="absolute top-8 left-8 lg:top-12 lg:left-12 z-30">
-          <Link href="/" className="flex items-center gap-4 group/logo">
-            <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-brand-200 bg-white shadow-[var(--shadow-card)] lg:h-16 lg:w-16">
-              <Image src="/images/logo.jpg" alt="VILA SANMYSHI" fill className="object-contain p-2" />
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-on-surface font-black tracking-tighter text-xl leading-none uppercase">VILA</p>
-              <p className="text-primary font-black tracking-tighter text-xl leading-none uppercase">SANMYSHI</p>
-            </div>
-          </Link>
-        </div>
-
-        {/* Feature Tags (Floating) */}
-        <div className="absolute bottom-12 left-12 hidden lg:flex flex-col gap-4 z-20">
-          {["Hiệu Suất", "Chính Xác", "Toàn Cầu"].map((tag, i) => (
-            <div
-              key={tag}
-              className="animate-fade-in rounded-lg border border-brand-200 bg-white/95 px-4 py-2 shadow-[var(--shadow-card)]"
-              style={{ animationDelay: `${i * 200}ms` }}
-            >
-              <span className="text-[10px] text-primary font-black uppercase tracking-[0.2em]">{tag}</span>
-            </div>
-          ))}
-        </div>
+    <StatusShell locale={locale} route="/coming-soon" image="/images/editorial/container-port.jpg" imageAlt={text.imageAlt} caption={text.caption} captionDetail={text.captionDetail}>
+      <p className={styles.eyebrow}>{text.eyebrow}</p>
+      <h1 className={styles.title}>{text.title}<em>{text.highlight}</em></h1>
+      <p className={styles.description}>{text.description}</p>
+      <div className={styles.notice}>
+        <strong>{text.notice}</strong>
+        <p>{text.noticeDetail}</p>
       </div>
-
-      {/* RIGHT SECTION: Content / Launch Control */}
-      <div className="relative z-30 flex w-full items-center justify-center border-brand-200 bg-white p-6 lg:w-1/2 lg:border-l lg:p-20">
-        <div className="max-w-xl w-full py-12 lg:py-0">
-          <div className="space-y-12 animate-fade-up">
-            {/* Launch Status */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary">
-                <div className="h-2 w-2 rounded-full bg-primary" />
-                <span>Hệ thống đang được chuẩn bị hoàn tất</span>
-              </div>
-
-              <h1 className="text-5xl font-bold leading-[1.02] tracking-[-0.04em] text-on-surface lg:text-7xl">
-                Giải Pháp<br />
-                <span className="text-primary">Logistics</span> <br />
-                Đỉnh Cao
-              </h1>
-
-              <p className="max-w-lg text-base font-normal leading-8 text-on-surface-variant lg:text-lg">
-                VILA SANMYSHI đang thiết lập một tiêu chuẩn mới cho dịch vụ giao nhận và thông quan hàng hóa. <span className="text-primary font-bold">Chúng tôi sẽ trở lại trong thời gian ngắn nhất.</span>
-              </p>
-            </div>
-
-            {/* Countdown Component */}
-            <div className="py-6 border-y border-primary/10">
-              <p className="text-[10px] font-bold text-primary/60 uppercase tracking-[0.4em] mb-6 block text-center lg:text-left">Thời gian chờ dự kiến</p>
-              <div className="flex justify-center lg:justify-start">
-                <Countdown />
-              </div>
-            </div>
-
-            {/* Notify Form */}
-            <div className="space-y-6">
-              <p className="text-[11px] font-black text-on-surface-variant uppercase tracking-[0.2em] pl-1">Nhận thông báo khi chúng tôi ra mắt</p>
-
-              <form className="flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1 group">
-                  <input
-                    type="email"
-                    placeholder="Địa chỉ email của bạn"
-                    className="relative z-10 h-16 w-full rounded-xl border border-brand-200 bg-brand-50 px-6 text-on-surface placeholder-on-surface-variant/40 transition-colors focus:border-primary focus:bg-white focus:outline-none"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="h-16 rounded-xl bg-primary px-10 text-xs font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-brand-700"
-                >
-                  Kết Nối
-                </button>
-              </form>
-            </div>
-
-            {/* Footer / Social Quick Links */}
-            <div className="pt-12 flex flex-col sm:flex-row items-center justify-between gap-8 border-t border-primary/10">
-              <div className="flex items-center gap-6">
-                {[
-                  { icon: 'phone_in_talk', label: '0913 497 246', href: 'tel:0913497246' },
-                  { icon: 'share', label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61580846237727' }
-                ].map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center gap-2 group/social"
-                  >
-                    <span className="material-symbols-outlined text-primary/40 text-lg group-hover/social:text-primary transition-colors">{item.icon}</span>
-                    <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest group-hover/social:text-primary transition-colors">{item.label}</span>
-                  </a>
-                ))}
-              </div>
-
-              <div className="text-[10px] font-black text-primary/30 uppercase tracking-[0.2em]">
-                VILA SANMYSHI &copy; 2026
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className={styles.support}>
+        <p className={styles.supportTitle}>{text.support}</p>
+        <a href={`tel:${COMPANY_INFO.hotline}`} className={styles.contact}>
+          <Phone size={18} aria-hidden="true" />
+          <div><small>{text.hotline}</small><strong>{COMPANY_INFO.hotline}</strong></div>
+          <ArrowUpRight size={17} aria-hidden="true" />
+        </a>
+        <a href={`mailto:${COMPANY_INFO.email}`} className={styles.contact}>
+          <Mail size={18} aria-hidden="true" />
+          <div><small>{text.email}</small><strong>{COMPANY_INFO.email}</strong></div>
+          <ArrowUpRight size={17} aria-hidden="true" />
+        </a>
       </div>
-
-    </div>
+      <Link href="/" className={styles.textLink}>{text.home}<ArrowRight size={15} aria-hidden="true" /></Link>
+    </StatusShell>
   );
 }

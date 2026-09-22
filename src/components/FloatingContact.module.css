@@ -1,0 +1,13 @@
+.contacts { position: fixed; bottom: max(24px, env(safe-area-inset-bottom)); right: 24px; z-index: 150; display: flex; flex-direction: column; gap: 10px; transition: opacity .2s, visibility .2s; }
+.contacts > a { position: relative; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #d9e3ce; border-radius: 50%; box-shadow: 0 4px 18px #153f3515; transition: background .2s, transform .2s; }
+.contacts > a:hover { transform: translateY(-2px); }
+.contacts > a:focus-visible { outline: 3px solid #83a361; outline-offset: 4px; }
+.zalo { background: #f7f8f2; color: #153f35; }
+.zalo:hover { background: #e9efd9; }
+.wordmark { font-size: 13px; font-weight: 700; letter-spacing: -.06em; }
+.contacts > .phone { background: #153f35; color: #f7f8f2; border-color: #426b4a; }
+.phone:hover { background: #215c43; }
+.tooltip { position: absolute; right: calc(100% + 12px); padding: 10px 13px; border-radius: 6px; background: #153f35; color: #f7f8f2; font-size: 11px; font-weight: 500; white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s; }
+.contacts > a:is(:hover, :focus-visible) .tooltip { opacity: 1; visibility: visible; }
+@media (max-width: 640px) { .contacts { right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); gap: 8px; } .contacts > a { width: 44px; height: 44px; } }
+@media (prefers-reduced-motion: reduce) { .contacts, .contacts > a, .tooltip { transition: none; } }
