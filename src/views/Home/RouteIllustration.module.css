@@ -12,7 +12,7 @@
   padding: 0 20px 16px;
   border-bottom: 1px solid rgb(247 248 242 / 15%);
   color: #e6edda;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -46,17 +46,17 @@
 }
 
 .countries {
-  fill: #214d40;
-  stroke: #6c9581;
+  fill: #26702f;
+  stroke: #7fb486;
   stroke-width: 1.1;
 }
 
 .countries path:nth-child(2) {
-  fill: #295343;
+  fill: #2e7c38;
 }
 
 .countries path:nth-child(3) {
-  fill: #315d48;
+  fill: #388943;
   stroke: #94ad85;
 }
 
@@ -96,7 +96,7 @@
 
 .node {
   fill: #d8e8a3;
-  stroke: #234938;
+  stroke: #1b5e26;
   stroke-width: 2;
 }
 
@@ -106,7 +106,7 @@
   font-weight: 500;
   letter-spacing: -0.2px;
   paint-order: stroke;
-  stroke: #153f35;
+  stroke: #1b5e26;
   stroke-width: 4;
   stroke-linejoin: round;
 }
@@ -137,7 +137,7 @@
   padding: 12px 20px 0;
   border-top: 1px solid rgb(247 248 242 / 15%);
   color: #a7bfb0;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -178,3 +178,22 @@
     gap: 8px;
   }
 }
+
+.mover { display: none; }
+.mover rect { fill: #e04818; stroke: #1b5e26; stroke-width: 1.5; }
+.moverPulse { fill: #e04818; opacity: .22; transform-box: fill-box; transform-origin: center; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .mover { display: inline; }
+  .route { animation: routeFlow 1.1s linear infinite; }
+  .moverPulse { animation: moverPulse 1.8s ease-out infinite; }
+  .nodeRing { transform-box: fill-box; transform-origin: center; animation: nodePulse 3.2s ease-in-out infinite alternate; }
+  .nodes g:nth-child(2) .nodeRing { animation-delay: -.6s; }
+  .nodes g:nth-child(3) .nodeRing { animation-delay: -1.2s; }
+  .nodes g:nth-child(4) .nodeRing { animation-delay: -1.8s; }
+  .nodes g:nth-child(5) .nodeRing { animation-delay: -2.4s; }
+}
+
+@keyframes routeFlow { to { stroke-dashoffset: -9; } }
+@keyframes moverPulse { from { transform: scale(.5); opacity: .45; } to { transform: scale(1.5); opacity: 0; } }
+@keyframes nodePulse { from { transform: scale(.85); } to { transform: scale(1.35); } }

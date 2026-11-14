@@ -34,18 +34,18 @@
 /* ---------- Base CSS Variables ---------- */
 :root {
   /* === Brand palette: zinc surfaces + a single green accent === */
-  --brand-50: #f2f8f4;
-  --brand-100: #e4f0e8;
-  --brand-200: #cfe1d5;
-  --brand-300: #a8c6b1;
-  --brand-400: #78a889;
-  --brand-500: #2f8a59;
-  --brand-600: #247a4b;
-  --brand-700: #1c633d;
-  --brand-800: #144b30;
-  --brand-900: #0d3824;
-  --brand-950: #07291b;
-  --brand-accent: #f2ad4e;
+  --brand-50: #f1f8f1;
+  --brand-100: #e0f0e1;
+  --brand-200: #c4e0c6;
+  --brand-300: #9bc99f;
+  --brand-400: #5fa867;
+  --brand-500: #3a9a42;
+  --brand-600: #287830;
+  --brand-700: #1f6327;
+  --brand-800: #184d1f;
+  --brand-900: #133d19;
+  --brand-950: #0c2910;
+  --brand-accent: #e04818;
 
   --md-primary: var(--brand-600);
   --md-on-primary: #ffffff;
@@ -118,12 +118,12 @@
   --slate-700: #3f3f46;
   --slate-800: #27272a;
   --slate-900: #18181b;
-  --slate-950: #0e2a1c;
+  --slate-950: #0e2e13;
 
   /* === Legacy emerald aliases — mapped back to the brand accent === */
-  --emerald-400: #25754c;
-  --emerald-500: #25754c;
-  --emerald-600: #1f5f3f;
+  --emerald-400: #287830;
+  --emerald-500: #287830;
+  --emerald-600: #1f6327;
 
   /* === Operational signals — reserved for live data, warning and actions === */
   --signal-blue-50: #eff6ff;
@@ -815,7 +815,7 @@ body {
 }
 
 .tiptap blockquote {
-  border-left: 4px solid #25754c;
+  border-left: 4px solid #287830;
   padding-left: 1.5rem;
   margin: 1.5rem 0;
   font-style: italic;
@@ -834,6 +834,33 @@ body {
 }
 
 .tiptap-editor-container:focus-within {
-  border-color: #25754c !important;
+  border-color: #287830 !important;
   box-shadow: 0 0 0 4px rgba(37, 117, 76, 0.1);
+}
+
+/* ============================================
+   Ease of use — keyboard skip link, comfortable touch targets, no zoom-on-focus
+   ============================================ */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 300;
+  padding: 14px 20px;
+  border-radius: 30px;
+  background: #1b5e26;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus-visible { transform: translateY(0); outline: 3px solid #d8e8a3; outline-offset: 3px; }
+main:focus { outline: none; }
+
+@media (max-width: 760px) {
+  /* iOS zooms the page when a focused field is under 16px. */
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: 16px !important; }
+}
+@media (pointer: coarse) {
+  main :is(button, summary, select, input:not([type="checkbox"]):not([type="radio"])) { min-height: 44px; }
 }

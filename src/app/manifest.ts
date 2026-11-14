@@ -7,13 +7,13 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'VILA SANMYSHI - Chuyên khai báo hải quan, vận tải quốc tế tại Cửa khẩu Lao Bảo (Quảng Trị).',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#004daa',
+    background_color: '#f7f8f2',
+    theme_color: '#287830',
     icons: [
       {
         src: '/images/logo.jpg',
-        sizes: 'any',
-        type: 'image/x-icon',
+        sizes: '631x395',
+        type: 'image/jpeg',
       },
     ],
   };

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { alternatesFor, pageTitle } from "@/lib/seo";
 import { getTranslations } from "next-intl/server";
 import ContactView from "@/views/Contact/ContactView";
 
@@ -11,8 +12,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata.contact" });
 
   return {
-    title: t("title"),
+    title: pageTitle(t("title")),
     description: t("description"),
+    alternates: alternatesFor(locale, "/contact"),
     openGraph: {
       title: t("title"),
       description: t("description"),

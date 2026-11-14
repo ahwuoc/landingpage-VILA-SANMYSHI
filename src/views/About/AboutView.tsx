@@ -24,6 +24,9 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { BRAND_NAME, COMPANY_INFO } from "@/constants/company";
+import HomeMotion from "@/views/Home/HomeMotion";
+import { TruckArt } from "@/views/Home/HeroScene";
+import AboutArt from "./AboutArt";
 import styles from "./About.module.css";
 
 const pageCopy = {
@@ -136,6 +139,7 @@ export default function AboutView() {
 
   return (
     <div className={styles.page}>
+      <HomeMotion />
       <header className={styles.hero}>
         <div className={`${styles.container} ${styles.heroGrid}`}>
           <div className={styles.heroCopy}>
@@ -148,17 +152,14 @@ export default function AboutView() {
             </div>
             <div className={styles.heroSignature}><ShieldCheck size={21} aria-hidden="true" /><span>{t("profile_tagline")}</span></div>
           </div>
-          <div className={styles.heroVisual}>
-            <div className={styles.heroPhoto}>
-              <Image src="/images/editorial/warehouse.jpg" alt={copy.photo} fill preload sizes="(max-width: 760px) 100vw, 50vw" className={styles.cover} />
+          <div className={styles.heroArt}>
+            <AboutArt />
+            <div className={styles.arch}>
+              <Image src="/images/editorial/warehouse.jpg" alt={copy.photo} fill preload sizes="(max-width: 760px) 42vw, 270px" className={styles.cover} />
               <div className={styles.photoShade} />
-              <p className={styles.photoCaption}>{copy.photo}</p>
+              <p className={styles.archCaption}>{copy.photo}</p>
             </div>
             <div className={styles.foundedSeal}><span>{copy.since}</span><strong>2018</strong><span>VILA SANMYSHI</span></div>
-            <div className={styles.gateCard}>
-              <div className={styles.gateImage}><Image src="/images/about/hero.png" alt="Lao Bao" fill sizes="210px" className={styles.cover} /></div>
-              <p><MapPin size={13} aria-hidden="true" />Lao Bảo, Quảng Trị</p>
-            </div>
           </div>
         </div>
         <div className={`${styles.container} ${styles.heroFoot}`}><span>{copy.place}</span><a href="#company-profile">{copy.scroll}<ArrowDown size={14} aria-hidden="true" /></a></div>
@@ -174,43 +175,43 @@ export default function AboutView() {
       </div>
 
       <section id="company-profile" className={`${styles.container} ${styles.profile}`}>
-        <div className={styles.profileIntro}>
+        <div className={`${styles.profileIntro} home-reveal`}>
           <p className={styles.eyebrow}><span className={styles.sectionNumber}>01 /</span>{t("profile_title")}</p>
           <h2 className={styles.sectionTitle}>{copy.company}<em>{copy.companyAccent}</em></h2>
           <p>{t("capacity_intro")}</p>
           <div className={styles.profileNote}><MapPin size={23} aria-hidden="true" /><div><strong>Lao Bảo · Quảng Trị</strong><span>{t("process.route_label")}</span></div></div>
           <Link href="/contact" className={styles.textLink}>{copy.inquiry}<ArrowUpRight size={17} aria-hidden="true" /></Link>
         </div>
-        <dl className={styles.profileDetails}>
+        <dl className={`${styles.profileDetails} home-reveal`}>
           {profileItems.map((item, index) => <div key={item.label}><dt><span>{String(index + 1).padStart(2, "0")}</span>{item.label}</dt><dd>{item.href ? <a href={item.href}>{item.value}<ArrowUpRight size={13} aria-hidden="true" /></a> : item.value}</dd></div>)}
         </dl>
       </section>
 
       <section className={styles.purpose}>
         <div className={styles.container}>
-          <div className={styles.sectionHeading}>
+          <div className={`${styles.sectionHeading} home-reveal`}>
             <div><p className={styles.eyebrow}><span className={styles.sectionNumber}>02 /</span>{t("purpose.eyebrow")}</p><h2 className={styles.sectionTitle}>{t("purpose.title")}</h2></div>
             <p>{t("purpose.intro")}</p>
           </div>
-          <div className={styles.purposeGrid}>
+          <div className={`${styles.purposeGrid} home-stagger`}>
             {purposeCards.map(({ icon: Icon, title, description }, index) => <article key={title} className={styles.purposeCard}><div className={styles.cardTop}><Icon size={25} strokeWidth={1.4} aria-hidden="true" /><span>0{index + 1}</span></div><h3>{title}</h3><p>{description}</p></article>)}
           </div>
           <div className={styles.valuesHeader}><span>{t("purpose.values_title")}</span><p>{copy.principle}</p></div>
-          <div className={styles.valuesGrid}>
+          <div className={`${styles.valuesGrid} home-stagger`}>
             {values.map((value, index) => { const Icon = valueIcons[index]; return <article key={value.title}><Icon size={23} strokeWidth={1.5} aria-hidden="true" /><h3>{value.title}</h3><p>{value.description}</p></article>; })}
           </div>
         </div>
       </section>
 
       <section className={`${styles.container} ${styles.process}`}>
-        <div className={styles.processIntro}>
+        <div className={`${styles.processIntro} home-reveal`}>
           <p className={styles.eyebrow}><span className={styles.sectionNumber}>03 /</span>{t("process.eyebrow")}</p>
           <h2 className={styles.sectionTitle}>{t("process.title")}</h2>
           <p>{t("process.intro")}</p>
           <div className={styles.processPhoto}><Image src="/images/editorial/container-port.jpg" alt={copy.photo} fill sizes="(max-width: 760px) 100vw, 40vw" className={styles.cover} /><span>{copy.countries}</span></div>
         </div>
         <div>
-          <ol className={styles.processSteps}>
+          <ol className={`${styles.processSteps} home-stagger`}>
             {processSteps.map((step, index) => { const Icon = processIcons[index]; return <li key={step.title}><span className={styles.stepNumber}>0{index + 1}</span><div><h3>{step.title}</h3><p>{step.description}</p></div><Icon size={22} strokeWidth={1.4} aria-hidden="true" /></li>; })}
           </ol>
           <details className={styles.commitments} open>
@@ -222,7 +223,7 @@ export default function AboutView() {
 
       <section className={styles.timelineSection}>
         <div className={styles.container}>
-          <div className={styles.timelineHeading}><div><p className={styles.eyebrow}><span className={styles.sectionNumber}>04 /</span>{t("timeline_period")}</p><h2 className={styles.sectionTitle}>{t("timeline_title")}</h2></div><div className={styles.timelineControls}><button type="button" onClick={() => scrollTimeline("left")} aria-label={t("timeline_prev")}><ArrowLeft size={19} aria-hidden="true" /></button><button type="button" onClick={() => scrollTimeline("right")} aria-label={t("timeline_next")}><ArrowRight size={19} aria-hidden="true" /></button></div></div>
+          <div className={`${styles.timelineHeading} home-reveal`}><div><p className={styles.eyebrow}><span className={styles.sectionNumber}>04 /</span>{t("timeline_period")}</p><h2 className={styles.sectionTitle}>{t("timeline_title")}</h2></div><div className={styles.timelineControls}><button type="button" onClick={() => scrollTimeline("left")} aria-label={t("timeline_prev")}><ArrowLeft size={19} aria-hidden="true" /></button><button type="button" onClick={() => scrollTimeline("right")} aria-label={t("timeline_next")}><ArrowRight size={19} aria-hidden="true" /></button></div></div>
           <div ref={timelineRef} className={styles.timeline} tabIndex={0} role="region" aria-label={t("timeline_title")}>
             {timeline.map((item, index) => <article key={`${item.year}-${index}`}><div className={styles.timelineYear}><strong>{item.year}</strong><span>0{index + 1}</span></div><span className={styles.timelinePoint} /><h3>{item.highlight}</h3><p>{item.description}</p></article>)}
           </div>
@@ -230,13 +231,14 @@ export default function AboutView() {
       </section>
 
       <section className={`${styles.container} ${styles.fields}`}>
-        <div className={styles.sectionHeading}><div><p className={styles.eyebrow}><span className={styles.sectionNumber}>05 /</span>{t("business_fields_eyebrow")}</p><h2 className={styles.sectionTitle}>{t("business_fields_title")}</h2></div><p>{t("business_fields_intro")}</p></div>
-        <div className={styles.fieldsGrid}>{businessFields.map((field, index) => <div key={field}><span>{String(index + 1).padStart(2, "0")}</span><h3>{field}</h3></div>)}</div>
+        <div className={`${styles.sectionHeading} home-reveal`}><div><p className={styles.eyebrow}><span className={styles.sectionNumber}>05 /</span>{t("business_fields_eyebrow")}</p><h2 className={styles.sectionTitle}>{t("business_fields_title")}</h2></div><p>{t("business_fields_intro")}</p></div>
+        <div className={`${styles.fieldsGrid} home-reveal`}>{businessFields.map((field, index) => <div key={field}><span>{String(index + 1).padStart(2, "0")}</span><h3>{field}</h3></div>)}</div>
         <div className={styles.fieldsFoot}><p>{copy.fields}</p><Link href="/services" className={styles.textLink}>{copy.services}<ArrowUpRight size={17} aria-hidden="true" /></Link></div>
       </section>
 
       <section className={styles.cta}>
-        <div className={`${styles.container} ${styles.ctaInner}`}><div><p className={styles.eyebrow}>{BRAND_NAME} · EWEC</p><h2>{t("cta.title")}</h2></div><div><p>{t("cta.desc")}</p><Link href="/contact" className={styles.button}>{t("cta.btn")}<ArrowUpRight size={18} aria-hidden="true" /></Link></div></div>
+        <div className={styles.ctaRoad} aria-hidden="true"><svg className={styles.ctaTruck} viewBox="-6 -96 312 100" focusable="false"><TruckArt /></svg></div>
+        <div className={`${styles.container} ${styles.ctaInner} home-reveal`}><div><p className={styles.eyebrow}>{BRAND_NAME} · EWEC</p><h2>{t("cta.title")}</h2></div><div><p>{t("cta.desc")}</p><Link href="/contact" className={styles.button}>{t("cta.btn")}<ArrowUpRight size={18} aria-hidden="true" /></Link></div></div>
       </section>
     </div>
   );

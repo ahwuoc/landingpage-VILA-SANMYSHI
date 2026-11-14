@@ -1,4 +1,5 @@
 import ServicesView from "@/views/Services/ServicesView";
+import { alternatesFor } from "@/lib/seo";
 import { getServicesList } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from "next";
@@ -27,7 +28,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; category: string; id: string }>
 }): Promise<Metadata> {
-  const { locale, id } = await params;
+  const { locale, id, category } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   const services = await getServicesList();
@@ -37,12 +38,13 @@ export async function generateMetadata({
   const title = service.title[locale] || service.title['vi'];
 
   return {
-    title: `${title} | VILA SANMYSHI`,
+    title,
     description: t("service_desc_template", { title: title }),
+    alternates: alternatesFor(locale, `/services/${category}/${id}`),
     openGraph: {
       title: title,
       images: [service.image],
-      url: `/${locale}/services/${(await params).category}/${id}`,
+      url: `/${locale}/services/${category}/${id}`,
     },
   };
 }

@@ -1,0 +1,39 @@
+.art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.orbitA, .orbitB { transform-origin: 438px 172px; }
+.orbitB { transform: rotate(-24deg); }
+.glow, .pop, .rise { transform-box: fill-box; transform-origin: center; }
+.mover { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .mover { display: inline; }
+  .orbitA { animation: orbit 46s linear infinite; }
+  .orbitB { animation: orbit 78s linear infinite reverse; }
+  .glow { animation: breathe 6s ease-in-out infinite alternate; }
+  .pop { animation: pop .9s cubic-bezier(.2, .8, .2, 1) both; }
+  .route { animation: flow 1.4s linear infinite; }
+  .sea path { stroke-dasharray: 7 5; animation: flow 2.2s linear infinite reverse; }
+  .hoist { animation: hoist 5.5s ease-in-out infinite alternate; }
+  .marks { animation: twinkle 3s ease-in-out infinite alternate; }
+
+  .rise { animation: rise .8s cubic-bezier(.2, .8, .2, 1) both; }
+  .rise:nth-child(1) { animation-delay: .25s; }
+  .rise:nth-child(2) { animation-delay: .35s; }
+  .rise:nth-child(3) { animation-delay: .5s; }
+  .rise:nth-child(4) { animation-delay: .6s; }
+  .rise:nth-child(5) { animation-delay: .75s; }
+}
+
+@keyframes orbit { to { rotate: 360deg; } }
+@keyframes breathe { from { transform: scale(.92); opacity: .75; } to { transform: scale(1.06); opacity: 1; } }
+@keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+@keyframes hoist { from { transform: translateY(-16px); } to { transform: translateY(4px); } }
+@keyframes twinkle { from { opacity: .35; } to { opacity: 1; } }

@@ -1,4 +1,5 @@
 import NewsView from "@/views/News/NewsView";
+import { alternatesFor, pageTitle } from "@/lib/seo";
 import { Metadata } from "next";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 export function generateStaticParams() {
@@ -14,8 +15,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
-    title: t("news.title"),
+    title: pageTitle(t("news.title")),
     description: t("news.description"),
+    alternates: alternatesFor(locale, "/news"),
     openGraph: {
       title: t("news.title"),
       description: t("news.description"),

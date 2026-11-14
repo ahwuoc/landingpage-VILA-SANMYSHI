@@ -1,4 +1,5 @@
 import ServicesView from "@/views/Services/ServicesView";
+import { alternatesFor, pageTitle } from "@/lib/seo";
 import { getServicesList } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from "next";
@@ -16,8 +17,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata.services" });
 
   return {
-    title: t("title"),
+    title: pageTitle(t("title")),
     description: t("description"),
+    alternates: alternatesFor(locale, "/services"),
     openGraph: {
       title: t("title"),
       description: t("description"),

@@ -97,6 +97,12 @@ export default function RouteIllustration({ locale }: { locale: string }) {
           aria-hidden="true"
         />
 
+        <g className={styles.mover} aria-hidden="true">
+          <circle className={styles.moverPulse} r="13" />
+          <rect x="-9" y="-5" width="18" height="10" rx="2" />
+          <animateMotion dur="11s" repeatCount="indefinite" rotate="auto" keyPoints="0;1;1;0;0" keyTimes="0;0.44;0.5;0.94;1" calcMode="linear" path="M194 288C212 255 240 228 282 217S320 215 336 217 394 201 419 213 459 227 478 247" />
+        </g>
+
         <g className={styles.leaders} fill="none" aria-hidden="true">
           <path d="M194 288 175 314 127 314" />
           <path d="M282 217 266 184 236 184" />

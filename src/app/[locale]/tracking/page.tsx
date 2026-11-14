@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternatesFor, pageTitle } from "@/lib/seo";
 import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import TrackingView from "@/views/Tracking/TrackingView";
@@ -27,7 +28,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const current = metadataCopy[locale as keyof typeof metadataCopy] || metadataCopy.vi;
   return {
     ...current,
-    alternates: { canonical: `/${locale}/tracking` },
+    title: pageTitle(current.title),
+    alternates: alternatesFor(locale, "/tracking"),
     openGraph: { ...current, url: `/${locale}/tracking`, images: ["/images/hero/hero-1.png"] },
   };
 }

@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${beVietnamPro.variable} ${editorial.variable} light scroll-smooth`} data-scroll-behavior="smooth">
+    <html lang="vi" suppressHydrationWarning className={`${beVietnamPro.variable} ${editorial.variable} light scroll-smooth`} data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

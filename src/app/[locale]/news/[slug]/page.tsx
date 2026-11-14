@@ -1,4 +1,5 @@
 import NewsDetailView from "@/views/News/NewsDetailView";
+import { alternatesFor } from "@/lib/seo";
 import { getNewsList } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from "next";
@@ -35,6 +36,7 @@ export async function generateMetadata({
   return {
     title,
     description: excerpt,
+    alternates: alternatesFor(locale, `/news/${slug}`),
     openGraph: {
       title,
       description: excerpt,

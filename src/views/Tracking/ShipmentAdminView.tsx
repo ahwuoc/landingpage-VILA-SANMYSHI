@@ -268,7 +268,7 @@ export default function ShipmentAdminView() {
           )}
         </section>
 
-        <aside className="rounded-2xl bg-[linear-gradient(155deg,#0e2a1c_0%,#102f3e_55%,#12233f_100%)] p-6 text-white shadow-[var(--shadow-card)] sm:p-7">
+        <aside className="rounded-2xl bg-[linear-gradient(155deg,#0e2e13_0%,#102f3e_55%,#12233f_100%)] p-6 text-white shadow-[var(--shadow-card)] sm:p-7">
           {!selected ? (
             <div className="grid min-h-[32rem] place-items-center text-center">
               <div>

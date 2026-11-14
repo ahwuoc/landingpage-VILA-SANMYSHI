@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { alternatesFor, pageTitle } from "@/lib/seo";
 import { COMPANY_INFO } from "@/constants/company";
 import { BranchesView } from "@/views/Branches/BranchesView";
 
@@ -6,7 +7,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Branches" });
   return {
-    title: t("metadata_title"),
+    title: pageTitle(t("metadata_title")),
+    alternates: alternatesFor(locale, "/branches"),
+    openGraph: { title: t("metadata_title"), url: `/${locale}/branches`, images: ["/images/logo.jpg"] },
   };
 }
 

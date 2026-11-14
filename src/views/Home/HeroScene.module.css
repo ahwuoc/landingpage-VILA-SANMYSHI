@@ -1,0 +1,142 @@
+.scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --truck-from: -260px;
+  --truck-to: 1680px;
+  --back-from: 2200px;
+  --back-to: -120px;
+  --ship-from: 1680px;
+  --ship-to: -640px;
+}
+
+.containerLabel {
+  font-family: var(--font-be-vietnam), sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.hullName {
+  fill: #f7f8f2;
+  font-family: var(--font-be-vietnam), sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+  opacity: .85;
+}
+
+/* Resting positions — what a visitor with reduced motion sees. */
+.truckRun { transform: translateX(560px); }
+.truckBack { transform: translateX(1750px); }
+.shipRun { transform: translateX(690px); }
+.wheel { transform-box: fill-box; transform-origin: center; }
+.shipBob { transform-box: fill-box; transform-origin: 50% 100%; }
+.sunGlow { transform-box: fill-box; transform-origin: center; }
+.exhaust circle, .smoke circle { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.headBeam { opacity: .7; }
+.cranes { opacity: .5; }
+.birds { transform: translate(930px, 400px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .truckRun { animation: drive 24s linear infinite; will-change: transform; }
+  .truckBack { animation: driveBack 37s linear -9s infinite; will-change: transform; }
+  .shipRun { animation: sail 68s linear -21s infinite; will-change: transform; }
+  .wheel { animation: spin .62s linear infinite; }
+  .truckBody { animation: rumble .46s ease-in-out infinite alternate; }
+  .shipBob { animation: bob 5.5s ease-in-out infinite alternate; }
+  .headBeam { animation: flicker 3.4s ease-in-out infinite alternate; }
+  .foam { animation: flicker 2.2s ease-in-out infinite alternate; }
+
+  .exhaust circle { animation: puff 1.8s ease-out infinite; }
+  .exhaust circle:nth-child(2) { animation-delay: -.6s; }
+  .exhaust circle:nth-child(3) { animation-delay: -1.2s; }
+  .smoke circle { animation: smoke 4.2s ease-out infinite; }
+  .smoke circle:nth-child(2) { animation-delay: -1.4s; }
+  .smoke circle:nth-child(3) { animation-delay: -2.8s; }
+
+  .sunRise { animation: sunrise 2.6s cubic-bezier(.2, .7, .2, 1) both; }
+  .sunGlow { animation: breathe 6s ease-in-out infinite alternate; }
+  .cloudA { animation: drift 70s linear infinite alternate; }
+  .cloudB { animation: drift 95s linear -30s infinite alternate-reverse; }
+  .cloudC { animation: drift 58s linear -12s infinite alternate; }
+  .birds { animation: flock 46s linear -8s infinite; }
+  .birds path { animation: flap .9s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+
+  .ridge { animation: ridgeIn 1.4s cubic-bezier(.2, .7, .2, 1) both; }
+  .ridgeMid { animation-delay: .12s; }
+  .ridgeNear { animation-delay: .24s; }
+  .cables path { stroke-dasharray: 1; animation: string 1.6s ease-out .5s both; }
+  .beacon { animation: blink 2.4s steps(1) infinite; }
+  .hoist { animation: hoist 9s ease-in-out infinite alternate; }
+
+  .glints rect { animation: glint 3.6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+  .waveBack { animation: swell160 9s linear infinite; }
+  .waveMid { animation: swell220 13s linear infinite reverse; }
+  .waveFront { animation: swell260 11s linear infinite; }
+  .waveFront2 { animation: swell200 8s linear infinite reverse; }
+
+  /* Depth on scroll, where the browser supports scroll-driven animation. */
+  @supports (animation-timeline: scroll()) {
+    .parallaxSlow, .parallaxFar, .parallaxMid {
+      animation: sink linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 900px;
+    }
+    .parallaxSlow { --sink: 150px; }
+    .parallaxFar { --sink: 70px; }
+    .parallaxMid { --sink: 34px; }
+  }
+}
+
+@keyframes drive { from { transform: translateX(var(--truck-from)); } to { transform: translateX(var(--truck-to)); } }
+@keyframes driveBack { from { transform: translateX(var(--back-from)); } to { transform: translateX(var(--back-to)); } }
+@keyframes sail { from { transform: translateX(var(--ship-from)); } to { transform: translateX(var(--ship-to)); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes rumble { from { transform: translateY(0); } to { transform: translateY(-1.1px); } }
+@keyframes bob { from { transform: translateY(1.5px) rotate(-.45deg); } to { transform: translateY(-2.5px) rotate(.45deg); } }
+@keyframes flicker { from { opacity: .45; } to { opacity: .9; } }
+@keyframes puff { 0% { opacity: .5; transform: translate(0, 0) scale(.5); } 100% { opacity: 0; transform: translate(-26px, -20px) scale(1.7); } }
+@keyframes smoke { 0% { opacity: .55; transform: translate(0, 0) scale(.6); } 100% { opacity: 0; transform: translate(64px, -46px) scale(2.6); } }
+@keyframes sunrise { from { opacity: 0; transform: translateY(120px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes breathe { from { transform: scale(.94); opacity: .82; } to { transform: scale(1.05); opacity: 1; } }
+@keyframes drift { from { transform: translateX(-70px); } to { transform: translateX(90px); } }
+@keyframes flock { 0% { opacity: 0; transform: translate(700px, 470px); } 8% { opacity: 1; } 100% { opacity: 1; transform: translate(1700px, 290px); } }
+@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(.25); } }
+@keyframes ridgeIn { from { opacity: 0; transform: translateY(46px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes string { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: .15; } }
+@keyframes hoist { 0%, 15% { transform: translate(0, 0); } 45%, 60% { transform: translate(0, 44px); } 100% { transform: translate(96px, 0); } }
+@keyframes glint { from { opacity: .12; transform: scaleX(.45); } to { opacity: .75; transform: scaleX(1); } }
+@keyframes swell160 { to { transform: translateX(-160px); } }
+@keyframes swell200 { to { transform: translateX(-200px); } }
+@keyframes swell220 { to { transform: translateX(-220px); } }
+@keyframes swell260 { to { transform: translateX(-260px); } }
+@keyframes sink { to { transform: translateY(var(--sink)); } }
+
+/* Narrow screens crop the scene to its middle, so keep the traffic inside it. */
+@media (max-width: 1100px) {
+  .scene {
+    --truck-from: 60px;
+    --truck-to: 1420px;
+    --back-from: 1900px;
+    --back-to: 200px;
+    --ship-from: 1500px;
+    --ship-to: -420px;
+  }
+}
+
+@media (max-width: 760px) {
+  .scene {
+    --truck-from: 180px;
+    --truck-to: 1300px;
+    --back-from: 1700px;
+    --back-to: 420px;
+    --ship-from: 1340px;
+    --ship-to: -260px;
+  }
+  .sunShift { transform: translateX(-190px); }
+  .truckRun { animation-duration: 16s; }
+  .shipRun { animation-duration: 48s; }
+}

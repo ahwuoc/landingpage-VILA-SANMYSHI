@@ -1,4 +1,5 @@
 import HomeView from "@/views/Home/view";
+import { alternatesFor } from "@/lib/seo";
 import { Metadata } from "next";
 import { getServicesList, getNewsList } from "@/lib/data";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
@@ -27,9 +28,7 @@ export async function generateMetadata({
       description: t("description"),
       images: ["/images/logo.jpg"],
     },
-    alternates: {
-      canonical: `/${locale}`,
-    },
+    alternates: alternatesFor(locale),
     robots: {
       index: true,
       follow: true,

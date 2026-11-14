@@ -1,4 +1,5 @@
 import ServiceCategoryView from "@/views/Services/ServiceCategoryView";
+import { alternatesFor } from "@/lib/seo";
 import { getServicesList } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from "next";
@@ -23,7 +24,7 @@ export async function generateMetadata({
     return {
       title: servicesMetadata("title"),
       description: servicesMetadata("description"),
-      alternates: { canonical: `/${locale}/services/all` },
+      alternates: alternatesFor(locale, "/services/all"),
     };
   }
 
@@ -34,9 +35,9 @@ export async function generateMetadata({
   const catName = nameObj[locale] || nameObj['vi'];
 
   return {
-    title: `${catName} | VILA SANMYSHI`,
+    title: catName,
     description: t("category_desc_template", { name: catName }),
-    alternates: { canonical: `/${locale}/services/${category}` },
+    alternates: alternatesFor(locale, `/services/${category}`),
   };
 }
 

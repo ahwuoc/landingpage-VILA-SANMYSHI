@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 
+const skipLabel: Record<string, string> = { vi: "Bỏ qua, tới nội dung chính", en: "Skip to main content", th: "ข้ามไปยังเนื้อหาหลัก" };
+
 export default function ClientLayout({
   children,
 }: {
@@ -22,8 +24,9 @@ export default function ClientLayout({
 
   return (
     <>
+      <a href="#main-content" className="skip-link">{skipLabel[segments[1]] || skipLabel.vi}</a>
       <Navbar />
-      <main>{children}</main>
+      <main id="main-content" tabIndex={-1}>{children}</main>
       <Footer />
       <FloatingContact />
     </>

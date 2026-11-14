@@ -39,3 +39,13 @@ This illustration is a regional logistics locator. The intentionally coarse Natu
 - Water: `#f2f5ec`.
 
 Visible labels are geographic names. An SVG title and description explain the regional scope and approximate town marker for assistive technology.
+
+## Superseded by the inline map (2026-11)
+
+The Branches and Contact pages no longer load `indochina.svg`. They render `src/components/maps/VietnamMap.tsx`, which draws from `src/components/maps/indochinaGeo.ts`.
+
+- Source: Natural Earth **1:10m** `ne_10m_admin_0_countries` and `ne_10m_rivers_lake_centerlines` (public domain).
+- Frame: spherical Mercator, 91.5–121.5° E, 6.5–24.5° N, viewBox `0 0 1140 713.2`.
+- Regenerate with `python3 scripts/build-indochina-map.py <countries.geojson> <rivers.geojson>`.
+- City dots use real coordinates. The dashed corridor line is a schematic link between them, not a traced road.
+- The Hoàng Sa and Trường Sa archipelagos are drawn as labelled symbolic markers at approximate centre positions, not surveyed island outlines.

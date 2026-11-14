@@ -1,4 +1,5 @@
 import AboutView from "@/views/About/AboutView";
+import { alternatesFor, pageTitle } from "@/lib/seo";
 import { Metadata } from "next";
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 
@@ -11,8 +12,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata.about" });
   
   return {
-    title: t("title"),
+    title: pageTitle(t("title")),
     description: t("description"),
+    alternates: alternatesFor(locale, "/about"),
     openGraph: {
       title: t("title"),
       description: t("description"),

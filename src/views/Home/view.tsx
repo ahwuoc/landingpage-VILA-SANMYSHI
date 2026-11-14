@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, FileCheck2, Globe2, MapPin, PackageCheck, Phone, Search, ShieldCheck, Truck } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, FileCheck2, Globe2, PackageCheck, Phone, Search, ShieldCheck, Truck } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import type { NewsItem, ServiceItem } from "@/lib/data";
 import { COMPANY_INFO } from "@/constants/company";
 import { copy, fallbackImages } from "./content";
 import { editorialCopy } from "./editorialCopy";
+import HeroScene, { TruckArt } from "./HeroScene";
 import HomeMotion from "./HomeMotion";
 import KnowledgeHub from "./KnowledgeHub";
 import ShipmentTools from "./ShipmentTools";
@@ -14,6 +15,7 @@ import RouteIllustration from "./RouteIllustration";
 import styles from "./Home.module.css";
 
 const supportedRemoteHosts = ["images.unsplash.com", "lh3.googleusercontent.com", "i.pravatar.cc", "xhtkvralkhnvohxjrmgq.supabase.co"];
+const corridorStops = ["Bangkok", "Mukdahan", "Savannakhet", "Lao Bảo", "Đà Nẵng"];
 const processIcons = [FileCheck2, ShieldCheck, Truck, PackageCheck];
 
 function safeImage(src: string | undefined, fallback: string) {
@@ -52,11 +54,19 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
   const lang = locale === "en" || locale === "th" ? locale : "vi";
   const faqs = [...current.faqs, ...shippingFaqs.map((faq) => ({ question: faq.question[lang], answer: faq.answer[lang], source: faq.source, url: faq.url }))];
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+  };
+
   return (
     <div id="top" className={styles.home}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <HomeMotion />
       <section className={styles.hero} aria-labelledby="home-title">
-        <div className={`${styles.container} ${styles.heroGrid}`}>
+        <div className={styles.heroScene}><HeroScene /></div>
+        <div className={`${styles.container} ${styles.heroInner}`}>
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}><span className={styles.dot} />{design.eyebrow}</p>
             <h1 id="home-title" className={styles.heroTitle}>
@@ -69,35 +79,19 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
               <Link href="/contact" className={styles.primaryButton}>{current.primaryCta}<ArrowUpRight size={18} aria-hidden="true" /></Link>
               <a href="#services" className={styles.textLink}>{design.explore}<ArrowRight size={17} aria-hidden="true" /></a>
             </div>
+          </div>
+
+          <div className={styles.heroAside}>
+            <div className={styles.corridorCard}>
+              <p><Globe2 size={14} aria-hidden="true" />{design.imageCaption}</p>
+              <div className={styles.corridorLine} aria-hidden="true"><span>TH</span><i /><span>LA</span><i /><span>VN</span></div>
+              <small>{design.since}</small>
+            </div>
             <div className={styles.heroTrust}>
-              <span className={styles.trustIcon}><ShieldCheck size={22} strokeWidth={1.5} aria-hidden="true" /></span>
+              <span className={styles.trustIcon}><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /></span>
               <div><strong>{design.assurance}</strong><p>{design.assuranceDetail}</p></div>
             </div>
           </div>
-
-          <div className={styles.heroVisual}>
-            <div className={styles.orbit} aria-hidden="true" />
-            <div className={styles.heroPhoto}>
-              <Image src="/images/services/cross-border-premium.png" alt={design.imageAlt} fill preload sizes="(max-width: 760px) 94vw, (max-width: 1100px) 48vw, 620px" className={styles.coverImage} />
-              <div className={styles.photoShade} />
-              <span className={styles.photoLabel}><Globe2 size={14} aria-hidden="true" />{design.imageCaption}</span>
-              <span className={styles.photoNumber} aria-hidden="true">VN · LA · TH</span>
-            </div>
-            <div className={styles.experienceSeal}>
-              <Globe2 size={25} strokeWidth={1.2} aria-hidden="true" />
-              <strong>EWEC</strong>
-              <span>CONNECTED<br />WITH CARE</span>
-            </div>
-            <div className={styles.gateCard}>
-              <div className={styles.gateImage}><Image src="/images/hero/hero-1.png" alt={design.gateAlt} fill sizes="220px" className={styles.coverImage} /></div>
-              <p><MapPin size={13} aria-hidden="true" />Lao Bao, Vietnam<ArrowUpRight size={13} aria-hidden="true" /></p>
-            </div>
-            <div className={styles.imageNote}><span />{design.since}</div>
-          </div>
-        </div>
-        <div className={`${styles.container} ${styles.heroBaseline}`}>
-          <span>LOCAL EXPERTISE. REGIONAL CONNECTIONS.</span>
-          <a href="#our-story">{design.scroll}<ArrowDown size={14} aria-hidden="true" /></a>
         </div>
       </section>
 
@@ -112,6 +106,20 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
           </form>
         </div>
       </section>
+
+      <div className={styles.ticker} aria-hidden="true">
+        <div className={styles.tickerTrack}>
+          {[0, 1, 2, 3].map((copyIndex) => (
+            <p key={copyIndex}>
+              {corridorStops.map((stop) => <span key={stop}>{stop}<ArrowRight size={13} /></span>)}
+              <b>{design.networkTag}</b>
+              <i />
+              <b>{design.imageCaption}</b>
+              <i />
+            </p>
+          ))}
+        </div>
+      </div>
 
       <section id="our-story" className={`${styles.container} ${styles.story}`}>
         <div className="home-reveal">
@@ -161,7 +169,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
       <section className={`${styles.container} ${styles.process}`}>
         <div className={`${styles.sectionHeading} home-reveal`}><div><p className={styles.eyebrow}><span className={styles.sectionNumber}>04 /</span>{current.processEyebrow}</p><h2 className={styles.sectionTitle}>{design.processTitle}<br /><em>{design.processAccent}</em></h2></div><p className={styles.headingAside}>{current.processBody}</p></div>
         <ol className={`${styles.processGrid} home-stagger`}>{current.processSteps.map((step, index) => { const Icon = processIcons[index]; return <li key={step.title}><div className={styles.processTop}><span>0{index + 1}</span><Icon size={26} strokeWidth={1.3} aria-hidden="true" /></div><h3>{step.title}</h3><p>{step.description}</p></li>; })}</ol>
-        <details className={styles.documentDetails}><summary><FileCheck2 size={18} aria-hidden="true" />{design.documents}<span aria-hidden="true">+</span></summary><div className={styles.documents}>{current.documents.map((document) => <div key={document.title}><Check size={16} aria-hidden="true" /><p><strong>{document.title}</strong><span>{document.meta}</span></p></div>)}</div><p className={styles.documentNote}>{current.documentsBody}</p></details>
+        <details className={styles.documentDetails} open><summary><FileCheck2 size={18} aria-hidden="true" />{design.documents}<span aria-hidden="true">+</span></summary><div className={styles.documents}>{current.documents.map((document) => <div key={document.title}><Check size={16} aria-hidden="true" /><p><strong>{document.title}</strong><span>{document.meta}</span></p></div>)}</div><p className={styles.documentNote}>{current.documentsBody}</p></details>
       </section>
 
       {landingNews.length > 0 && <section className={styles.news}>
@@ -180,6 +188,7 @@ export default function HomeView({ services = [], newsList = [] }: { services?: 
 
       <section className={styles.cta}>
         <div className={styles.ctaContour} aria-hidden="true" />
+        <div className={styles.ctaRoad} aria-hidden="true"><svg className={styles.ctaTruck} viewBox="-6 -96 312 100" focusable="false"><TruckArt /></svg></div>
         <div className={`${styles.container} ${styles.ctaInner} home-reveal`}><p className={styles.eyebrow}>{design.ctaEyebrow}</p><h2>{design.ctaTitle}<br /><em>{design.ctaAccent}</em></h2><p className={styles.ctaBody}>{design.ctaBody}</p><div className={styles.ctaActions}><Link href="/contact" className={styles.primaryButton}>{current.primaryCta}<ArrowUpRight size={18} aria-hidden="true" /></Link><a href={`tel:${COMPANY_INFO.hotline}`} className={styles.phoneLink}><Phone size={17} aria-hidden="true" />{COMPANY_INFO.hotline.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3")}</a></div></div>
       </section>
     </div>
